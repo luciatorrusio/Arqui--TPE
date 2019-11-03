@@ -26,7 +26,6 @@ typedef enum {
 }Color;
 
 
-
 void clearConsole();
 
 int moveCursor(int row, int col);

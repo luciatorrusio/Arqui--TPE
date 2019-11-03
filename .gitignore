@@ -55,5 +55,9 @@ dkms.conf
 # Other
 
 .vscode/*
-
+*.img
+*.qcow2
+*.vmdk
+*.bin
+*.sys
 .bash_history

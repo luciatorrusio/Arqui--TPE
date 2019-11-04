@@ -61,3 +61,4 @@ dkms.conf
 *.bin
 *.sys
 .bash_history
+.bash_history

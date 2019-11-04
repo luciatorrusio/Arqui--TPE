@@ -38,6 +38,8 @@ int setColor(Color textColor, Color backgroundColor);
 
 int printlnAt(char *str, unsigned int position);
 
+int printChar( char ch);
+
 int println(char * str);
 
 void getColor(Color * textColor, Color * backgroundColor);

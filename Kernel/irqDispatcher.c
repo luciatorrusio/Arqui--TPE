@@ -75,10 +75,11 @@ static void int_81(void * firstParam, void * secondParam, void * thirdParam){
 
 void int_21(){
 
-	 int a = readKey();
-		char dd[2] = {0,0};
-		dd[0]=a;
-	 println(dd);
+	 readKey();
+
+	int temp = returnKey();
+	if( temp != -1)
+	 	printChar(temp);
 	
 }
 

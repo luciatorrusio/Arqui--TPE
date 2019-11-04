@@ -12,7 +12,7 @@ void printCurrentTime();
 int main() {
 
 
-clearConsole();
+	clearConsole();
 
 	do{
 		

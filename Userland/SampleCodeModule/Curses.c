@@ -7,12 +7,13 @@
 
 void clearConsole()
 {
-    for (int i = 0; i < DISPLAY_ROW; i++)
+    for (int row = 0; row < DISPLAY_ROW; row++)
     {
-        for (int j = 0; j < DISPLAY_COL; j++)
+        for (int col = 0; col < DISPLAY_COL; col++)
         {
-            printCharAt(' ', j, i);
+            printCharAt(' ',col,row);
         }
+
     }
 }
 
@@ -53,9 +54,8 @@ int printCharAt( char ch, int col, int row)
     int position = (row * DISPLAY_COL + col) * 2;
     char temp[2]={ch,0};
 
-    writeAt(STDOUT,temp,position);
 
-    
+    writeAt(STDOUT,temp,position);
 
     return OK;
 }
@@ -74,6 +74,6 @@ int readKey()
 {
     
     static char buff[2];
-    read1(1,buff,2);
+    read(1,buff,2);
     return buff[0];
 }

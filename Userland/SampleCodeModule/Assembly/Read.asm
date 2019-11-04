@@ -1,8 +1,8 @@
-GLOBAL read1
+GLOBAL read
 
 section .text:
 
-read1:
+read:
     enter 0,0
 
     

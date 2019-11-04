@@ -56,7 +56,7 @@ int setColor( Color textColor, Color backgroundColor)
 
 int printlnAt(char *str, unsigned int pos)
 {
-    if (pos > DISPLAY_COL * DISPLAY_ROW)
+    if (pos > DISPLAY_COL * DISPLAY_ROW *2)
         return ERROR;
 
  

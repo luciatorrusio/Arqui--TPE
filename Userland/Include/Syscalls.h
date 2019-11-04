@@ -7,7 +7,7 @@
 extern void write(int fd, char * buff );
 extern void writeAt(int fd, char * buff, unsigned int pos);
 
-extern void read1(int fd,char * buff, unsigned int size);
+extern void read(int fd,char * buff, unsigned int size);
 
 
 

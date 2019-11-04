@@ -54,7 +54,7 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 		}
 		case 2:{
 
-			int position = fourthParam;
+			uint64_t position = fourthParam;
 
 			if(fileDescriptor == 2){
 				getColor(&currentTextColor,&currentBackgroundColor);
@@ -72,7 +72,6 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 		{
 			int bufferSize = fourthParam;
 			int i = 0;
-
 			
 			int temp;
 			do{

@@ -11,8 +11,6 @@ static unsigned int position = 0;
 static Color FntColor = Blue;
 static Color BgColor = LightGreen;
 
-int printChar( char ch);
-int printCharAt( char ch, unsigned int pos);
 int processKeyboardInput(int input);
 
 int formatColor(Color text, Color background)
@@ -20,12 +18,6 @@ int formatColor(Color text, Color background)
 
     return (int)text + 0x10 * (int)background;
 }
-
-
-
-
-
-
 
 void clearConsole()
 {
@@ -99,10 +91,9 @@ void getColor(Color * textColor, Color * backgroundColor){
     *backgroundColor = BgColor;
 }
 
-int printCharAt(char ch, unsigned int pos)
-{
-    display[pos] = ch;
-    display[pos + 1] = formatColor(FntColor, BgColor);
+int printCharAt(char ch, unsigned int position){
+    display[position] = ch;
+    display[position + 1] = formatColor(FntColor, BgColor);
 
     return OK;
 }

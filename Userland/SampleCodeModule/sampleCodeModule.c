@@ -11,16 +11,21 @@ void printCurrentTime();
 
 int main() {
 
-	clearConsole();
 
-	// write(1,"0123456789");
-	//  println("Muy PUTA\n");
+clearConsole();
 
-	//  println("Muy PUTA\n");
+	do{
+		
+		int key = readKey();
+		
 
-	//printlnAt("PUTA",2,10);
-	
-	while (1);
+		if(key != -1){
+			
+			printChar(key);
+			
+		}
+
+	}while(1);
 
 
 

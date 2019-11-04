@@ -61,10 +61,12 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 
-	mov rsi,rax
-	mov rdx,rbx
-	mov r10,rcx
-	mov rdi, %1 ; pasaje de parametro
+	mov r9, rdx ; Cuarto Param
+	mov r10,rcx ; Tercer Param
+	mov rdx,rbx ; Segundo Param
+	mov rsi,rax ; Primer Param
+	mov rdi, %1 ; Tipo de Interrupcion
+	
 	call irqDispatcher
 
 	; signal pic EOI (End of Interrupt)

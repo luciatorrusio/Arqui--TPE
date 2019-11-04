@@ -5,8 +5,9 @@ section .text:
 
 write:
     enter 0,0
-    mov rax,rdi
-    mov rbx,rsi
+    mov rax,1
+    mov rbx,rdi
+    mov rcx,rsi
     int 80h
 
     leave
@@ -14,10 +15,11 @@ write:
 
 writeAt:
     enter 0,0
-    mov rax,rdi
-    mov rbx,rsi
-    mov rcx,rdx
-    int 81h
+    mov rax,2       ; ID
+    mov rbx,rdi     ; FD
+    mov rcx,rsi     ; char *
+    mov rdx,rdx     ; pos
+    int 80h
 
     leave
     ret

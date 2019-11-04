@@ -22,19 +22,19 @@ int seconds_elapsed() {
 }
 
 void setString(char * str2, int interval2){
-	ncClear();
+	//ncClear();
 	str = str2;
 	interval = interval2;
 
-	ncPrintDec(interval2);
+	//ncPrintDec(interval2);
 
 }
 
 void printString(){
 	if(str != NULL && interval != 0){
 		if(ticks_elapsed() % (18 *interval) == 0){
-			ncPrint((char*)str);
-			ncNewline();
+			//ncPrint((char*)str);
+			//ncNewline();
 		}
 	}
 }

@@ -5,11 +5,10 @@
 #include <keyboard.h>
 
 static void int_20();
-static void int_80(void * firstParam,void * secondParam);
-static void int_81(void * firstParam, void * secondParam, void * thirdParam);
+static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
 static void int_21();
 
-void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam ) {
+void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
 
 	switch (irq) {
 		case 0:
@@ -20,66 +19,80 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 			int_21();
 			break;
 		case 0x80:
-			int_80(firstParam,secondParam);
+			int_80(firstParam,secondParam,thirdParam,fourthParam);
 			break;
-		case 0x81:
-			
-			int_81(firstParam,secondParam,thirdParam);
-			break;
+
 	}
-	return;
 }
 
 void int_20() {
 	timer_handler();
 }
 
-void int_80(void * firstParam,void * secondParam){
-	int fileDescriptor = firstParam;
-	char * buffer = secondParam;
+void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam){
+	int id = firstParam;
+	int fileDescriptor = secondParam;
+	char * buffer = (char *) thirdParam;
 
+	Color currentTextColor,currentBackgroundColor;
+	
+	switch (id)
+	{
+		case 1:{
 
-	Color currentTextColor;
-	Color currentBackgroundColor;
+			if(fileDescriptor == 2){
+				getColor(&currentTextColor,&currentBackgroundColor);
+				setColor(White,Red);
+			}
 
-	if(fileDescriptor == 2){
-		getColor(&currentTextColor,&currentBackgroundColor);
-		setColor(White,Red);
+			println(buffer);
+			
+			if(fileDescriptor == 2)
+				setColor(currentTextColor,currentBackgroundColor);
+
+			break;
+		}
+		case 2:{
+
+			int position = fourthParam;
+
+			if(fileDescriptor == 2){
+				getColor(&currentTextColor,&currentBackgroundColor);
+				setColor(White,Red);
+			}
+
+			printlnAt(buffer,position);
+
+			if(fileDescriptor == 2)
+				setColor(currentTextColor,currentBackgroundColor);
+
+			break;
+		}
+		case 3: 
+		{
+			int bufferSize = fourthParam;
+			int i = 0;
+
+			
+			int temp;
+			do{
+				temp = returnKey();
+				
+				if( temp != -1 )
+					buffer[i++]=temp;
+			}while( i <bufferSize-1 );
+
+			buffer[i] = 0;
+			break;
+		}
 	}
-
-	println(buffer);
-	
-	if(fileDescriptor == 2)
-		setColor(currentTextColor,currentBackgroundColor);
-	
 }
 
-static void int_81(void * firstParam, void * secondParam, void * thirdParam){
-	int fileDescriptor = firstParam;
-	char * buffer = secondParam;
-	unsigned int position = thirdParam;
 
-	Color currentTextColor;
-	Color currentBackgroundColor;
-	
-	if(fileDescriptor == 2){
-		getColor(&currentTextColor,&currentBackgroundColor);
-		setColor(White,Red);
-	}
-
-	printlnAt(buffer,position);
-
-	if(fileDescriptor == 2)
-		setColor(currentTextColor,currentBackgroundColor);
-}
 
 void int_21(){
 
 	 readKey();
-
-	int temp = returnKey();
-	if( temp != -1)
-	 	printChar(temp);
 	
 }
 

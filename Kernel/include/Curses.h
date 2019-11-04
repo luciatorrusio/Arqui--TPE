@@ -40,6 +40,8 @@ int printlnAt(char *str, unsigned int position);
 
 int printChar( char ch);
 
+int printCharAt(char ch, unsigned int position);
+
 int println(char * str);
 
 void getColor(Color * textColor, Color * backgroundColor);

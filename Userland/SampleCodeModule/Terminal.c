@@ -35,8 +35,9 @@ int runTerminal(){
 
                 handleTerminalMovement();
 
-                printTerminal();
+                
 		    }
+            printTerminal();
         }
 
 	}while(1);

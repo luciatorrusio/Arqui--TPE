@@ -7,15 +7,22 @@
 // Variables
 
 static char TerminalDisplay [DISPLAY_COL * (DISPLAY_ROW-1)];
+static char TerminalType [DISPLAY_COL+1];
 
 
 
 int runTerminal(){
 
+	do{
+		
+		int key = readKey();
 
+		if(key != -1){
+			
+			printChar(key);
+			
+		}
 
-    do{
-
-    }while(1);
+	}while(1);
 
 }

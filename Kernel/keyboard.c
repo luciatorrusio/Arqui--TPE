@@ -33,7 +33,7 @@ static const int KeyMap[] = {
     //1
     Escape, 27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 8,
     //16
-    9, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', 13, Control,
+    9, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', Control,
     //32
     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', LShift, '\\',
     //46
@@ -48,7 +48,7 @@ static const int KeyMap[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static const int ShiftKeyMap[] = {    
     //0
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '\n', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     //32
     ' ', '!', '\"', '#', '&', '%', '\"', '(', ')', '*', '+', '<', '_', '>', '?', ')',
     '!', '@', '#', '$', '%', '^', '&', '*', '(', ':', ':', '<', '+', '>', '?',
@@ -82,6 +82,7 @@ void readKey()
         returnIndex++;
         
     int temp = processKeyboardInput(__ReadKey__());
+   
 
     if(temp != -1)
         keyboardBuffer[bufferIndex++ % BUFFER_SIZE] = temp;
@@ -100,34 +101,19 @@ int returnKey(){
 
 int processKeyboardInput(int input)
 {
-    if (Mayusc)
-    {
-        // printlnAt( "CAPS ON ", 0, 10);
-    }
-    else
-    {
-        // printlnAt( "CAPS OFF", 0, 10);
-    }
+
 
     handleBreaks(input);
 
     if (input <= 0 || input > 86)
         return -1;
 
-    char arr[20];
-    HexToString(arr, 20, input);
-    // printlnAt( "Codigo:       ", 0, 0);
-    // printlnAt( arr, 10, 0);
-
     int PressedKey = KeyMap[input];
-
-    // printlnAt( "valor real:            ", 18, 0);
-    IntToString(arr, 20, PressedKey + (Mayusc ? 'A' - 'a' : 0));
-    // printlnAt( arr, 30, 0);
 
     if (PressedKey > 0)
     {
         int asciiValue = handleASCII(PressedKey);
+        
         if (asciiValue != -1)
             return asciiValue;
     }
@@ -167,13 +153,15 @@ int handleASCII(int PressedKey)
             PressedKey = ShiftKeyMap[PressedKey];
         return PressedKey;
     }
-    else if ((' ' <= PressedKey && PressedKey <= '?') || ('Z' < PressedKey && PressedKey < 'a'))
+    else if ((' ' <= PressedKey && PressedKey <= '?') || ('Z' < PressedKey && PressedKey < 'a') || (PressedKey == '\n'))
     {
         if (Shift)
             return ShiftKeyMap[PressedKey];
         else
             return PressedKey;
     }
+
+    
 
     return -1;
 }

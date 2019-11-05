@@ -4,6 +4,8 @@
 #include "../Include/String.h"
 #include "../Include/Syscalls.h"
 
+#include "include/Terminal.h"
+
 #include <stdlib.h>
 
 void printCurrentTime();
@@ -11,25 +13,7 @@ void printCurrentTime();
 
 int main() {
 
-
-	// clearConsole();
-
-
-	do{
-		
-		int key = readKey();
-
-		if(key != -1){
-			
-			printChar(key);
-			
-		}
-
-	}while(1);
-
-
-
-
+	runTerminal();
 
 	return 0xDEA;
 }

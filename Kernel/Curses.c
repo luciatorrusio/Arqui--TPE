@@ -69,7 +69,10 @@ int printlnAt(char *str, unsigned int pos)
             printCharAt(str[i],pos);
             pos += 2;
         }else{
-            pos = (pos / (2 *DISPLAY_COL) ) + DISPLAY_COL * 2;
+            int tempCol = 0;
+            int tempRow = (pos/2) / DISPLAY_COL;
+            tempRow++;
+            pos = 2 * (DISPLAY_COL * tempRow + tempCol);
         }
     }
     return OK;
@@ -105,7 +108,10 @@ int printChar( char ch)
         printCharAt(ch,position);        
         position += 2;
     }else{
-        position = (position / (2 *DISPLAY_COL) ) + DISPLAY_COL * 2;
+        int tempCol = 0;
+        int tempRow = (position/2) / DISPLAY_COL;
+        tempRow++;
+        position = 2 * (DISPLAY_COL * tempRow + tempCol);
     }
     return OK;
 }

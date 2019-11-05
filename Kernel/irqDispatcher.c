@@ -29,6 +29,7 @@ void int_20() {
 	timer_handler();
 }
 
+
 void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam){
 	int id = firstParam;
 	int fileDescriptor = secondParam;
@@ -71,15 +72,17 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 		case 3: 
 		{
 			int bufferSize = fourthParam;
-			int i = 0;
-			
+			int i = 0;		
 			int temp;
 			do{
 				temp = returnKey();
 				
-				if( temp != -1 )
+				if( temp != -1 ){
 					buffer[i++]=temp;
-			}while( i <bufferSize-1 );
+				}
+
+			}while( temp!= -1 && i <bufferSize-1 );
+
 
 			buffer[i] = 0;
 			break;

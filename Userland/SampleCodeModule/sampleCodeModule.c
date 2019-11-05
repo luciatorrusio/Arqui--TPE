@@ -12,12 +12,12 @@ void printCurrentTime();
 int main() {
 
 
-	clearConsole();
+	// clearConsole();
+
 
 	do{
 		
 		int key = readKey();
-		
 
 		if(key != -1){
 			

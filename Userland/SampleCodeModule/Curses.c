@@ -72,8 +72,9 @@ int printChar( char ch)
 
 int readKey()
 {
-    
     static char buff[2];
     read(1,buff,2);
-    return buff[0];
+    char retValue = buff[0];
+    buff[0] = 0;
+    return retValue;
 }

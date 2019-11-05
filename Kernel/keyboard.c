@@ -88,10 +88,12 @@ void readKey()
 }
 
 
+
 int returnKey(){
+
     if(returnIndex == bufferIndex)
         return -1;
-
+        
     return keyboardBuffer[returnIndex++ % BUFFER_SIZE];
 }
 

@@ -1,6 +1,7 @@
 #include "../Include/String.h"
 
 
+
 int strlen(char * str){
     int i = 0;
     while(str[i]!=0)
@@ -8,7 +9,8 @@ int strlen(char * str){
     return i;
 }
 
-void IntToString(char * buffer, int buffSize, int num){
+
+void IntToString(char * buffer, int buffSize, uint64_t num){
 
     for(int i = 0 ; i < buffSize ; i++)
 		buffer[i] = 0;
@@ -35,7 +37,7 @@ void IntToString(char * buffer, int buffSize, int num){
 		buffer[i-a] = temp;
 	}
 
-		if(num <0){
+	if(num <0){
 		for(int j = strlen(buffer)-2; j >=0; j--){
 			buffer[j+1] = buffer[j];
 		}
@@ -43,21 +45,23 @@ void IntToString(char * buffer, int buffSize, int num){
 	}
 }
 
-void HexToString(char * buffer, int buffSize, int num){
+
+void HexToString(char * buffer, int buffSize, uint64_t num){
+
+
+
     for(int i = 0 ; i < buffSize ; i++)
-		buffer[i] = 0;
+		buffer[i] = '0';
 
-	buffer[0]='0';
-	buffer[1]='0';
+	buffer[buffSize-1]= 0;
 
-
-    int temp = num;
+    uint64_t temp = num;
 	int i = 0;
 
-	while(temp!= 0 && i < buffSize-3){
+	while(temp!= 0 && i < buffSize){
 
-		int stVal = temp;
-		int numToSave = temp - 16*(stVal/16);
+		uint64_t stVal = temp;
+		uint64_t numToSave = temp - 16*(stVal/16);
 
 		if(numToSave <10 ){
 			buffer[i++] = '0' + numToSave;
@@ -68,9 +72,9 @@ void HexToString(char * buffer, int buffSize, int num){
 		
 		temp = temp/16;
 	}
-    i--;
+    i = buffSize-2;
 
-	for(int a = 0 ; a <= i/2 ; a++){
+	for(int a = 0 ; a <= (buffSize-2)/2 ; a++){
 		char temp = buffer[a];
 		buffer[a] = buffer[i-a];
 		buffer[i-a] = temp;

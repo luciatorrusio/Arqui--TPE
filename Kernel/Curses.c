@@ -8,8 +8,8 @@
 char * display = (char *)0xB8000;
 
 static unsigned int position = 0;
-static Color FntColor = Blue;
-static Color BgColor = LightGreen;
+static Color FntColor = LightGreen;
+static Color BgColor = Black;
 
 int processKeyboardInput(int input);
 

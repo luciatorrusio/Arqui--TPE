@@ -1,43 +1,44 @@
 #include "../Include/Time.h"
 
-extern int __GetTime__(int code);
+enum{
+SECONDS, MINUTES, HOURS, DAYOFWEEK, DAYOFMONTH, MONTH, YEAR
+};
+extern void __time__(int id, int * time);
 
+int getTime(int id);
 
 int GetSeconds(){
-    int ss1 = __GetTime__(0)/16;
-    int ss2 = __GetTime__(0) - ss1*16;
-    return ss1*10 + ss2;
+    return getTime(SECONDS);
 }
 
 int GetMinutes(){
-    int mm1 = __GetTime__(2)/16;
-    int mm2 = __GetTime__(2) - mm1*16;
-    return mm1*10 + mm2;
+    return getTime(MINUTES);
 }
 
 int GetHours(){
-    int hh1 = __GetTime__(4)/16;
-    int hh2 = __GetTime__(4) - hh1*16;
-    return hh1*10 + hh2;
+    return getTime(HOURS);
 }
 
 int GetDayOfWeek(){
-    return __GetTime__(6)/16;
+    return getTime(DAYOFWEEK);
 }
+
 int GetDayOfMonth(){
-    int mm1 = __GetTime__(7)/16;
-    int mm2 = __GetTime__(7) - mm1*16;
-    return mm1*10 + mm2;
-    }
+    return getTime(DAYOFMONTH);
+}
 
 int GetMonth(){
-    int mm1 = __GetTime__(8)/16;
-    int mm2 = __GetTime__(8) - mm1*16;
-    return mm1*10 + mm2;
+    return getTime(MONTH);
 }
 
 int GetYear(){
-    int aa1 = __GetTime__(9);
-    int aa2 = __GetTime__(9)/16 - aa1*16 ;
-    return 2000 + aa1 * 10 + aa2;
+    return getTime(YEAR);
+}
+
+
+int getTime(int id){
+    int time = -1;
+    __time__(id,&time);
+
+    return time;
 }

@@ -63,7 +63,8 @@ int interpretCommand(){
     overwriteArray(TerminalType,command);
 
     
-    return  0;
+    return  time();
+    
 
 }
 

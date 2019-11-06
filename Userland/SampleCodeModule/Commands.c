@@ -3,6 +3,7 @@
 #include "../Include/deviceInfo.h"
 #include "../Include/String.h"
 #include "Include/Terminal.h"
+#include "../Include/Time.h"
 
 int printMem(uint64_t memDirection){
 
@@ -149,5 +150,21 @@ int infoReg(){
     
 	writeLineToTerminal(arr);
 
+
+}
+
+int time(){
+
+    char arr[200];
+    char month[10];
+    cleanArr(arr,200);
+
+    IntToString(month,10,GetMonth());
+    append("Month: ",arr,200);
+
+    append(month,arr,200);
+
+    writeLineToTerminal(arr);
+    
 
 }

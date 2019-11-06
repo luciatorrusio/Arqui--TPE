@@ -81,3 +81,25 @@ void HexToString(char * buffer, int buffSize, uint64_t num){
 
 	
 }
+
+void append(char * src, char * dest, unsigned size){
+	int base = strlen(dest);
+
+	for(int i = 0 ; i < size && src[i] != 0 ; i++){
+		dest[base + i] = src[i];
+	}
+
+}
+
+void preppend(char * src, char * dest, unsigned size){
+	int srcLenght = strlen(src);
+	int destLenght = strlen(dest);
+
+	for(int i = destLenght ; i >=0  ; i--){
+		dest[i + srcLenght ] = dest[i];
+	}
+
+	for(int i = 0 ; i < srcLenght-1 ; i++)
+		dest[i] = src[i];
+
+}

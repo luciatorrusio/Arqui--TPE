@@ -1,8 +1,9 @@
 
 #include "include/Terminal.h"
 #include "../Include/Curses.h"
-
+#include "include/Commands.h"
 #include <stdlib.h>
+
 
 
 
@@ -26,6 +27,7 @@ int interpretCommand();
 int runTerminal(){
 
     clearConsole();
+
 	do{
 		
 		int key = readKey();
@@ -43,7 +45,6 @@ int runTerminal(){
                     handleTerminalMovement();
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    int a = 10 / 0;
                     //printTerminal();
     
                 }
@@ -61,12 +62,8 @@ int interpretCommand(){
     char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
 
-   // RunCommand();
-
-    // Interpretar el comando
-
-    // Devuelve un valor de retorno
-    return 0;
+    
+    return  0;
 
 }
 

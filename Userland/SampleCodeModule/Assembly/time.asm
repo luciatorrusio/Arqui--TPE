@@ -1,25 +1,13 @@
-
-GLOBAL __GetTime__
-
-section .bss
-
-    TEMP resb 8
-
-section .text:
+GLOBAL __time__
 
 
-__GetTime__:
-    enter 0,0
+section .text
 
-    mov [TEMP],rdi
-
-    xor ax,ax
-    mov al,[TEMP]
-    
-    out 70h, al
-    in al,71h
-
-    leave
-    ret    
-
-
+__time__:
+        enter 0,0
+        mov rbx,rsi ; puntero a int para devolver
+        mov rax,rdi ; id de time
+        int 82h
+        
+        leave
+        ret

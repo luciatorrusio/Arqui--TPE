@@ -14,6 +14,8 @@ GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 GLOBAL _irq80Handler
 GLOBAL _irq81Handler
+GLOBAL _irq82Handler
+
 
 GLOBAL _exception0Handler
 
@@ -148,6 +150,10 @@ _irq80Handler:
 ; DEVICEINFO
 _irq81Handler:
 	irqHandlerMaster 81h
+
+; TIME
+_irq82Handler:
+	irqHandlerMaster 82h
 
 
 ;USB

@@ -4,10 +4,12 @@
 #include <String.h>
 #include <keyboard.h>
 #include <deviceInfo.h>
+#include <Time.h>
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
 static void int_21();
+void int_82(int timeID, int * value);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
@@ -27,7 +29,9 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x81:
 			int_81(firstParam,secondParam,thirdParam,fourthParam);
 		break;
-
+		case 0x82:
+			int_82(firstParam,secondParam);
+			break;
 	}
 }
 
@@ -102,9 +106,6 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 }
 
 
-
-
-
 void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 
 	switch (id)
@@ -129,6 +130,10 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 			break;
 		}
 	}
+}
+
+void int_82(int timeID, int * value){
+	*value = handleTimeRequest(timeID);
 }
 
 

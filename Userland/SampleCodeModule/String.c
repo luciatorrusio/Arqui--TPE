@@ -18,10 +18,6 @@ void IntToString(char * buffer, int buffSize, uint64_t num){
     int temp = num>0 ?num:-num;
 	int i = 0;
 
-	
-
-	
-
 	while(temp!= 0 && i < buffSize-1){
 
 		int stVal = temp;

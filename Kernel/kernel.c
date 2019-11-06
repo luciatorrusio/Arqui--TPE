@@ -87,8 +87,6 @@ int main()
 	load_idt();
 	startVideoDriver();
 
-	clearScreen();
-
 	((EntryPoint)sampleCodeModuleAddress)();
 
 

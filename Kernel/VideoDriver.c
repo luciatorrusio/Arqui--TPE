@@ -1,5 +1,6 @@
 #include <VideoDriver.h>
 #include <stdint.h>
+#include <font.h>
 
 unsigned int SCREEN_WIDTH = 1024;
 unsigned int SCREEN_HEIGHT = 768;
@@ -73,10 +74,30 @@ void drawLine(){
     }
 }
 
-void clearScreen(){
-    for(int j = 0 ; j < SCREEN_HEIGHT; j++){
-            for(int i = 0 ; i < SCREEN_WIDTH; i++){
-        drawPixel(i,j,i*j*3 % 0xFFFFFF);
-    }
-    }
+
+
+void drawChar(int x, int y, char character, int fontColor, int background){
+
+	int aux_x = x;
+	int aux_y = y;
+	unsigned char * toDraw = charBitmap(character);
+
+	char bitIsPresent ;
+
+	for(int i = 0; i < CHAR_HEIGHT; i++){
+		for(int j = 0 ; j < CHAR_WIDTH ; j++){
+			bitIsPresent = (1<< (CHAR_WIDTH-j)) & toDraw[i];
+
+			if(bitIsPresent)
+				drawPixel(aux_x,aux_y,fontColor);
+			else
+				drawPixel(aux_x,aux_y,background);
+			
+			aux_x++;
+		}
+		aux_x = x;
+		aux_y++;
+	}
+
+
 }

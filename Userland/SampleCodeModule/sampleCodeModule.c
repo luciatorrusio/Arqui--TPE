@@ -1,10 +1,10 @@
 /* sampleCodeModule.c */
-#include "../Include/Time.h"
-#include "../Include/String.h"
-#include "../Include/Syscalls.h"
+#include "../include/Time.h"
+#include "../include/String.h"
+#include "../include/Syscalls.h"
 
 #include "include/Terminal.h"
-#include "../Include/Curses.h"
+#include "../include/Curses.h"
 
 #include <stdlib.h>
 

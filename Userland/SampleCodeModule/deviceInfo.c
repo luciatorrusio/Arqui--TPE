@@ -1,4 +1,4 @@
-#include "../Include/deviceInfo.h"
+#include "../include/deviceInfo.h"
 
 extern void __READMEM__(uint64_t position, char * buff, unsigned size);
 extern void __GETREGISTERS__(void * reg);

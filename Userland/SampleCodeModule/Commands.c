@@ -22,6 +22,8 @@ int printMem(uint64_t memDirection){
         writeLineToTerminal(printStr);
     }
 
+    return 0;
+
 }
 
 
@@ -150,11 +152,13 @@ int infoReg(){
     
 	writeLineToTerminal(arr);
 
+    return 0;
 
 }
 
 int time(){
 
+// Cuando este el printf lo terminamos
     char arr[200];
     char month[10];
     cleanArr(arr,200);
@@ -166,5 +170,6 @@ int time(){
 
     writeLineToTerminal(arr);
     
+    return 0;
 
 }

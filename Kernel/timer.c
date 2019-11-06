@@ -1,4 +1,4 @@
-#include "../Include/timer.h"
+#include "../include/timer.h"
 #include <naiveConsole.h>
 #include <stdlib.h>
 

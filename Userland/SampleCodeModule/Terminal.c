@@ -1,6 +1,6 @@
 
 #include "include/Terminal.h"
-#include "../Include/Curses.h"
+#include "../include/Curses.h"
 #include "include/Commands.h"
 #include <stdlib.h>
 

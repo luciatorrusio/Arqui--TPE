@@ -26,6 +26,8 @@ void clearConsole()
     {
             printCharAt( ' ', i);
     }
+
+    position = 0;
     
 
 }
@@ -83,7 +85,6 @@ int println(char *str)
     for (int i = 0; str[i] != 0; i++)
     {
         printChar(str[i]);
-
     }
 
     return OK;

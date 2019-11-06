@@ -1,5 +1,5 @@
-#ifndef CURSES
-#define CURSES
+#ifndef CURSES_API_H
+#define CURSES_API_H
 
 #define DISPLAY_COL 80
 #define DISPLAY_ROW 25

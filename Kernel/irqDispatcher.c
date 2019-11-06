@@ -3,10 +3,13 @@
 #include <Curses.h>
 #include <String.h>
 #include <keyboard.h>
+#include <deviceInfo.h>
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
 static void int_21();
+
+static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
 
@@ -21,6 +24,9 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x80:
 			int_80(firstParam,secondParam,thirdParam,fourthParam);
 			break;
+		case 0x81:
+			int_81(firstParam,secondParam,thirdParam,fourthParam);
+		break;
 
 	}
 }
@@ -29,6 +35,11 @@ void int_20() {
 	timer_handler();
 }
 
+void int_21(){
+
+	 readKey();
+	
+}
 
 void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam){
 	int id = firstParam;
@@ -92,10 +103,32 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 
 
 
-void int_21(){
 
-	 readKey();
-	
+
+void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
+
+	switch (id)
+	{
+		case 0x01: // READMEM
+		{
+			uint64_t position = firstParam;
+			char * buff = secondParam;
+			unsigned size = thirdParam;
+
+			readMem(position,buff,size);
+
+			break;
+		}
+		case 0x02: // GETREGISTERS
+		{
+			Registers reg = getRegisters();
+			Registers * returnAdress = firstParam;
+		
+			*returnAdress = reg;
+
+			break;
+		}
+	}
 }
 
 

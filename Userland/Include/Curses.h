@@ -26,6 +26,10 @@ typedef enum {
 }Color;
 
 
+// Use only to interface directly with the kernel API.
+// DO NOT USE IT WHILE RUNNING THE TERMINAL. 
+// If you are creating a terminal command, please use the one provided in terminal.h
+
 void clearConsole();
 
 int moveCursor(int row, int col);

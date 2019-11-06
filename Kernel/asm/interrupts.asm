@@ -141,11 +141,11 @@ _irq03Handler:
 _irq04Handler:
 	irqHandlerMaster 4
 
-; Write
+; READ / WRITE 
 _irq80Handler:
 	irqHandlerMaster 80h
 
-;WriteAt
+; DEVICEINFO
 _irq81Handler:
 	irqHandlerMaster 81h
 

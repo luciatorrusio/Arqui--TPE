@@ -1,5 +1,4 @@
 /* sampleCodeModule.c */
-#include "../Include/Curses.h"
 #include "../Include/Time.h"
 #include "../Include/String.h"
 #include "../Include/Syscalls.h"

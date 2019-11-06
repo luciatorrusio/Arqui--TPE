@@ -8,8 +8,10 @@
 
 // Variables
 
-static char TerminalDisplay [DISPLAY_ROW-1][DISPLAY_COL+1];
-static char TerminalType [DISPLAY_COL+1];
+#define MAXBUFFER (DISPLAY_COL * 5)
+
+static char TerminalDisplay [DISPLAY_ROW-1][MAXBUFFER];
+static char TerminalType [MAXBUFFER];
 static unsigned int TypeIndex = 0;
 static unsigned int FirstAvailableLine = 0;
 
@@ -20,6 +22,7 @@ void printTerminal();
 int interpretCommand();
 
 
+
 int runTerminal(){
 
     clearConsole();
@@ -27,17 +30,27 @@ int runTerminal(){
 		
 		int key = readKey();
 		if(key >0){
+            if(key == 8 ){
+                if(TypeIndex>0)
+                    TerminalType[--TypeIndex] = 0;
 
-            TerminalType[TypeIndex++] = key;
+            }else{ 
 
-            if(key == '\n'){
-                interpretCommand();
+                TerminalType[TypeIndex++] = key;
 
-                handleTerminalMovement();
+                if(key == '\n'){
 
-                
-		    }
+                    handleTerminalMovement();
+                    interpretCommand();
+                    clearArray(TerminalType,MAXBUFFER);
+                    int a = 10 / 0;
+                    //printTerminal();
+    
+                }
+            }
+            
             printTerminal();
+
         }
 
 	}while(1);
@@ -45,8 +58,10 @@ int runTerminal(){
 
 
 int interpretCommand(){
-    char command[DISPLAY_COL+1];
+    char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
+
+   // RunCommand();
 
     // Interpretar el comando
 
@@ -65,7 +80,6 @@ void handleTerminalMovement(){
     }
 
     overwriteArray(TerminalType,TerminalDisplay[FirstAvailableLine++]);
-    clearArray(TerminalType,DISPLAY_COL + 1);
 }
 
 
@@ -76,7 +90,15 @@ void printTerminal(){
     for(int i = 0 ; i < FirstAvailableLine; i ++)
         printlnAt(TerminalDisplay[i],0,i);
 
-    printlnAt(TerminalType,0,DISPLAY_ROW-1);
+    int offset = 0;
+
+    if (TypeIndex > DISPLAY_COL)
+    {
+        offset = TypeIndex - DISPLAY_COL;
+    }
+    
+
+    printlnAt(TerminalType + offset,0,DISPLAY_ROW-1);
 }
 
 void clearArray(char * arr, int size){
@@ -88,7 +110,24 @@ void clearArray(char * arr, int size){
 void overwriteArray(char * src, char * dest){
 
     clearArray(dest,DISPLAY_COL + 1);
-    for (int i = 0; src[i]!=0; i++)
+    for (int i = 0; src[i]!=0 && i < MAXBUFFER; i++)
         dest[i] = src[i];
     
 }
+
+
+void writeLineToTerminal(char * str){
+    char temp[MAXBUFFER];
+    overwriteArray(TerminalType,temp);
+
+    overwriteArray(str,TerminalType);
+
+
+
+    handleTerminalMovement();
+    printTerminal();
+
+    overwriteArray(temp,TerminalType);
+    
+    
+    }

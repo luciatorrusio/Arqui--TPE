@@ -2,6 +2,8 @@
 #define TERMINAL_H
 
 
+void writeLineToTerminal(char * str);
+
 int runTerminal();
 
 

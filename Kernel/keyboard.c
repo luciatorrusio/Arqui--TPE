@@ -48,7 +48,7 @@ static const int KeyMap[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static const int ShiftKeyMap[] = {    
     //0
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '\n', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 8, 0, '\n', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     //32
     ' ', '!', '\"', '#', '&', '%', '\"', '(', ')', '*', '+', '<', '_', '>', '?', ')',
     '!', '@', '#', '$', '%', '^', '&', '*', '(', ':', ':', '<', '+', '>', '?',
@@ -153,7 +153,8 @@ int handleASCII(int PressedKey)
             PressedKey = ShiftKeyMap[PressedKey];
         return PressedKey;
     }
-    else if ((' ' <= PressedKey && PressedKey <= '?') || ('Z' < PressedKey && PressedKey < 'a') || (PressedKey == '\n'))
+    else if ((' ' <= PressedKey && PressedKey <= '?') || ('Z' < PressedKey && PressedKey < 'a') 
+                || (PressedKey == '\n') || (PressedKey == 8))
     {
         if (Shift)
             return ShiftKeyMap[PressedKey];

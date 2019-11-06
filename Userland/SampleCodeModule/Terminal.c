@@ -62,8 +62,8 @@ int interpretCommand(){
     char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
 
-
-    return printMem(0);
+    
+    return  0;
 
 }
 

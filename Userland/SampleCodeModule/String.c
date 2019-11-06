@@ -1,6 +1,5 @@
 #include "../Include/String.h"
-
-
+#include <stdbool.h>
 
 int strlen(char * str){
     int i = 0;
@@ -101,3 +100,22 @@ void preppend(char * src, char * dest, unsigned size){
 		dest[i] = src[i];
 
 }
+
+void removeFirstOccurrence(char * str, char ch){
+
+	bool found = false;
+
+	for(int i = 0 ; i < strlen(str); i++){
+		
+	}
+
+}
+
+void removeLastOccurrence(char * str, char ch){
+
+}
+
+void removeAllOcurrences(char * str, char ch){
+
+}
+

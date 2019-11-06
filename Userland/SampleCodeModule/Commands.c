@@ -2,7 +2,7 @@
 
 #include "../Include/deviceInfo.h"
 #include "../Include/String.h"
-#include "Include/Terminal.h"
+#include "include/Terminal.h"
 #include "../Include/Time.h"
 
 int printMem(uint64_t memDirection){

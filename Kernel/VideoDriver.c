@@ -59,3 +59,24 @@ void drawPixel(unsigned int x, unsigned int y, int color)
     screen[where + 1] = (color >> 8) & 255;   // GREEN
     screen[where + 2] = (color >> 16) & 255;  // RED
 }
+
+
+
+void startVideoDriver(){
+    init_VM_Driver();
+}
+
+void drawLine(){
+
+    for(int i = 0 ; i < SCREEN_WIDTH; i++){
+        drawPixel(i,SCREEN_WIDTH/2,0xFFFFFF);
+    }
+}
+
+void clearScreen(){
+    for(int j = 0 ; j < SCREEN_HEIGHT; j++){
+            for(int i = 0 ; i < SCREEN_WIDTH; i++){
+        drawPixel(i,j,i*j*3 % 0xFFFFFF);
+    }
+    }
+}

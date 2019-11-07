@@ -1,8 +1,7 @@
 #ifndef CURSES
 #define CURSES
 
-#define DISPLAY_COL 80
-#define DISPLAY_ROW 25
+
 #define ERROR -1
 #define OK 0
 
@@ -26,6 +25,12 @@ typedef enum {
 }Color;
 
 
+
+
+
+
+void initializeCurses();
+void getConsoleDimensions(int * cols, int * rows);
 // Use only to interface directly with the kernel API.
 // DO NOT USE IT WHILE RUNNING THE TERMINAL. 
 // If you are creating a terminal command, please use the one provided in terminal.h
@@ -33,7 +38,6 @@ typedef enum {
 void clearConsole();
 
 int moveCursor(int row, int col);
-
 
 int setColor(Color textColor, Color backgroundColor);
 

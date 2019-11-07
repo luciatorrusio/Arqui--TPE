@@ -3,32 +3,66 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <VideoDriver.h>
 
 
-char * display = (char *)0xB8000;
+static uint64_t pos_x = 0;
+static uint64_t pos_y = 0;
 
-static unsigned int position = 0;
-static Color FntColor = Blue;
-static Color BgColor = LightGreen;
 
-int processKeyboardInput(int input);
 
-int formatColor(Color text, Color background)
-{
+static Color FntColor = White;
+static Color BgColor = Black;
 
-    return (int)text + 0x10 * (int)background;
+static int charHeight;
+static int charWidth;
+static int screenHeight;
+static int screenWidth;
+
+void nextColumn();
+void nextRow();
+
+
+void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, int screenWidth_){
+    charHeight = charHeight_;
+    charWidth = charWidth_;
+    screenHeight = screenHeight_;
+    screenWidth = screenWidth_;
 }
+
+void getScreenDimensions(int * cols, int * rows){
+    *cols = screenWidth / charWidth;
+    *rows = screenHeight / charHeight;
+}
+
+
+void nextColumn(){
+
+    pos_x+= charWidth;
+
+}
+void nextRow(){
+    pos_x = 0;
+    pos_y += charHeight;
+}
+
 
 void clearConsole()
 {
+    pos_x = 0;
+    pos_y = 0; 
 
-    for (int i = 0; i < DISPLAY_COL * DISPLAY_ROW * 2; i+=2)
-    {
-            printCharAt( ' ', i);
+    while(pos_y < screenHeight){
+        while(pos_x < screenWidth){
+            
+            printCharAt(' ',pos_x,pos_y);
+            nextColumn();
+        }
+        nextRow();
     }
 
-    position = 0;
-    
+    pos_x = 0;
+    pos_y = 0;    
 
 }
 
@@ -58,23 +92,28 @@ int setColor( Color textColor, Color backgroundColor)
 
 int printlnAt(char *str, unsigned int pos)
 {
-    if (pos > DISPLAY_COL * DISPLAY_ROW *2)
-        return ERROR;
 
- 
     if (str == NULL)
         return ERROR;
 
+    int x = (pos % screenWidth) * charWidth;
+    int y = ((pos * charWidth) / screenWidth) * charHeight;
+
+
     for (int i = 0 ; str[i]!=0; i++){
 
-        if(str[i]!= '\n'){
-            printCharAt(str[i],pos);
-            pos += 2;
+        if(str[i]!= '\n' ){
+
+            if(x >= screenWidth * charWidth){
+                 x = 0;
+                y += charHeight;
+            }
+
+            printCharAt(str[i],x,y);
+            x += charWidth;
         }else{
-            int tempCol = 0;
-            int tempRow = (pos/2) / DISPLAY_COL;
-            tempRow++;
-            pos = 2 * (DISPLAY_COL * tempRow + tempCol);
+            x = 0;
+            y += charHeight;
         }
     }
     return OK;
@@ -90,14 +129,17 @@ int println(char *str)
     return OK;
 }
 
+
+
 void getColor(Color * textColor, Color * backgroundColor){
     *textColor = FntColor;
     *backgroundColor = BgColor;
 }
 
-int printCharAt(char ch, unsigned int position){
-    display[position] = ch;
-    display[position + 1] = formatColor(FntColor, BgColor);
+int printCharAt(char ch, uint64_t x, uint64_t y){
+
+    drawChar(x,y,ch,FntColor,BgColor);
+
 
     return OK;
 }
@@ -106,13 +148,13 @@ int printChar( char ch)
 {
 
     if(ch != '\n'){
-        printCharAt(ch,position);        
-        position += 2;
+        if(pos_x >= screenWidth)
+            nextRow();
+
+        printCharAt(ch,pos_x,pos_y);    
+        nextColumn();    
     }else{
-        int tempCol = 0;
-        int tempRow = (position/2) / DISPLAY_COL;
-        tempRow++;
-        position = 2 * (DISPLAY_COL * tempRow + tempCol);
+        nextRow();
     }
     return OK;
 }

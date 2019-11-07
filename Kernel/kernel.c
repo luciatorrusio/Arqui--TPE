@@ -3,7 +3,9 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <idtLoader.h>
-#include <naiveConsole.h>
+#include <Curses.h>
+#include <VideoDriver.h>
+#include <font.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -84,6 +86,8 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
+	startVideoDriver();
+	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH);
 
 	((EntryPoint)sampleCodeModuleAddress)();
 

@@ -56,5 +56,5 @@ int ballBetweenYSides(int[] auxPos, int c, int r);
 //Se fija si la pelota esta o no en el rango x del bloque correspondiente a {c,r} (column , row)
 int ballBetweenXSides(int[] auxPos, int c, int r);
 
-
+int finishGame(int time_past, int result);
 #endif

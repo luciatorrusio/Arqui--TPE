@@ -373,8 +373,11 @@ int ballBetweenYSides(int[] auxPos, int c, int r){
 }
 
 
-int finishGame(int time_past){
-
+int finishGame(int time_past, int result){
+    if(result == WON)
+        printf("congratulations you've won!! it took you %d seconds", time_past);
+    else
+        printf("better luck next time! time: %d seconds", time_past);
 }
 
 
@@ -385,8 +388,6 @@ int finishGame(int time_past){
     .bool stopKeyPressed()
     .bool left_arrow_pressed()
     .bool right_arrow_pressed()
-   
-    .int[] ballHitBlock()                  devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
     .print_ball(ball_pos)
     .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego

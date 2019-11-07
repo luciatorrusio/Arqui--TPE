@@ -6,7 +6,8 @@ int R_BLOCKS = 4; //Cantidad de filas de bloques
 int C_BLOCKS = 5; //Cantidad de columnas de bloques
 int LIVESi = 3;     //cantidad de vidas al iniciar el juego
 enum ball_direc{LU, U, RU, RD, D, LD}; //Left up, up, right up, right down, down, left down
-
+bool barHitWall;
+enum walls{LEFT, RIGHT, UPPER, FLOOR};
 
 int runGame(void){
     
@@ -15,7 +16,7 @@ int runGame(void){
     int ball_pos[]={XMIDDLE, YMIDDLE};       //pelota en el medio de ls pantalla
     int ball_vel=1;                          //la velocidad cuenta de a cuantos cuadraditos se mueve
     int pos_bar = XMIDDLE;
-    
+    barHitWall= false;
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
@@ -40,11 +41,19 @@ int runGame(void){
 
 
  //inicializa el juego(empieza a pintar la pantalla)
+
 int startGame(int pos_bar,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int ball_vel, ball_direc, lives){
     
     print_ball(ball_pos);
     print_blocks(blocks);
-    print_bar(pos_bar)
+    print_bar(pos_bar);
+
+//barHitWall devuelve un int que representa que pared esta chocando (enum walls)
+    if(barHitWall()){
+        if (left_arrow_pressed() && Hit()==RIGHT){
+
+        }
+    }
 
 }
 

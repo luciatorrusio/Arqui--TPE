@@ -1,5 +1,6 @@
 #include "./include/Game.h"
-
+int X = 0;
+int Y = 1;
 int XMIDDLE = SCREEN_WIDTH/2;                       //la mitad en x de la panalla
 int YMIDDLE = SCREEN_HEIGHT/2;                      //la mitad  en y de la pantalla
 int R_BLOCKS = 4;                                   //Cantidad de filas de bloques
@@ -141,14 +142,33 @@ void ballHitBarChangeDireccion(barSides side){
     }
 }
 
-
-
-
-
-
-
-
-
+void ballMove(){
+    switch(ball_direc){
+        case LU:
+            ball_pos[X] -= ( ball_vel * 0,7071); 
+            ball_pos[Y] += ( ball_vel * 0,7071);
+            break;
+        case U:
+            ball_pos[Y] += ball_vel;  
+            break;
+        case RU:
+            ball_pos[X] += ( ball_vel * 0,7071); 
+            ball_pos[Y] += ( ball_vel * 0,7071);
+            break;
+        case RD:
+            ball_pos[X] += ( ball_vel * 0,7071); 
+            ball_pos[Y] -= ( ball_vel * 0,7071);
+            break;
+        case D: 
+            ball_pos[Y] += ball_vel * 0,7071;
+            break;
+        case LD:
+            ball_pos[X] -= ( ball_vel * 0,7071); 
+            ball_pos[Y] -= ( ball_vel * 0,7071);
+            break;
+    } 
+}
+//{LU, U, RU, RD, D, LD}ball_direc;
 
 
 
@@ -164,7 +184,6 @@ void ballHitBarChangeDireccion(barSides side){
     .print_bar(bar_pos)
     .void invertDirectionLR()               hace que la pelotita cambie de direccion si choca con una pared
     .void ballMove()                        le cambia la posicion a la pelota dependiendo su pos y direccion y vel
-    .ballHitBarChangeDireccion(bar_side);   
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
 en el if 0=false; 1=true  SORRY TAMI SOY UN DESASTRE
 

@@ -23,4 +23,6 @@ void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks);
 */
 void ballHitBarChangeDireccion(barSides side);
 
+void ballMove();
+
 #endif

@@ -39,4 +39,18 @@ walls ballHitWall();
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
 walls barHitWall();
 
+//Devuelve la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve falso
+int[] ballHitBlock();
+
+
+//devuelve que borde del bloque esta chocando la pelota, se devuelve la pared que representa ese borde(ya que actua de la misma forma)
+wall ballTouchingWall(int c, int r);
+
+//Se fija si la pelota esta o no en el rango y del bloque correspondiente a {c,r} (column , row)
+int ballBetweenYSides(int[] auxPos, int c, int r);
+
+//Se fija si la pelota esta o no en el rango x del bloque correspondiente a {c,r} (column , row)
+int ballBetweenXSides(int[] auxPos, int c, int r);
+
+
 #endif

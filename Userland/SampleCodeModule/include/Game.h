@@ -6,10 +6,14 @@ enum ballDirec{LU, U, RU, RD, D, LD}ball_direc;                                 
 enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER }wall;           //los bordes de la pantalla
 enum barSides{N, L, R, UL, UM, UR}bar_side;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
 
+
+//Inicialiizar el juego desde cero
 int runGame(void);
 
 
+//para volver si fue pausado
 int startGame(void);
+int startGameRec(void);
 
 
 void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks);

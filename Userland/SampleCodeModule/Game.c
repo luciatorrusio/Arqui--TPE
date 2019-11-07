@@ -3,8 +3,8 @@
 int X = 0;
 int Y = 1;
 
-int XMIDDLE = SCREEN_WIDTH/2;                       //la mitad en x de la panalla
-int YMIDDLE = SCREEN_HEIGHT/2;                      //la mitad  en y de la pantalla
+int WON=1;
+int LOST =0;
 
 int LIVESi = 3;                                     //cantidad de vidas al iniciar el juego    
 int lives;                                          //cantidad de vidas que tiene
@@ -29,13 +29,15 @@ int time_past;
 int relative_startTime;
 int relative_time;
 
+
+
+
+//para inicializar el juego
 int runGame(void){
     time_past=0;
-    start_time={GetYear(),GetDay(), GetHour(), GetMinutes(), GetSeconds()};
-
     lives = LIVESi;                     
     blocks[R_BLOCKS][C_BLOCKS];         
-    ball_pos[]={XMIDDLE, YMIDDLE};      
+    ball_pos[]={SCREEN_WIDTH/2, SCREEN_HEIGHT/2};      
     ball_vel=1;                         
     pos_bar = XMIDDLE;
     ball_direc = D;
@@ -52,9 +54,10 @@ int runGame(void){
     return 0;
 }
 
-
+//cuando quiero retomar el juego
 int startGame(){
     relative_startTime={GetYear(), GetDay(), GetHour(), GetMinutes(), GetSeconds()};
+    start_time = relative_startTime;
     startGameRec();
     return 0;
 }
@@ -67,14 +70,19 @@ int startGameRec(void){
     
     relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60) + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDay()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
-        time_past=relative_time + relative_startTime[0] - start_time[0] + relative_startTime[1] - start_time[1] + relative_startTime[2] - start_time[2] + relative_startTime[3] - start_time[3] + relative_startTime[4] - start_time[4];
+        time_past += relative_time + relative_startTime[0] - start_time[0] + relative_startTime[1] - start_time[1] + relative_startTime[2] - start_time[2] + relative_startTime[3] - start_time[3] + relative_startTime[4] - start_time[4];
         //mainMenu(); esto va?
         return 0;
     }
     if(lives == 0){
         time_past=relative_time + relative_startTime[0] - start_time[0] + relative_startTime[1] - start_time[1] + relative_startTime[2] - start_time[2] + relative_startTime[3] - start_time[3] + relative_startTime[4] - start_time[4];
-        finishGame(time_past);
+        finishGame(time_past, LOST);
         return 0;        
+    }
+    if(blocks_left == 0){
+        time_past=relative_time + relative_startTime[0] - start_time[0] + relative_startTime[1] - start_time[1] + relative_startTime[2] - start_time[2] + relative_startTime[3] - start_time[3] + relative_startTime[4] - start_time[4];
+        finishGame(time_past, WON);
+        return 0;
     }
 
 
@@ -139,7 +147,7 @@ int startGameRec(void){
     }
 
 
-    startGameRec(pos_bar, blocks, ball_pos, ball_vel, ball_direc, lives);
+    startGameRec();
 }
 
 void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks){
@@ -365,7 +373,9 @@ int ballBetweenYSides(int[] auxPos, int c, int r){
 }
 
 
+int finishGame(int time_past){
 
+}
 
 
 

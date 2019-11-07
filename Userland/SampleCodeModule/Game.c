@@ -286,9 +286,27 @@ int[] ballHitBlock(){
         }
     }
 }
-int ballTouchingUpperOrLower(){
+wall ballTouchingUpperOrLower(int c, int r){
     int auxPos[]=ballNextPos();
-    if(auxPos[x] < (i+1)* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION && auxPos[X] > i* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION
+    if(ballBetweenXSides(auxPos, c, r) && ballBetweenXSides(ball_pos, c, r) && ballBetweenYSides(auxPos, c, r)){
+        blocks_left -=1;
+        if(ball_direc == U || ball_direc == LU || ball_direc == RU){
+            return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+        }
+        if(ball_direc == D || ball_direc == LD || ball_direc == RD){
+            return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
+        }
+    }
+}
+
+int ballBetweenXSides(int[] auxPos, int c, int r){
+    if(auxPos[x] < (c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION && auxPos[X] > c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION){
+        return 1;
+    }
+    return 0;
+}
+int ballBetweenYSides(int[] auxPos, int c, int r){
+    if(auxPos[Y] < (r+1)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 && auxPos[Y] > (r)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION)
 }
 
 /* funciones a hacer=

@@ -1,4 +1,4 @@
-#include "../Include/timer.h"
+#include "../include/timer.h"
 #include <stdint.h>
 #include <Curses.h>
 #include <String.h>

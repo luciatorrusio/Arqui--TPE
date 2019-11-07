@@ -267,25 +267,17 @@ walls barHitWall(){
 }
 
 int[] ballHitBlock(){
-    int auxPos[]= ballNextPos();
+    walls auxWall;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
-            //PARA VER SI ESTA CHOCANDO ARRIBA O ABAJO
-            if(auxPos[x] < (i+1)* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION && ball_pos[X] > i* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION){
-                if(auxPos[Y] < (j+1)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 && auxPos[Y] > (j)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION){
-                    blocks_left -=1;
-                    return {i,j,UPPER };//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
-                }
-                if(auxPos[Y] == (j)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION + BLOCK_HEIGHT/2 ){
-                    blocks_left -=1;
-                    return{1,j, FLOOR};
-                }
-            //PARA VER SI ESTA CHOCANDO EN ALGUN COSTADO    
-            }else if()
-            
+            auxWall = ballTouchingWall(i, j);
+            if(auxWall){
+                return {i,j, auxWall};
+            }       
         }
     }
 }
+
 wall ballTouchingWall(int c, int r){
     int auxPos[]=ballNextPos();
     if(ballBetweenXSides(auxPos, c, r) && ballBetweenXSides(ball_pos, c, r) && ballBetweenYSides(auxPos, c, r)){
@@ -327,7 +319,7 @@ wall ballTouchingWall(int c, int r){
 }
 
 int ballBetweenXSides(int[] auxPos, int c, int r){
-    if(auxPos[x] < (c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION && auxPos[X] > c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION){
+    if(auxPos[x] - BALL_RADIO < (c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION && auxPos[X] + BALL_RADIO > c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION){
         return 1;
     }
     return 0;
@@ -335,8 +327,18 @@ int ballBetweenXSides(int[] auxPos, int c, int r){
 
 //completar
 int ballBetweenYSides(int[] auxPos, int c, int r){
-    if(auxPos[Y] < (r+1)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 && auxPos[Y] > (r)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION)
+    if(auxPos[Y] - BALL_RADIO < (r+1)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 && auxPos[Y] + BALL_RADIO > (r)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION){
+        return 1;
+    }
+    return 0;
 }
+
+
+
+
+
+
+
 
 /* funciones a hacer=
     .bool stopKeyPressed()

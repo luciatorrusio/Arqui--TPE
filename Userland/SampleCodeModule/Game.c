@@ -111,7 +111,34 @@ int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int 
 }
 
 void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks){
-    for()
+    for(int i = 0; i < C_BLOCKS ; i++){
+        for(int j = 0; j < R_BLOCKS; j++){
+            if( blocks[i][j] == 1){
+                print_block(i*BLOCK_WIDTH + BLOCK_XSEPARATION, j*BLOCK_HEIGHT + BLOCK_YSEPARATION);
+            }
+        }
+    }
+}
+
+void ballHitBarChangeDireccion(barSides side){
+    switch(side){ L, R, UL, UM, UR}
+        case L:
+
+            break;
+        case R:
+
+            break;
+        case UL:
+
+            break;
+        case UM:
+
+            break;
+        case UR:
+
+            break;
+        
+    }
 }
 
 
@@ -130,7 +157,6 @@ void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks){
     .walls ballHitWall()                              ""
     .int[3] ballHitBlock()                  devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
     .print_ball(ball_pos)
-    .print_blocks(blocks)
     .print_bar(bar_pos)
     .void invertDirectionLR()               hace que la pelotita cambie de direccion si choca con una pared
     .void ballMove()                        le cambia la posicion a la pelota dependiendo su pos y direccion y vel

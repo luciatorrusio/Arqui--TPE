@@ -12,7 +12,9 @@
 
 int main() {
 
-	
+	initializeTerminal();
+
+
 	runTerminal();
 
 	return 0xDEA;

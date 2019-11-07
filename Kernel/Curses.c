@@ -19,6 +19,8 @@ static int charWidth;
 static int screenHeight;
 static int screenWidth;
 
+void nextColumn();
+void nextRow();
 
 
 void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, int screenWidth_){
@@ -26,6 +28,11 @@ void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, 
     charWidth = charWidth_;
     screenHeight = screenHeight_;
     screenWidth = screenWidth_;
+}
+
+void getScreenDimensions(int * cols, int * rows){
+    *cols = screenWidth / charWidth;
+    *rows = screenHeight / charHeight;
 }
 
 
@@ -85,25 +92,26 @@ int setColor( Color textColor, Color backgroundColor)
 
 int printlnAt(char *str, unsigned int pos)
 {
-    // if (pos > DISPLAY_COL * DISPLAY_ROW *2)
-    //     return ERROR;
 
- 
-    // if (str == NULL)
-    //     return ERROR;
+    if (str == NULL)
+        return ERROR;
 
-    // for (int i = 0 ; str[i]!=0; i++){
+    int x = (pos % screenWidth) * charWidth;
+    int y = ((pos * charWidth) / screenWidth) * charHeight;
 
-    //     if(str[i]!= '\n'){
-    //        // printCharAt(str[i],pos);
-    //         pos += 2;
-    //     }else{
-    //         int tempCol = 0;
-    //         int tempRow = (pos/2) / DISPLAY_COL;
-    //         tempRow++;
-    //         pos = 2 * (DISPLAY_COL * tempRow + tempCol);
-    //     }
-    // }
+
+    for (int i = 0 ; str[i]!=0; i++){
+
+        if(str[i]!= '\n'){
+
+
+            printCharAt(str[i],x,y);
+            x += charWidth;
+        }else{
+            x = 0;
+            y += charHeight;
+        }
+    }
     return OK;
 }
 
@@ -116,6 +124,8 @@ int println(char *str)
 
     return OK;
 }
+
+
 
 void getColor(Color * textColor, Color * backgroundColor){
     *textColor = FntColor;

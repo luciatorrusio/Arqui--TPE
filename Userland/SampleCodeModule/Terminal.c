@@ -9,20 +9,28 @@
 
 // Variables
 
-#define MAXBUFFER (DISPLAY_COL * 5)
+#define MAXBUFFER (600)
 
-static char TerminalDisplay [DISPLAY_ROW-1][MAXBUFFER];
+static char TerminalDisplay [60][MAXBUFFER];
 static char TerminalType [MAXBUFFER];
 static unsigned int TypeIndex = 0;
 static unsigned int FirstAvailableLine = 0;
+
+static int columns;
+static int rows;
 
 void clearArray(char * arr, int size);
 void overwriteArray(char * src, char * dest);
 void handleTerminalMovement();
 void printTerminal();
 int interpretCommand();
+void printTypeLine();
 
+void initializeTerminal(){
+    initializeCurses();
 
+    getConsoleDimensions(&columns,&rows);
+}
 
 int runTerminal(){
 
@@ -45,12 +53,14 @@ int runTerminal(){
                     handleTerminalMovement();
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    //printTerminal();
+                    printTerminal();
     
                 }
             }
+                            printTypeLine();
+
             
-            printTerminal();
+            
 
         }
 
@@ -70,9 +80,9 @@ int interpretCommand(){
 
 void handleTerminalMovement(){
     TypeIndex = 0;
-    if(FirstAvailableLine == DISPLAY_ROW-2)
+    if(FirstAvailableLine == columns-2)
     {
-        for( int i = 0 ; i < DISPLAY_ROW-3; i++)
+        for( int i = 0 ; i < rows-3; i++)
            overwriteArray(TerminalDisplay[i+1],TerminalDisplay[i]);    
         FirstAvailableLine--;
     }
@@ -90,13 +100,19 @@ void printTerminal(){
 
     int offset = 0;
 
-    if (TypeIndex > DISPLAY_COL)
-    {
-        offset = TypeIndex - DISPLAY_COL;
-    }
-    
+   printTypeLine();
+}
 
-    printlnAt(TerminalType + offset,0,DISPLAY_ROW-1);
+void printTypeLine(){
+    int offset = 0;
+
+    if (TypeIndex > columns)
+    {
+        offset = TypeIndex - columns;
+    }
+
+    printlnAt(TerminalType + offset,0,rows-2);
+
 }
 
 void clearArray(char * arr, int size){
@@ -107,7 +123,7 @@ void clearArray(char * arr, int size){
 
 void overwriteArray(char * src, char * dest){
 
-    clearArray(dest,DISPLAY_COL + 1);
+    clearArray(dest,columns + 1);
     for (int i = 0; src[i]!=0 && i < MAXBUFFER; i++)
         dest[i] = src[i];
     

@@ -4,12 +4,44 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+static int displayRows;
+static int displayCols;
+
+typedef struct 
+{
+    int columns;
+    int rows;
+
+}VideoConfiguration;
+
+
+void initializeCurses(){
+    VideoConfiguration config;
+
+    read(2,(void *)&config,0);
+    displayRows = config.rows;
+    displayCols = config.columns;
+
+
+    
+}
+
+void getConsoleDimensions(int * cols, int * rows){
+    *cols = displayCols;
+    *rows = displayRows;
+}
+
+int calculatePosition(int col, int row){
+
+    return col + row * displayCols;
+}
+
 
 void clearConsole()
 {
-    for (int row = 0; row < DISPLAY_ROW; row++)
+    for (int row = 0; row < displayRows; row++)
     {
-        for (int col = 0; col < DISPLAY_COL; col++)
+        for (int col = 0; col < displayCols; col++)
         {
             printCharAt(' ',col,row);
         }
@@ -35,7 +67,7 @@ int setColor( Color textColor, Color backgroundColor)
 
 int printlnAt( char *str, int col, int row)
 {
-    int position = (row * DISPLAY_COL + col) * 2;
+    int position = calculatePosition(col,row);
 
     writeAt(1,str,position);
 
@@ -51,7 +83,7 @@ int println( char *str)
 int printCharAt( char ch, int col, int row)
 {
 
-    int position = (row * DISPLAY_COL + col) * 2;
+    int position = calculatePosition(col,row);
     char temp[2]={ch,0};
 
 

@@ -47,6 +47,8 @@ int println(char * str);
 
 void getColor(Color * textColor, Color * backgroundColor);
 
+void getScreenDimensions(int * cols, int * rows);
+
 
 
 

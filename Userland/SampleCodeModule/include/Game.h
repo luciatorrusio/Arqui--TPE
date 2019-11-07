@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 enum ballDirec{LU, U, RU, RD, D, LD}ball_direc;     //Left up, up, right up, right down, down, left down
-enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, RCORNER, LCORNER}wall;          //los bordes de la pantalla
+enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER }wall;          //los bordes de la pantalla
 enum barSides{N, L, R, UL, UM, UR}bar_side;                    //none, left, right, upperLeft, UpperMiddle, UpperRight
 
 int runGame(void);

@@ -121,25 +121,29 @@ void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks){
 }
 
 void ballHitBarChangeDireccion(barSides side){
-    switch(side){ L, R, UL, UM, UR}
+    //enum ballDirec{LU, U, RU, RD,D, LD}ball_direc
+    switch(side){
         case L:
-
+            ball_direc = LD;
             break;
         case R:
-
+            ball_direc = RD;
             break;
         case UL:
-
+            ball_direc = LU;
             break;
         case UM:
-
+            ball_direc = U;
             break;
         case UR:
-
+            ball_direc = RU;
             break;
-        
     }
 }
+
+
+
+
 
 
 
@@ -160,7 +164,7 @@ void ballHitBarChangeDireccion(barSides side){
     .print_bar(bar_pos)
     .void invertDirectionLR()               hace que la pelotita cambie de direccion si choca con una pared
     .void ballMove()                        le cambia la posicion a la pelota dependiendo su pos y direccion y vel
-    .ballHitBarChangeDireccion(bar_side);   le cambia la direccion a la pelota dependiendo exactamente donde cae en la barra
+    .ballHitBarChangeDireccion(bar_side);   
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
 en el if 0=false; 1=true  SORRY TAMI SOY UN DESASTRE
 

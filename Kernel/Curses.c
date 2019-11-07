@@ -102,8 +102,12 @@ int printlnAt(char *str, unsigned int pos)
 
     for (int i = 0 ; str[i]!=0; i++){
 
-        if(str[i]!= '\n'){
+        if(str[i]!= '\n' ){
 
+            if(x >= screenWidth * charWidth){
+                 x = 0;
+                y += charHeight;
+            }
 
             printCharAt(str[i],x,y);
             x += charWidth;
@@ -146,6 +150,7 @@ int printChar( char ch)
     if(ch != '\n'){
         if(pos_x >= screenWidth)
             nextRow();
+
         printCharAt(ch,pos_x,pos_y);    
         nextColumn();    
     }else{

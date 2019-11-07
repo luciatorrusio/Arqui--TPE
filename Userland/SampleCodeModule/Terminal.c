@@ -29,6 +29,7 @@ void printTypeLine();
 void initializeTerminal(){
     initializeCurses();
 
+
     getConsoleDimensions(&columns,&rows);
 }
 
@@ -43,6 +44,7 @@ int runTerminal(){
             if(key == 8 ){
                 if(TypeIndex>0)
                     TerminalType[--TypeIndex] = 0;
+                 printTypeLine();
 
             }else{ 
 
@@ -54,10 +56,17 @@ int runTerminal(){
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
                     printTerminal();
+
+                    
+
+                    
+
     
+                }else{
+                     printTypeLine();
                 }
             }
-                            printTypeLine();
+           
 
             
             
@@ -80,7 +89,7 @@ int interpretCommand(){
 
 void handleTerminalMovement(){
     TypeIndex = 0;
-    if(FirstAvailableLine == columns-2)
+    if(FirstAvailableLine == columns-3)
     {
         for( int i = 0 ; i < rows-3; i++)
            overwriteArray(TerminalDisplay[i+1],TerminalDisplay[i]);    
@@ -93,18 +102,20 @@ void handleTerminalMovement(){
 
 void printTerminal(){
     
-    clearConsole();
 
-    for(int i = 0 ; i < FirstAvailableLine; i ++)
+    for(int i = 0 ; i < FirstAvailableLine; i ++){
+        clearLine(i);
         printlnAt(TerminalDisplay[i],0,i);
+    }
 
-    int offset = 0;
-
-   printTypeLine();
+    clearLine(rows-2);
+  // printTypeLine();
 }
 
 void printTypeLine(){
     int offset = 0;
+
+    clearLine(rows-2);
 
     if (TypeIndex > columns)
     {
@@ -119,6 +130,11 @@ void clearArray(char * arr, int size){
 
     for (int i = 0; i < size; i++)
         arr[i] = 0;
+}
+
+void clearLine(int row){
+    for(int i = 0 ; i < columns ; i++)
+        printCharAt(' ',i,row);
 }
 
 void overwriteArray(char * src, char * dest){

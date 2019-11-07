@@ -267,25 +267,29 @@ walls barHitWall(){
 }
 
 int[] ballHitBlock(){
+    int auxPos[]= ballNextPos();
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
             //PARA VER SI ESTA CHOCANDO ARRIBA O ABAJO
-            if(ball_pos[x] < (i+1)* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION && ball_pos[X] > i* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION){
-                if(ball_pos[Y] == (j+1)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ){
+            if(auxPos[x] < (i+1)* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION && ball_pos[X] > i* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION){
+                if(auxPos[Y] < (j+1)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 && auxPos[Y] > (j)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION){
                     blocks_left -=1;
                     return {i,j,UPPER };//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
                 }
-                if(ball_pos[Y] == (j)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION + BLOCK_HEIGHT/2 ){
+                if(auxPos[Y] == (j)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION + BLOCK_HEIGHT/2 ){
                     blocks_left -=1;
                     return{1,j, FLOOR};
                 }
             //PARA VER SI ESTA CHOCANDO EN ALGUN COSTADO    
             }else if()
-            //PARA VER SI ESTA CHOCANDO EN ALGUNA ESQUINA
+            
         }
     }
 }
-
+int ballTouchingUpperOrLower(){
+    int auxPos[]=ballNextPos();
+    if(auxPos[x] < (i+1)* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION && auxPos[X] > i* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION
+}
 
 /* funciones a hacer=
     .bool stopKeyPressed()

@@ -89,7 +89,7 @@ int interpretCommand(){
 
 void handleTerminalMovement(){
     TypeIndex = 0;
-    if(FirstAvailableLine == columns-3)
+    if(FirstAvailableLine == rows-3)
     {
         for( int i = 0 ; i < rows-3; i++)
            overwriteArray(TerminalDisplay[i+1],TerminalDisplay[i]);    

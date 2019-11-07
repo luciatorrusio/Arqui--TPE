@@ -1,19 +1,18 @@
 #include "./include/Game.h"
 
-int XMIDDLE = SCREEN_WIDTH/2;               //la mitad en x de la panalla
-int YMIDDLE = SCREEN_HEIGHT/2;              //la mitad  en y de la pantalla
-int R_BLOCKS = 4;                           //Cantidad de filas de bloques
-int C_BLOCKS = 5;                           //Cantidad de columnas de bloques
-enum ballDirec{LU, U, RU, RD, D, LD};       //Left up, up, right up, right down, down, left down
-enum walls{LEFT, RIGHT, UPPER, FLOOR};      //los bordes de la pantalla
-int bar_vel= 1;                             //velocidad de la barra 
-int LIVESi = 3;                             //cantidad de vidas al iniciar el juego    
-int lives;                                  //cantidad de vidas que tiene
-int blocks[R_BLOCKS][C_BLOCKS];             //matriz de los bloques
-int ball_pos[2];                            //pelota en el medio de ls pantalla
-int ball_vel;                               //la velocidad cuenta de a cuantos cuadraditos se mueve
+int XMIDDLE = SCREEN_WIDTH/2;                       //la mitad en x de la panalla
+int YMIDDLE = SCREEN_HEIGHT/2;                      //la mitad  en y de la pantalla
+int R_BLOCKS = 4;                                   //Cantidad de filas de bloques
+int C_BLOCKS = 5;                                   //Cantidad de columnas de bloques
+enum ballDirec{LU, U, RU, RD, D, LD}ball_direc;     //Left up, up, right up, right down, down, left down
+enum walls{LEFT, RIGHT, UPPER, FLOOR}wall;          //los bordes de la pantalla
+int bar_vel= 1;                                     //velocidad de la barra 
+int LIVESi = 3;                                     //cantidad de vidas al iniciar el juego    
+int lives;                                          //cantidad de vidas que tiene
+int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
+int ball_pos[2];                                    //pelota en el medio de ls pantalla
+int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
 int pos_bar;
-int ball_direc;
 
 
 int runGame(void){
@@ -50,7 +49,7 @@ int runGame(void){
 
  //inicializa el juego(empieza a pintar la pantalla)
 
-int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int ball_vel, ball_direc, lives){
+int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int ball_vel, int ball_direc, int lives){
     
     print_ball(ball_pos);
     print_blocks(blocks);

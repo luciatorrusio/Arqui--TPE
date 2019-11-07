@@ -11,12 +11,8 @@
 
 // Variables
 
-<<<<<<< HEAD
-#define MAXBUFFER (DISPLAY_COL * 5)
 #define MAXPBUFF 1000
-=======
 #define MAXBUFFER (600)
->>>>>>> 5a9a352acbdc32031993bcb53fbaa5afcbf31128
 
 static char TerminalDisplay [60][MAXBUFFER];
 static char TerminalType [MAXBUFFER];

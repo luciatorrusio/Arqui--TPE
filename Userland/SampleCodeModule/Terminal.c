@@ -1,7 +1,9 @@
 
+#include <stdarg.h>
 #include "include/Terminal.h"
 #include "../Include/Curses.h"
 #include "include/Commands.h"
+#include "../Include/String.h"
 #include <stdlib.h>
 
 
@@ -10,6 +12,7 @@
 // Variables
 
 #define MAXBUFFER (DISPLAY_COL * 5)
+#define MAXPBUFF 1000
 
 static char TerminalDisplay [DISPLAY_ROW-1][MAXBUFFER];
 static char TerminalType [MAXBUFFER];
@@ -126,6 +129,17 @@ void writeLineToTerminal(char * str){
     printTerminal();
 
     overwriteArray(temp,TerminalType);
-    
-    
     }
+void printf(char * format,...){
+    char string[MAXPBUFF];
+    for(int i=0;i<MAXPBUFF;i++)
+        *(string+i)=0;
+    va_list args;
+	va_start(args,format);
+    snprintf(string,MAXPBUFF,format,args);
+    va_end(args);
+    writeLineToTerminal(string);
+}
+void putchar(char c){
+	//ncPrintChar(c);
+}

@@ -85,8 +85,8 @@ int startGameRec(void){
         return 0;
     }
 
-
-    int block[3];                       // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;
+    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;
+    int block[3];                       
     print_ball(ball_pos);
     print_blocks(blocks);
     print_bar(bar_pos);

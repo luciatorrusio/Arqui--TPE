@@ -12,6 +12,7 @@ int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 int ball_pos[2];                                    //pelota en el medio de ls pantalla
 int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
 int pos_bar;
+int BAR_LENGTH;
 
 
 int runGame(void){
@@ -230,21 +231,28 @@ void invertDirection(walls wall){
 walls ballHitWall(){
     if((ball_pos[x] + BALL_RADIO) == SCREEN_WIDTH && (ball_pos[Y] - BALL_RADIO)== 0){
         return RCORNER;
-    }
-    if((ball_pos[x] - BALL_RADIO) == 0 && (ball_pos[Y] - BALL_RADIO)== 0){
+    } else if((ball_pos[x] - BALL_RADIO) == 0 && (ball_pos[Y] - BALL_RADIO)== 0){
         return LCORNER;
-    }
-    if(ball_pos[X] + BALL_RADIO == SCREEN_WIDTH ){
+    }else if(ball_pos[X] + BALL_RADIO == SCREEN_WIDTH ){
         return RIGHT;
-    }
-    if(ball_pos[X] - BALL_RADIO == 0){
+    }else if(ball_pos[X] - BALL_RADIO == 0){
         return LEFT;
-    }
-    if(ball_pos[Y] + BALL_RADIO == SCREEN_HEIGHT){
+    }else if(ball_pos[Y] + BALL_RADIO == SCREEN_HEIGHT){
         return FLOOR;
-    }
-    if(ball_pos[Y] - BALL_RADIO == 0 ){
+    }else if(ball_pos[Y] - BALL_RADIO == 0 ){
         return UPPER;
+    }else{
+        return NONE;
+    }
+}
+
+walls barHitWall(){
+    if(bar_pos + BAR_LENGTH/2 == SCREEN_WIDTH){
+        return RIGHT;
+    }else if(bar_pos - BAR_LENGTH/2 == 0){
+        return LEFT;
+    }else{
+        return NONE;
     }
 }
 
@@ -252,11 +260,10 @@ walls ballHitWall(){
     .bool stopKeyPressed()
     .bool left_arrow_pressed()
     .bool right_arrow_pressed()
-    .walls barHitWall()                     devuelve el wall, (enum walls)
-    .walls ballHitWall()                              ""
+   
     .int[3] ballHitBlock()                  devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
     .print_ball(ball_pos)
     .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
-en el if 0=false; 1=true  SORRY TAMI SOY UN DESASTRE
+
 

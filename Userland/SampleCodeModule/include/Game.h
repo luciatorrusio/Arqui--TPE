@@ -33,4 +33,10 @@ void ballMove();
 //hace que la pelotita cambie de direccion si choca con una pared o bloque
 void invertDirection(walls wall);
 
+//devuelve que pared le esta pegando y false(osea 0) si no le pega a ninguna
+walls ballHitWall();
+
+//devuelve la pared que esta tocando y false(osea 0) si no esta tocando
+walls barHitWall();
+
 #endif

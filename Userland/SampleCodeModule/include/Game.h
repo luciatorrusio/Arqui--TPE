@@ -9,7 +9,7 @@ enum barSides{N, L, R, UL, UM, UR}bar_side;                                     
 int runGame(void);
 
 
-int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int ball_vel,int ball_direc,int lives);
+int startGame(void);
 
 
 void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks);

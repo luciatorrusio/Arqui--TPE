@@ -2,6 +2,9 @@
 #define GAME_H
 
 #include <stdio.h>
+enum ballDirec{LU, U, RU, RD, D, LD}ball_direc;     //Left up, up, right up, right down, down, left down
+enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, RCORNER, LCORNER}wall;          //los bordes de la pantalla
+enum barSides{N, L, R, UL, UM, UR}bar_side;                    //none, left, right, upperLeft, UpperMiddle, UpperRight
 
 int runGame(void);
 
@@ -23,6 +26,11 @@ void print_blocks(int[R_BLOCKS][C_BLOCKS] blocks);
 */
 void ballHitBarChangeDireccion(barSides side);
 
+//Le cambia la posicion a la pelota dependiendo su pos y direccion y vel
 void ballMove();
+
+
+//hace que la pelotita cambie de direccion si choca con una pared o bloque
+void invertDirection(walls wall);
 
 #endif

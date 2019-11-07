@@ -5,9 +5,6 @@ int XMIDDLE = SCREEN_WIDTH/2;                       //la mitad en x de la panall
 int YMIDDLE = SCREEN_HEIGHT/2;                      //la mitad  en y de la pantalla
 int R_BLOCKS = 4;                                   //Cantidad de filas de bloques
 int C_BLOCKS = 5;                                   //Cantidad de columnas de bloques
-enum ballDirec{LU, U, RU, RD, D, LD}ball_direc;     //Left up, up, right up, right down, down, left down
-enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR}wall;          //los bordes de la pantalla
-enum barSides{N, L, R, UL, UM, UR}bar_side;                    //none, left, right, upperLeft, UpperMiddle, UpperRight
 int bar_vel= 1;                                     //velocidad de la barra 
 int LIVESi = 3;                                     //cantidad de vidas al iniciar el juego    
 int lives;                                          //cantidad de vidas que tiene
@@ -171,7 +168,85 @@ void ballMove(){
 //{LU, U, RU, RD, D, LD}ball_direc;
 
 
+//walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR}wall; 
 
+void invertDirection(walls wall){
+    switch(wall){
+        case LCORNER:
+            ball_direc = RD;
+        break;
+        case RCORNER = LD;
+        case LEFT:
+            switch(ball_direc){
+                case LU:
+                    ball_direc = RU;
+                break;
+                case LD:
+                    ball_direc = RD;
+                break;
+            }
+        break;
+        case RIGHT:
+            switch(ball_direc){
+                case RU:
+                    ball_direc = LU;
+                break;
+                case RD:
+                    ball_direc = LD;
+                break;
+            }
+        break;
+        case UPPER:
+            switch(ball_direc){
+                case LU:
+                    ball_direc = LD;
+                break;
+                case RU:
+                    ball_direc = RD;
+                break;
+                case U:
+                    ball_direc = D;
+                break;
+            }
+        break;
+        //FLOOR SOLO PASA CON LOS BLOQUES(la parte de arriba)
+        case FLOOR:
+            switch(ball_direc){
+                case LD:
+                    ball_direc = LU;
+                break;
+                case RD:
+                    ball_direc = RU;
+                break;
+                case D:
+                    ball_direc = U;
+                break;
+            }
+        break;
+
+    }
+}
+
+walls ballHitWall(){
+    if((ball_pos[x] + BALL_RADIO) == SCREEN_WIDTH && (ball_pos[Y] - BALL_RADIO)== 0){
+        return RCORNER;
+    }
+    if((ball_pos[x] - BALL_RADIO) == 0 && (ball_pos[Y] - BALL_RADIO)== 0){
+        return LCORNER;
+    }
+    if(ball_pos[X] + BALL_RADIO == SCREEN_WIDTH ){
+        return RIGHT;
+    }
+    if(ball_pos[X] - BALL_RADIO == 0){
+        return LEFT;
+    }
+    if(ball_pos[Y] + BALL_RADIO == SCREEN_HEIGHT){
+        return FLOOR;
+    }
+    if(ball_pos[Y] - BALL_RADIO == 0 ){
+        return UPPER;
+    }
+}
 
 /* funciones a hacer=
     .bool stopKeyPressed()
@@ -181,9 +256,7 @@ void ballMove(){
     .walls ballHitWall()                              ""
     .int[3] ballHitBlock()                  devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
     .print_ball(ball_pos)
-    .print_bar(bar_pos)
-    .void invertDirectionLR()               hace que la pelotita cambie de direccion si choca con una pared
-    .void ballMove()                        le cambia la posicion a la pelota dependiendo su pos y direccion y vel
+    .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
 en el if 0=false; 1=true  SORRY TAMI SOY UN DESASTRE
 

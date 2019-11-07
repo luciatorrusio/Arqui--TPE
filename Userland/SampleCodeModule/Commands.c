@@ -1,9 +1,9 @@
 #include "include/Commands.h"
 
-#include "../include/deviceInfo.h"
+#include "../Include/deviceInfo.h"
 #include "../Include/String.h"
 #include "include/Terminal.h"
-#include "../include/Time.h"
+#include "../Include/Time.h"
 
 int printMem(uint64_t memDirection){
 

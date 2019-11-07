@@ -1,4 +1,4 @@
-#include "../include/Time.h"
+#include "../Include/Time.h"
 
 enum{
 SECONDS, MINUTES, HOURS, DAYOFWEEK, DAYOFMONTH, MONTH, YEAR

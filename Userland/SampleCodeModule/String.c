@@ -1,4 +1,4 @@
-#include "../include/String.h"
+#include "../Include/String.h"
 #include <stdbool.h>
 
 int strlen(char * str){

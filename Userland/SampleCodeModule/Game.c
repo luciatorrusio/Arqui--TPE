@@ -177,19 +177,22 @@ int[] ballNextPos(){
     }
     return auxPos;
 }
-
-
-//{LU, U, RU, RD, D, LD}ball_direc;
-
-
-//walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR}wall; 
+ 
 
 void invertDirection(walls wall){
     switch(wall){
-        case LCORNER:
+        case ULCORNER:
             ball_direc = RD;
         break;
-        case RCORNER = LD;
+        case URCORNER:
+            ball-direc = LD;
+        break;
+        case LLCORNER:
+            ball-direc = RU;
+        break;
+        case LRCORNER:
+            ball-direc = LU;
+        break;
         case LEFT:
             switch(ball_direc){
                 case LU:
@@ -278,6 +281,8 @@ int[] ballHitBlock(){
     }
 }
 
+
+//retorna la pared que actua de la misma forma que el borde del bloque
 wall ballTouchingWall(int c, int r){
     int auxPos[]=ballNextPos();
     if(ballBetweenXSides(auxPos, c, r) && ballBetweenXSides(ball_pos, c, r) && ballBetweenYSides(auxPos, c, r)){
@@ -292,10 +297,10 @@ wall ballTouchingWall(int c, int r){
     if(ballBetweenYSides(auxPos, c, r) && ballBetweenYSides(ball_pos) && ballBetweenXSides(auxPos)){
         blocks_left -=1;
         if(ball_direc == LU || ball_direc == LD){
-            return LEFT;//en verdad es la parte de la derecha del bloque pero se comporta como la pared de izquierda      }
+            return LEFT;
         }
         if(ball_direc == RU || ball_direc == RD){
-            return RIGHT; //en verdad esta tocando la parte de arriba pero se comporta como piso
+            return RIGHT; 
         }
     }if(ballBetweenXSides(auxPos, c, r) && ballBetweenYSides(auxPos) && !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
         blocks_left -=1;
@@ -325,7 +330,6 @@ int ballBetweenXSides(int[] auxPos, int c, int r){
     return 0;
 }
 
-//completar
 int ballBetweenYSides(int[] auxPos, int c, int r){
     if(auxPos[Y] - BALL_RADIO < (r+1)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 && auxPos[Y] + BALL_RADIO > (r)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION){
         return 1;

@@ -69,7 +69,7 @@ int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int 
     }
 
 //Para la pelota
-    switch(ballHitWall()){
+    switch(wall = ballHitWall()){
         case FLOOR:
             lives -=1; 
             ball_pos[]={XMIDDLE, YMIDDLE};
@@ -77,11 +77,10 @@ int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int 
             break;
         case LEFT:    
         case RIGHT:
-            invertDirectionLR();
-            break;
         case UPPER:
-            invertDirectionU();
+            invertDirection(wall);
             break;
+        case NONE:
     }
     if(ballHitBlock())
 

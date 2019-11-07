@@ -4,19 +4,26 @@ int XMIDDLE = SCREEN_WIDTH/2;               //la mitad en x de la panalla
 int YMIDDLE = SCREEN_HEIGHT/2;              //la mitad  en y de la pantalla
 int R_BLOCKS = 4;                           //Cantidad de filas de bloques
 int C_BLOCKS = 5;                           //Cantidad de columnas de bloques
-int LIVESi = 3;                             //cantidad de vidas al iniciar el juego
-enum ball_direc{LU, U, RU, RD, D, LD};      //Left up, up, right up, right down, down, left down
+enum ballDirec{LU, U, RU, RD, D, LD};       //Left up, up, right up, right down, down, left down
 enum walls{LEFT, RIGHT, UPPER, FLOOR};      //los bordes de la pantalla
 int bar_vel= 1;                             //velocidad de la barra 
+int LIVESi = 3;                             //cantidad de vidas al iniciar el juego    
+int lives;                                  //cantidad de vidas que tiene
+int blocks[R_BLOCKS][C_BLOCKS];             //matriz de los bloques
+int ball_pos[2];                            //pelota en el medio de ls pantalla
+int ball_vel;                               //la velocidad cuenta de a cuantos cuadraditos se mueve
+int pos_bar;
+int ball_direc;
+
 
 int runGame(void){
     
-    int lives = LIVESi;                     //cantidad de vidas que tiene
-    int blocks[R_BLOCKS][C_BLOCKS];         //matriz de los bloques
-    int ball_pos[]={XMIDDLE, YMIDDLE};      //pelota en el medio de ls pantalla
-    int ball_vel=1;                         //la velocidad cuenta de a cuantos cuadraditos se mueve
-    int pos_bar = XMIDDLE;
-    
+    lives = LIVESi;                     
+    blocks[R_BLOCKS][C_BLOCKS];         
+    ball_pos[]={XMIDDLE, YMIDDLE};      
+    ball_vel=1;                         
+    pos_bar = XMIDDLE;
+    ball_direc = D;
 
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
@@ -51,16 +58,40 @@ int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int 
 
 //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
     if(left_arrow_pressed()){
-       if(!barHitWall() || Hit() == RIGHT){
+       if(!barHitWall() || barHitWall() == RIGHT){      //FIJARSE QUE TIENE QUE DEVOLVER barHitWall() para que me de false cuando no hitea
              bar_pos  -= bar_vel;                     //la muevo para la izquierda
        }
     }
     if(right_arrow_pressed()){
-        if(!barHitWall() || Hit() == LEFT){
+        if(!barHitWall() || barHitWall() == LEFT){
             bar_pos += bar_vel;
+        }
+    }
+    if(ballHitWall()){
+        if(barHitWall() == FLOOR){
+            lives -=1; 
+            ball_pos[]={XMIDDLE, YMIDDLE};
+            pos_bar = XMIDDLE;
         }
     }
 
 }
+
+
+
+
+
+
+
+
+/* funciones a hacer=
+    .bool left_arrow_pressed()
+    .bool right_arrow_pressed()
+    .int barHitWall()               devuelve el wall, (enum walls)
+    .ballHitWall()                              ""
+    .ballHitBlock()                 devuelve la pos del block o [-1, -1] si no le pego a nada
+    .print_ball(ball_pos)
+    .print_blocks(blocks)
+    .print_bar(bar_pos)
 
 

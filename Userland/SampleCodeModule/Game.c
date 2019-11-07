@@ -282,7 +282,6 @@ int[] ballHitBlock(){
 }
 
 
-//retorna la pared que actua de la misma forma que el borde del bloque
 wall ballTouchingWall(int c, int r){
     int auxPos[]=ballNextPos();
     if(ballBetweenXSides(auxPos, c, r) && ballBetweenXSides(ball_pos, c, r) && ballBetweenYSides(auxPos, c, r)){

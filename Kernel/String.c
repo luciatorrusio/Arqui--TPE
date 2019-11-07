@@ -10,37 +10,62 @@ int strlen(char * str){
 
 void IntToString(char * buffer, int buffSize, uint64_t num){
 
-    for(int i = 0 ; i < buffSize ; i++)
-		buffer[i] = 0;
+	char *p = buffer;
+	char *p1, *p2;
+	uint32_t digits = 0;
 
-    int temp = num>0 ?num:-num;
-	int i = 0;
-
-	
-
-	
-
-	while(temp!= 0 && i < buffSize-1){
-
-		int stVal = temp;
-		int numToSave = temp - 10*(stVal/10);
-		buffer[i++] = '0' + numToSave;
-		temp = temp/10;
+	//Calculate characters for each digit
+	do
+	{
+		uint32_t remainder = num % 10;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
 	}
-    i--;
+	while (num /= 10);
 
-	for(int a = 0 ; a <= i/2 ; a++){
-		char temp = buffer[a];
-		buffer[a] = buffer[i-a];
-		buffer[i-a] = temp;
+	// Terminate string in buffer.
+	*p = 0;
+
+	//Reverse string in buffer.
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
 	}
 
-	if(num <0){
-		for(int j = strlen(buffer)-2; j >=0; j--){
-			buffer[j+1] = buffer[j];
-		}
-		buffer[0]='-';
-	}
+    // for(int i = 0 ; i < buffSize ; i++)
+	// 	buffer[i] = 0;
+
+    // int temp = num>0 ?num:-num;
+	// int i = 0;
+
+
+	// while(temp!= 0 && i < buffSize-1){
+
+	// 	int stVal = temp;
+	// 	int numToSave = temp - 10*(stVal/10);
+	// 	buffer[i++] = '0' + numToSave;
+	// 	temp = temp/10;
+	// }
+    // i--;
+
+	// for(int a = 0 ; a <= i/2 ; a++){
+	// 	char temp = buffer[a];
+	// 	buffer[a] = buffer[i-a];
+	// 	buffer[i-a] = temp;
+	// }
+
+	// if(num <0){
+	// 	for(int j = strlen(buffer)-2; j >=0; j--){
+	// 		buffer[j+1] = buffer[j];
+	// 	}
+	// 	buffer[0]='-';
+	// }
 }
 
 

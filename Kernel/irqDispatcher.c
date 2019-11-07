@@ -5,6 +5,7 @@
 #include <keyboard.h>
 #include <deviceInfo.h>
 #include <Time.h>
+#include <ReadDispatcher.h>
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
@@ -54,7 +55,7 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	
 	switch (id)
 	{
-		case 1:{
+		case 1:{ // write
 
 			if(fileDescriptor == 2){
 				getColor(&currentTextColor,&currentBackgroundColor);
@@ -68,7 +69,7 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 
 			break;
 		}
-		case 2:{
+		case 2:{ // write at
 
 			uint64_t position = fourthParam;
 
@@ -84,22 +85,9 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 
 			break;
 		}
-		case 3: 
+		case 3: // read
 		{
-			int bufferSize = fourthParam;
-			int i = 0;		
-			int temp;
-			do{
-				temp = returnKey();
-				
-				if( temp != -1 ){
-					buffer[i++]=temp;
-				}
-
-			}while( temp!= -1 && i <bufferSize-1 );
-
-
-			buffer[i] = 0;
+			dispatchRead(secondParam,thirdParam,fourthParam);
 			break;
 		}
 	}

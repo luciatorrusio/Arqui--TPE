@@ -39,7 +39,7 @@ void PrintExceptionDetails(char * name){
 
 	clearConsole();
 	
-	setColor(Red,Black);
+	//setColor(Red,Black);
 	println("EXCEPTION: ");
 	println(name);
 	println("  @ IP: 0X");

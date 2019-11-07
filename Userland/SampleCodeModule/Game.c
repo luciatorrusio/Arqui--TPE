@@ -13,6 +13,11 @@ int ball_pos[2];                                    //pelota en el medio de ls p
 int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
 int pos_bar;
 int BAR_LENGTH;
+int NO_BLOCK[]={-1,-1,-1};
+int BLOCK_WIDTH;            //COMPLETAR
+int BLOCK_XSEPARATION;      //COMPLETAR
+int BLOCK_HEIGHT;           //COMPLETAR
+int BLOCK_YSEPARATION;      //COMPLETAR
 
 
 int runGame(void){
@@ -92,7 +97,7 @@ int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int 
     }
     //si pega contra un bloque
     block=ballHitBlock();
-    if(block != NO_BLOCK){      //NO_BLOCK[]={-1,-1,-1}?
+    if(block != NO_BLOCK){    
         blocks[block[0]][block[1]]=0;
         invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
         ball_move();
@@ -256,12 +261,33 @@ walls barHitWall(){
     }
 }
 
+int[] ballHitBlock(){
+    for(int i = 0; i < C_BLOCKS ; i++){
+        for(int j = 0; j < R_BLOCKS; j++){
+            //PARA VER SI ESTA CHOCANDO ARRIBA O ABAJO
+            if(ball_pos[x] < (i+1)* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION && ball_pos[X] > i* BLOCK_WIDTH + (i+1)* BLOCK_XSEPARATION){
+                if(ball_pos[Y] == (j+1)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ){
+                    blocks_left -=1;
+                    return {i,j,UPPER };//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+                }
+                if(ball_pos[Y] == (j)* BLOCK_HEIGHT + (j+1)*BLOCK_YSEPARATION + BLOCK_HEIGHT/2 ){
+                    blocks_left -=1;
+                    return{1,j, FLOOR};
+                }
+            //PARA VER SI ESTA CHOCANDO EN ALGUN COSTADO    
+            }else if()
+            //PARA VER SI ESTA CHOCANDO EN ALGUNA ESQUINA
+        }
+    }
+}
+
+
 /* funciones a hacer=
     .bool stopKeyPressed()
     .bool left_arrow_pressed()
     .bool right_arrow_pressed()
    
-    .int[3] ballHitBlock()                  devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
+    .int[] ballHitBlock()                  devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
     .print_ball(ball_pos)
     .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego

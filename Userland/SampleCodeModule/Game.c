@@ -146,31 +146,39 @@ void ballHitBarChangeDireccion(barSides side){
 }
 
 void ballMove(){
+     int auxPos[] = ballNextPos();
+}
+
+int[] ballNextPos(){
+    int auxPos[] =ball_pos; 
     switch(ball_direc){
         case LU:
-            ball_pos[X] -= ( ball_vel * 0,7071); 
-            ball_pos[Y] += ( ball_vel * 0,7071);
+            auxPos[X] -= ( ball_vel * 0,7071); 
+            auxPos[Y] += ( ball_vel * 0,7071);
             break;
         case U:
-            ball_pos[Y] += ball_vel;  
+            auxPos[Y] += ball_vel;  
             break;
         case RU:
-            ball_pos[X] += ( ball_vel * 0,7071); 
-            ball_pos[Y] += ( ball_vel * 0,7071);
+            auxPos[X] += ( ball_vel * 0,7071); 
+            auxPos[Y] += ( ball_vel * 0,7071);
             break;
         case RD:
-            ball_pos[X] += ( ball_vel * 0,7071); 
-            ball_pos[Y] -= ( ball_vel * 0,7071);
+            auxPos[X] += ( ball_vel * 0,7071); 
+            auxPos[Y] -= ( ball_vel * 0,7071);
             break;
         case D: 
-            ball_pos[Y] += ball_vel * 0,7071;
+            auxPos[Y] += ball_vel * 0,7071;
             break;
         case LD:
-            ball_pos[X] -= ( ball_vel * 0,7071); 
-            ball_pos[Y] -= ( ball_vel * 0,7071);
+            auxPos[X] -= ( ball_vel * 0,7071); 
+            auxPos[Y] -= ( ball_vel * 0,7071);
             break;
-    } 
+    }
+    return auxPos;
 }
+
+
 //{LU, U, RU, RD, D, LD}ball_direc;
 
 
@@ -234,17 +242,14 @@ void invertDirection(walls wall){
 }
 
 walls ballHitWall(){
-    if((ball_pos[x] + BALL_RADIO) == SCREEN_WIDTH && (ball_pos[Y] - BALL_RADIO)== 0){
-        return RCORNER;
-    } else if((ball_pos[x] - BALL_RADIO) == 0 && (ball_pos[Y] - BALL_RADIO)== 0){
-        return LCORNER;
-    }else if(ball_pos[X] + BALL_RADIO == SCREEN_WIDTH ){
+    int auxPos[] = ballNextPos();
+    if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
         return RIGHT;
-    }else if(ball_pos[X] - BALL_RADIO == 0){
+    }else if(auxPos[X] - BALL_RADIO <= 0){
         return LEFT;
-    }else if(ball_pos[Y] + BALL_RADIO == SCREEN_HEIGHT){
+    }else if(auxPos[Y] + BALL_RADIO >= SCREEN_HEIGHT){
         return FLOOR;
-    }else if(ball_pos[Y] - BALL_RADIO == 0 ){
+    }else if(auxPos[Y] - BALL_RADIO <= 0 ){
         return UPPER;
     }else{
         return NONE;
@@ -252,9 +257,9 @@ walls ballHitWall(){
 }
 
 walls barHitWall(){
-    if(bar_pos + BAR_LENGTH/2 == SCREEN_WIDTH){
+    if(bar_pos+ bar_vel + BAR_LENGTH/2 >= SCREEN_WIDTH){
         return RIGHT;
-    }else if(bar_pos - BAR_LENGTH/2 == 0){
+    }else if(bar_pos -bar_vel- BAR_LENGTH/2 <= 0){
         return LEFT;
     }else{
         return NONE;

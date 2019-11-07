@@ -51,38 +51,54 @@ int runGame(void){
  //inicializa el juego(empieza a pintar la pantalla)
 
 int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int ball_vel, ballDirec ball_direc, int lives){
-    
+    int block[3];                       // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;
     print_ball(ball_pos);
     print_blocks(blocks);
     print_bar(bar_pos);
 
-//barHitWall devuelve un int que representa que pared esta chocando (enum walls)
+/*MOVIMIENTO DE LA BARRA*/
+    //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
     if(left_arrow_pressed()){
        if(!barHitWall() || barHitWall() == RIGHT){      
-             bar_pos  -= bar_vel;                     //la muevo para la izquierda
+             bar_pos  -= bar_vel;                     //muevo la barra para la izquierda
        }
     }
     if(right_arrow_pressed()){
         if(!barHitWall() || barHitWall() == LEFT){
-            bar_pos += bar_vel;
+            bar_pos += bar_vel;                     //muevo la barra para la derecha
         }
     }
 
-//Para la pelota
+/*MOVIMIENTO DE LA PELOTA*/
+    //si pega contra una pared
     switch(wall = ballHitWall()){
+        case NONE:
+            ball_move();
         case FLOOR:
             lives -=1; 
             ball_pos[]={XMIDDLE, YMIDDLE};
+            ball_direc= D;
             pos_bar = XMIDDLE;
             break;
         case LEFT:    
         case RIGHT:
         case UPPER:
             invertDirection(wall);
+            ball_move();
             break;
-        case NONE:
     }
-    if(ballHitBlock())
+    //si pega contra un bloque
+    block=ballHitBlock();
+    if(block != NO_BLOCK){      //NO_BLOCK[]={-1,-1,-1}?
+        blocks[block[0]][block[1]]=0;
+        invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
+        ball_move();
+    }else{
+        ball_move();
+    }
+    //Si pega en la barra
+    
+
 
 }
 
@@ -98,12 +114,13 @@ int startGame(int bar_pos,int[R_BLOCKS][C_BLOCKS] blocks, int [2] ball_pos, int 
     .bool right_arrow_pressed()
     .walls barHitWall()               devuelve el wall, (enum walls)
     .walls ballHitWall()                              ""
-    .ballHitBlock()                 devuelve la pos del block o [-1, -1] si no le pego a nada
+    .int[3] ballHitBlock()                 devuelve la pos del block o {-1,-1,-1} si no le pego a nada, resta  blocks_left -=1;
     .print_ball(ball_pos)
     .print_blocks(blocks)
     .print_bar(bar_pos)
-    .invertDirectionLR()            hace que la pelotita cambie de direccion si choca con una pared
-    .invertDirectionU()
+    .void invertDirectionLR()            hace que la pelotita cambie de direccion si choca con una pared
+    .void ballMove()                le cambia la posicion a la pelota dependiendo su pos y direccion y vel
+
 
 en el if 0=false; 1=true  SORRY TAMI SOY UN DESASTRE
 

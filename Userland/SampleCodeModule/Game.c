@@ -11,6 +11,8 @@
 #define BLOCK_HEIGHT           7//COMPLETAR
 #define BLOCK_YSEPARATION      7//COMPLETAR
 
+#define BLACK 
+#define WHITE
 
 int X = 0;
 int Y = 1;
@@ -236,11 +238,13 @@ void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
-            if( blocks[i][j] == 1){
                 x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION ;
                 y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION ;
-                print_block( x , y );
+            if( blocks[i][j] == 1){
+                print_block( x , y,WHITE);
             }
+            else
+                print_block( x , y,BLACK);
         }
     }
 }
@@ -483,16 +487,21 @@ void setRelativeStartTime(){
     relative_startTime[4]= GetMinutes();
     relative_startTime[5]= GetSeconds();
 }
+void print_ball(int * ball_pos,int color){
+    printOnScreen(BALL,ball_pos[x],ball_pos[y],BALL_RADIO*2,BALL_RADIO*2,color);
+}
 
-
-
+void print_bar(int * bar_pos,int color){
+    printOnScreen(BAR,bar_pos[x],bar_pos[y],BAR_LENGTH,BAR_HEIGHT,color);
+}
+void print_block(int x,int y,int color){
+    printOnScreen(BLOCK,x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+}
 /* funciones a hacer=
     .printf();
     .bool stopKeyPressed()
     .bool left_arrow_pressed()
     .bool right_arrow_pressed()
-    .print_ball(ball_pos)
-    .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
     .barSides ballHitBar()
 */

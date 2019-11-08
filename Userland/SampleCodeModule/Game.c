@@ -192,38 +192,43 @@ barSides ballHitBar(){
     int bar_Ycord[] = {bar_pos[Y] - BAR_HEIGHT / 2, bar_pos[Y] + BAR_HEIGHT / 2 };
     int nextPos[2];
     ballNextPos(nextPos);
-    if(ballBetweenX(nextPos, bar_Xcord[0], bar_Xcord[1]) && ballBetweenX(ball_pos, bar_Xcord[0], bar_Xcord[1]) && ballBetweenY(auxPos, bar_Ycord[0], bar_Xcord[1])){
-        return UL;
-    }
-    if(ballBetweenY(auxPos, c, r) && ballBetweenYSides(ball_pos, c, r) && ballBetweenXSides(auxPos, c, r)){
-        blocks_left -=1;
-        if(ball_dir == LU || ball_dir == LD){
-            return LEFT;
+    if(!insideSquare(nextPos, {bar_Xcord[0], bar_Ycord[1]}, {bar_Xcord[3], bar_Ycord[0]})){
+        return N;
+    }else{
+        //dentro de la primer parte de la barra
+        if(insideSquare(nextPos, {bar_Xcord[0], bar_Ycord[1]}, {bar_Xcord[1], bar_Ycord[0]})){
+            if(ballBetween(ball_pos[Y], bar_Ycord[0], bar_Ycord[1])){
+                return L;
+            }
+            return UL;
         }
-        if(ball_dir == RU || ball_dir == RD){
-            return RIGHT; 
+        //dentro de la segunda parte de la barra
+        if(insideSquare(nextPos, {bar_Xcord[1], bar_Ycord[1]}, {bar_Xcord[2], bar_Ycord[0]})){
+            return UM;
         }
-    }if(ballBetweenXSides(auxPos, c, r) && ballBetweenYSides(auxPos, c, r) && !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
-        blocks_left -=1;
-        switch(ball_dir){
-            case LU:
-                return ULCORNER;    
-            break;
-            case RU:
-                return URCORNER;
-            break;
-            case LD:
-                return  LLCORNER;
-            break;
-            case RD:
-                return LRCORNER;
-            break;
-            
+        //dentro de la TERCER parte de la barra
+        if(insideSquare(nextPos, {bar_Xcord[2], bar_Ycord[1]}, {bar_Xcord[3], bar_Ycord[0]})){
+            if(ballBetween(ball_pos[Y], bar_Ycord[0], bar_Ycord[1])){
+                return R;
+            }
+            return UR;
         }
     }
-    return NONE;
+}
 
+int ballBetween(int auxPos, int y1, int y2){
+    if(auxPos < y2 && auxPos > y1){
+        return 1;
     }
+    return 0;
+}
+
+//la pos de la pelota, punto de abajo a la izquierda y arriba a la derecha del cuadrado
+int insideSquare(int * auxPos, int * LLSquare, int * URSquare){
+    if(ballBetweenX(auxPos,LLSquare[X], URSquare[X]) && ballBetweenY(auxPos, URSquare[Y], LLSquare[Y])){
+        return 1;
+    }
+    return 0;
 }
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){

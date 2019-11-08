@@ -489,14 +489,14 @@ void setRelativeStartTime(){
     relative_startTime[5]= GetSeconds();
 }
 void print_ball(int * ball_pos,int color){
-    printOnScreen(BALL,ball_pos[x],ball_pos[y],BALL_RADIO*2,BALL_RADIO*2,color);
+    printOnScreen(ball_pos[x],ball_pos[y],BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
 void print_bar(int bar_pos,int color){
-    printOnScreen(BAR,bar_pos,bar_Ycord,BAR_LENGTH,BAR_HEIGHT,color);
+    printOnScreen(bar_pos,bar_Ycord,BAR_LENGTH,BAR_HEIGHT,color);
 }
 void print_block(int x,int y,int color){
-    printOnScreen(BLOCK,x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+    printOnScreen(x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);
 }
 /* funciones a hacer=
     .printf();

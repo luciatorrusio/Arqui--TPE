@@ -10,7 +10,6 @@ printAt:
     mov rcx,rsi     ; y
     mov rdx,rdx     ; lenght
     mov r8,r8       ;fontColor
-   
     int 83h
 
     leave

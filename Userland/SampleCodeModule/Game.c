@@ -3,7 +3,8 @@
 
 #define LIVESi  3                                     //cantidad de vidas al iniciar el juego    
 
-#define BAR_LENGTH             7
+#define BAR_LENGTH             7//complestar
+#define BAR_YPOS               8//completar                
 
 #define BLOCK_WIDTH            7//COMPLETAR
 #define BLOCK_XSEPARATION      7//COMPLETAR
@@ -25,7 +26,7 @@ ballDirec ball_dir;
 int BALL_RADIO;
 
 int bar_vel= 1;                                     //velocidad de la barra 
-int bar_pos;
+int* bar_pos;
 
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 int NO_BLOCK[]={-1,-1,-1};
@@ -47,7 +48,7 @@ int runGame(void){
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=1;                         
-    bar_pos=SCREEN_WIDTH/2; 
+    bar_pos[]={SCREEN_WIDTH/2, BAR_YPOS}; 
     ball_dir = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
 
     //pongo la matriz de bloques todos en uno, (osea que estan)
@@ -123,12 +124,12 @@ void handleBarMov(){
         //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
     if(left_arrow_pressed()){
        if(!(barHitWall() == LEFT)){      
-             bar_pos  -= bar_vel;                     //muevo la barra para la izquierda
+             bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
        }
     }
     if(right_arrow_pressed()){
         if(!(barHitWall()== RIGHT)){
-            bar_pos += bar_vel;                     //muevo la barra para la derecha
+            bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
         }
     }
 
@@ -146,7 +147,7 @@ void handleBallMov(void){
                 ball_pos[0]=SCREEN_WIDTH/2;
                 ball_pos[0]=SCREEN_HEIGHT/2;
                 ball_dir= D;
-                bar_pos = SCREEN_WIDTH/2;
+                bar_pos[X] = SCREEN_WIDTH/2;
                 return;
             break;
             case LEFT:    
@@ -176,6 +177,19 @@ void handleBallMov(void){
         ballHitBarChangeDireccion(bar_side);
     }
     ballMove();
+}
+
+/*typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;      
+             ____________________________________ bar_Ycord[0]
+            |___________|_____-______|___________| <-bar      __ bar_Ycord[1]
+     bar_Xcord[0]  bar_Xcord[1]  bar_Xcord[2]  bar_Xcord[3]
+                               ^
+                               |
+                            bar_pos
+*/
+barSides ballHitBar(){
+    int bar_Xcord[]={bar_pos[X] - BAR_LENGTH/2, bar_pos[X] - BAR_LENGTH/6, bar_pos[X] + BAR_LENGTH/6, bar_pos[X] + BAR_LENGTH/2};
+    int bar_Ycord[] = {bar_pos[Y] - BAR_HEIGHT / 2, bar_pos[Y] + BAR_HEIGHT / 2 }
 }
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
@@ -327,9 +341,9 @@ walls ballHitWall(){
 }
 
 walls barHitWall(){
-    if( ( bar_pos+ bar_vel + (BAR_LENGTH /2) ) >= SCREEN_WIDTH){
+    if( ( bar_pos[X]+ bar_vel + (BAR_LENGTH /2) ) >= SCREEN_WIDTH){
         return RIGHT;
-    }else if(bar_pos -bar_vel- BAR_LENGTH/2 <= 0){
+    }else if(bar_pos[X] -bar_vel- BAR_LENGTH/2 <= 0){
         return LEFT;
     }
     return NONE;

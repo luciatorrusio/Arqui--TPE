@@ -1,7 +1,7 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
 
-#define LIVESi  3                                     //cantidad de vidas al iniciar el juego    
+#define LIVESi  3               //cantidad de vidas al iniciar el juego    
 
 #define BAR_LENGTH             7//complestar
 #define BAR_YPOS               8//completar                

@@ -100,3 +100,10 @@ void drawChar(int x, int y, char character, int fontColor, int background){
 
 
 }
+void print(int x,int y,int lenght,int height,int fontColor){
+	for(int i=0;i<lenght;i++){
+		for(int j=0;j<height;j++){
+			drawPixel(x+i,y+j,fontColor);
+		}
+	}
+}

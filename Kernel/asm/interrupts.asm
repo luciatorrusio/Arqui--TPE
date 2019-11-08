@@ -15,7 +15,7 @@ GLOBAL _irq05Handler
 GLOBAL _irq80Handler
 GLOBAL _irq81Handler
 GLOBAL _irq82Handler
-
+GLOBAL _irq83Handler
 
 GLOBAL _exception0Handler
 
@@ -63,6 +63,8 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 
+	mov r10,r8 ;sexto Param	
+	mov r9, r9 ; Quinto Param
 	mov r8, rdx ; Cuarto Param
 	mov rcx,rcx ; Tercer Param
 	mov rdx,rbx ; Segundo Param
@@ -154,6 +156,10 @@ _irq81Handler:
 ; TIME
 _irq82Handler:
 	irqHandlerMaster 82h
+
+; printAt
+_irq83Handler:
+	irqHandlerMaster 83h	
 
 
 ;USB

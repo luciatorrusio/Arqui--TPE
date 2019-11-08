@@ -6,9 +6,13 @@
 #include <deviceInfo.h>
 #include <Time.h>
 #include <ReadDispatcher.h>
+#include <VideoDriver.h>
+
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
+static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm);
+
 static void int_21();
 void int_82(int timeID, int * value);
 
@@ -33,6 +37,10 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x82:
 			int_82(firstParam,secondParam);
 			break;
+		case 0x83:
+			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam,sixParm);
+			break;
+		
 	}
 }
 
@@ -124,5 +132,14 @@ void int_82(int timeID, int * value){
 	*value = handleTimeRequest(timeID);
 }
 
+void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm){
+	int id = firstParam;
+	int x = secondParam;
+	int y= thirdParam;
+	int lenght=fourthParam;
+	int height=fifthParam;
+	int fontColor=sixParm;
+
+}
 
 	

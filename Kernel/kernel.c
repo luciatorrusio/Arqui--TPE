@@ -88,6 +88,7 @@ int main()
 	load_idt();
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH);
+	drawLine();
 
 	((EntryPoint)sampleCodeModuleAddress)();
 

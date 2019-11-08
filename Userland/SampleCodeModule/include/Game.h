@@ -2,9 +2,9 @@
 #define GAME_H
 
 #include <stdio.h>
-typedef enum ballDirec{LU, U, RU, RD, D, LD} ball_dir;                                                         //Left up, up, right up, right down, down, left down
+typedef enum ballDirec{LU, U, RU, RD, D, LD} ballDirec;                                                         //Left up, up, right up, right down, down, left down
 typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } walls;           //los bordes de la pantalla
-typedef enum barSides{N, L, R, UL, UM, UR} bar_sides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
+typedef enum barSides{N, L, R, UL, UM, UR} barSides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
 
 #define R_BLOCKS  4                                   //Cantidad de filas de bloques
 #define C_BLOCKS  5                                   //Cantidad de columnas de bloques
@@ -34,7 +34,7 @@ void handleBarMov();
         derecha: sale a -45 grados(RD)
         izquierda: sale a 225 grados(RD)
 */
-void ballHitBarChangeDireccion(bar_sides side);
+void ballHitBarChangeDireccion(barSides side);
 
 //Le cambia la posicion a la pelota dependiendo su pos y direccion y vel
 void ballMove();
@@ -63,4 +63,8 @@ int ballBetweenYSides(int * auxPos, int c, int r);
 int ballBetweenXSides(int * auxPos, int c, int r);
 
 int finishGame(int time_past, int result);
+
+void ballNextPos(int * auxPos);
+
+int past_time(void);
 #endif

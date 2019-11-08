@@ -78,17 +78,44 @@ int runTerminal(){
 
 	}while(1);
 }
-
+int getHash(char * string){
+    int hash=0;
+    for(int i=0;*(string+i)!=0;i++){
+        hash=hash*255+*(string+i);
+    }
+    return hash;
+}
 
 int interpretCommand(){
     char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
-
-    
+    int hash=getHash(command);
+    switch(hash){
+        case getHash("time"):
+                        {   printf("la hora es: %d",time());
+                            break;}
+        case getHash("man"):
+                        {   man();
+                            break;}
+        case getHash("game"):
+                        {   game();
+                            break;}
+        case getHash("infoRegs"):
+                        {   infoRegs();
+                            break;}
+        case getHash("printMem"):
+                        {   printMem();
+                            break;}                            
+        default:
+                ERROR;
+        }
+        
     return  0;
-    
-
 }
+void man(){
+    printf("time man game infoRegs printMem");
+}
+
 
 void handleTerminalMovement(){
     TypeIndex = 0;
@@ -154,14 +181,13 @@ void writeLineToTerminal(char * str){
     overwriteArray(TerminalType,temp);
 
     overwriteArray(str,TerminalType);
-
-
-
+    
     handleTerminalMovement();
     printTerminal();
 
     overwriteArray(temp,TerminalType);
     }
+
 void printf(char * format,...){
     char string[MAXPBUFF];
     for(int i=0;i<MAXPBUFF;i++)

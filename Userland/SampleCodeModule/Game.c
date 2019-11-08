@@ -44,7 +44,7 @@ int runGame(void){
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=1;                         
-    bar_pos=XMIDDLE; //pos_bar = XMIDDLE; QUISISTE DECIR ESO?
+    bar_pos=SCREEN_WIDTH/2; //pos_bar = XMIDDLE; QUISISTE DECIR ESO?
     ball_direc = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
 
     //pongo la matriz de bloques todos en uno, (osea que estan)
@@ -131,9 +131,10 @@ void handleBallMov(int * block){
     switch(wall){
         case FLOOR:
             lives -=1; 
-            ball_pos[]={XMIDDLE, YMIDDLE};
+            ball_pos[0]=SCREEN_WIDTH/2;
+            ball_pos[0]=SCREEN_HEIGHT/2;
             ball_direc= D;
-            pos_bar = XMIDDLE;
+            pos_bar = SCREEN_WIDTH/2;
             break;
         case LEFT:    
         case RIGHT:

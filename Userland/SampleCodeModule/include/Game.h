@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 typedef enum ballDirec{LU, U, RU, RD, D, LD} ball_dir;                                                         //Left up, up, right up, right down, down, left down
-typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } wall;           //los bordes de la pantalla
+typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } walls;           //los bordes de la pantalla
 typedef enum barSides{N, L, R, UL, UM, UR} bar_sides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
 
 #define R_BLOCKS  4                                   //Cantidad de filas de bloques
@@ -34,27 +34,27 @@ void handleBarMov();
         derecha: sale a -45 grados(RD)
         izquierda: sale a 225 grados(RD)
 */
-void ballHitBarChangeDireccion(bar_side side);
+void ballHitBarChangeDireccion(bar_sides side);
 
 //Le cambia la posicion a la pelota dependiendo su pos y direccion y vel
 void ballMove();
 
 
 //hace que la pelotita cambie de direccion si choca con una pared o bloque
-void invertDirection(wall wall);
+void invertDirection(walls wall);
 
 //devuelve que pared le esta pegando y false(osea 0) si no le pega a ninguna
-wall ballHitWall();
+walls ballHitWall();
 
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
-wall barHitWall();
+walls barHitWall();
 
 //Devuelve la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve falso
 int * ballHitBlock();
 
 
 //devuelve que borde del bloque esta chocando la pelota, se devuelve la pared que representa ese borde(ya que actua de la misma forma)
-wall ballTouchingWall(int c, int r);
+walls ballTouchingWall(int c, int r);
 
 //Se fija si la pelota esta o no en el rango y del bloque correspondiente a {c,r} (column , row)
 int ballBetweenYSides(int * auxPos, int c, int r);

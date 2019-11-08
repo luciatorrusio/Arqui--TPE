@@ -27,13 +27,15 @@ int bar_pos;
 
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 int NO_BLOCK[]={-1,-1,-1};
-
+int blocks_left=R_BLOCKS*C_BLOCKS;
 
 int time_past;
-int relative_startTime;
+int relative_startTime[6];
 int relative_time;
+int start_time[6];
 
-
+int SCREEN_HEIGHT; 
+int SCREEN_WIDTH;
 
 
 //para inicializar el juego
@@ -61,8 +63,18 @@ int runGame(void){
 
 //cuando quiero retomar el juego
 int startGame(){
-    relative_startTime={GetYear(), GetDay(), GetHour(), GetMinutes(), GetSeconds()};
-    start_time = relative_startTime;
+    relative_startTime[0]=GetYear();
+    relative_startTime[1]=GetMonth();
+    relative_startTime[2]= GetDay();
+    relative_startTime[3]= GetHour();
+    relative_startTime[4]= GetMinutes();
+    relative_startTime[5]= GetSeconds();
+    start_time[0]=relative_startTime[0];
+    start_time[0]=relative_startTime[1];
+    start_time[0]=relative_startTime[2];
+    start_time[0]=relative_startTime[3];
+    start_time[0]=relative_startTime[4];
+    start_time[0]=relative_startTime[5];
     startGameRec();
     return 0;
 }
@@ -73,7 +85,7 @@ int startGame(){
 
 int startGameRec(void){ 
     
-    relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60) + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDay()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
+    relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDay()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
         //mainMenu(); esto va?
@@ -119,7 +131,7 @@ void handleBarMov(){
        }
     }
     if(right_arrow_pressed()){
-        if(!barHitWall()== RIGHT)){
+        if(!(barHitWall()== RIGHT)){
             bar_pos += bar_vel;                     //muevo la barra para la derecha
         }
     }
@@ -127,7 +139,7 @@ void handleBarMov(){
 }
 void handleBallMov(int * block){
             //si pega contra una pared
-    if((wall = ballHitWall())!=NONE){
+    if((walls wall= ballHitWall())!=NONE){
     switch(wall){
         case FLOOR:
             lives -=1; 

@@ -9,6 +9,19 @@ typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                        
 #define R_BLOCKS  4                                   //Cantidad de filas de bloques
 #define C_BLOCKS  5                                   //Cantidad de columnas de bloques
 
+
+
+// BORRAR ESTAS FINCIONES SOLO POR WARNINGS
+
+int stopKeyPressed();
+void print_ball(int* ball_pos);
+void print_bar(int bar_pos);
+int left_arrow_pressed();
+int right_arrow_pressed();
+void print_block(int x, int y);
+
+//TODO EL RESTO OK
+
 //Inicialiizar el juego desde cero
 int runGame(void);
 
@@ -22,7 +35,7 @@ void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]);
 
 int past_time();
 
-void handleBallMov(int * block);
+void handleBallMov();
 
 void handleBarMov();
 /*Le cambia la direccion a la pelota dependiendo exactamente donde cae en la barra
@@ -39,6 +52,7 @@ void ballHitBarChangeDireccion(barSides side);
 //Le cambia la posicion a la pelota dependiendo su pos y direccion y vel
 void ballMove();
 
+barSides ballHitBar();
 
 //hace que la pelotita cambie de direccion si choca con una pared o bloque
 void invertDirection(walls wall);
@@ -49,8 +63,8 @@ walls ballHitWall();
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
 walls barHitWall();
 
-//Devuelve la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
-int * ballHitBlock();
+//Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
+void ballHitBlock(int* block);
 
 
 //devuelve que borde del bloque esta chocando la pelota, se devuelve la pared que representa ese borde(ya que actua de la misma forma)
@@ -65,6 +79,9 @@ int ballBetweenXSides(int * auxPos, int c, int r);
 int finishGame(int time_past, int result);
 
 void ballNextPos(int * auxPos);
+
+
+void setRelativeStartTime();
 
 int past_time(void);
 #endif

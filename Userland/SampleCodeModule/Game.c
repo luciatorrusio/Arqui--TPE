@@ -22,6 +22,8 @@ int lives;                                          //cantidad de vidas que tien
 int ball_pos[2];                                    //pelota en el medio de ls pantalla
 int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
 ballDirec ball_dir;
+int BALL_RADIO;
+
 int bar_vel= 1;                                     //velocidad de la barra 
 int bar_pos;
 
@@ -136,7 +138,8 @@ void handleBallMov(void){
     walls wall;
     barSides bar_side;
     int block[3];
-    if(wall = ballHitWall()){   //NONE = 0 entonces devuelve FALSE
+    ballHitBlock(block);
+    if( (wall = ballHitWall()) ){   //NONE = 0 entonces devuelve FALSE
         switch(wall){
             case FLOOR:
                 lives -=1; 
@@ -157,31 +160,39 @@ void handleBallMov(void){
             case ULCORNER:
                 ball_dir = RD;
             break;
+            case NONE:
+            case LRCORNER:
+            case LLCORNER:
+            break;
         }
     }
     //si pega contra un bloque
-    else if((block = ballHitBlock()) != NO_BLOCK){    
+    else if(block != NO_BLOCK){    
         blocks[block[0]][block[1]]=0;
         invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
     }
     //Si pega en la barra
-    else if(bar_side = ballHitBar()){
+    else if( (bar_side = ballHitBar()) ){
         ballHitBarChangeDireccion(bar_side);
     }
     ballMove();
 }
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
+    int x;
+    int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
             if( blocks[i][j] == 1){
-                print_block(i * BLOCK_WIDTH + BLOCK_XSEPARATION, j * BLOCK_HEIGHT + BLOCK_YSEPARATION);
+                x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION ;
+                y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION ;
+                print_block( x , y );
             }
         }
     }
 }
 
-void ballHitBarChangeDireccion(barSide side){
+void ballHitBarChangeDireccion(barSides side){
     //enum ballDirec{LU, U, RU, RD,D, LD}ballDirec
     switch(side){
         case L:
@@ -211,26 +222,26 @@ void ballNextPos(int * auxPos){
     auxPos[Y] = ball_pos[Y]; 
     switch(ball_dir){
         case LU:
-            auxPos[X] -= ( ball_vel * 0,7071); 
-            auxPos[Y] += ( ball_vel * 0,7071);
+            auxPos[X] -= ( ball_vel * 0.7071); 
+            auxPos[Y] += ( ball_vel * 0.7071);
             break;
         case U:
             auxPos[Y] += ball_vel;  
             break;
         case RU:
-            auxPos[X] += ( ball_vel * 0,7071); 
-            auxPos[Y] += ( ball_vel * 0,7071);
+            auxPos[X] += ( ball_vel * 0.7071); 
+            auxPos[Y] += ( ball_vel * 0.7071);
             break;
         case RD:
-            auxPos[X] += ( ball_vel * 0,7071); 
-            auxPos[Y] -= ( ball_vel * 0,7071);
+            auxPos[X] += ( ball_vel * 0.7071); 
+            auxPos[Y] -= ( ball_vel * 0.7071);
             break;
         case D: 
-            auxPos[Y] += ball_vel * 0,7071;
+            auxPos[Y] += ball_vel * 0.7071;
             break;
         case LD:
-            auxPos[X] -= ( ball_vel * 0,7071); 
-            auxPos[Y] -= ( ball_vel * 0,7071);
+            auxPos[X] -= ( ball_vel * 0.7071); 
+            auxPos[Y] -= ( ball_vel * 0.7071);
             break;
     }
     return;
@@ -243,32 +254,27 @@ void invertDirection(walls wall){
             ball_dir = RD;
         break;
         case URCORNER:
-            ball-direc = LD;
+            ball_dir = LD;
         break;
         case LLCORNER:
-            ball-direc = RU;
+            ball_dir = RU;
         break;
         case LRCORNER:
-            ball-direc = LU;
+            ball_dir = LU;
         break;
         case LEFT:
-            switch(ball_dir){
-                case LU:
+            if(ball_dir == LU){
                     ball_dir = RU;
-                break;
-                case LD:
-                    ball_dir = RD;
-                break;
+            }
+            else if( ball_dir == LD){
+                ball_dir = RD;
             }
         break;
         case RIGHT:
-            switch(ball_dir){
-                case RU:
-                    ball_dir = LU;
-                break;
-                case RD:
-                    ball_dir = LD;
-                break;
+            if(ball_dir == RU){
+                ball_dir = LU;
+            }else if(ball_dir == RD){
+                ball_dir = LD;
             }
         break;
         case UPPER:
@@ -306,7 +312,8 @@ void invertDirection(walls wall){
 
 //implementar CORNERS
 walls ballHitWall(){
-    int auxPos[] = ballNextPos();
+    int auxPos[2];
+    ballNextPos(auxPos);
     if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
         return RIGHT;
     }else if(auxPos[X] - BALL_RADIO <= 0){
@@ -320,7 +327,7 @@ walls ballHitWall(){
 }
 
 walls barHitWall(){
-    if(bar_pos+ bar_vel + BAR_LENGTH/2 >= SCREEN_WIDTH){
+    if( ( bar_pos+ bar_vel + (BAR_LENGTH/2) ) >= SCREEN_WIDTH){
         return RIGHT;
     }else if(bar_pos -bar_vel- BAR_LENGTH/2 <= 0){
         return LEFT;
@@ -328,22 +335,25 @@ walls barHitWall(){
     return NONE;
 }
 
-int * ballHitBlock(){
+void ballHitBlock(int * block){
     walls auxWall;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
             auxWall = ballTouchingWall(i, j);
             if(auxWall){
-                return {i,j, auxWall};
+                block[0]=i;
+                block[1]=j;
+                block[2]=auxWall;
             }       
         }
     }
-    return NO_BLOCK;
+    return;
 }
 
 
-wall ballTouchingWall(int c, int r){
-    int auxPos[]=ballNextPos();
+walls ballTouchingWall(int c, int r){
+    int auxPos[2];
+    ballNextPos(auxPos);
     if(ballBetweenXSides(auxPos, c, r) && ballBetweenXSides(ball_pos, c, r) && ballBetweenYSides(auxPos, c, r)){
         blocks_left -=1;
         if(ball_dir == U || ball_dir == LU || ball_dir == RU){
@@ -353,7 +363,7 @@ wall ballTouchingWall(int c, int r){
             return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
         }
     }
-    if(ballBetweenYSides(auxPos, c, r) && ballBetweenYSides(ball_pos) && ballBetweenXSides(auxPos)){
+    if(ballBetweenYSides(auxPos, c, r) && ballBetweenYSides(ball_pos, c, r) && ballBetweenXSides(auxPos, c, r)){
         blocks_left -=1;
         if(ball_dir == LU || ball_dir == LD){
             return LEFT;
@@ -361,7 +371,7 @@ wall ballTouchingWall(int c, int r){
         if(ball_dir == RU || ball_dir == RD){
             return RIGHT; 
         }
-    }if(ballBetweenXSides(auxPos, c, r) && ballBetweenYSides(auxPos) && !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
+    }if(ballBetweenXSides(auxPos, c, r) && ballBetweenYSides(auxPos, c, r) && !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
         blocks_left -=1;
         switch(ball_dir){
             case LU:
@@ -427,5 +437,5 @@ void setRelativeStartTime(){
     .print_ball(ball_pos)
     .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
-
+    .barSides ballHitBar()
 */

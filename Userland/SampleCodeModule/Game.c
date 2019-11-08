@@ -99,7 +99,7 @@ int startGameRec(void){
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
-        handleBallMov(block);
+    handleBallMov(block);
     //modificar velocidad de 
 
     if(relative_time >= 15){
@@ -127,9 +127,8 @@ void handleBarMov(){
 }
 void handleBallMov(int * block){
             //si pega contra una pared
-    switch(wall = ballHitWall()){
-        case NONE:
-            ball_move();
+    if((wall = ballHitWall())!=NONE){
+    switch(wall){
         case FLOOR:
             lives -=1; 
             ball_pos[]={XMIDDLE, YMIDDLE};
@@ -143,17 +142,15 @@ void handleBallMov(int * block){
             ball_move();
             break;
     }
+    }
     //si pega contra un bloque
-    block=ballHitBlock();
-    if(block != NO_BLOCK){    
+    else if((block=ballHitBlock()) != NO_BLOCK){    
         blocks[block[0]][block[1]]=0;
         invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
         ball_move();
-    }else{
-        ball_move();
     }
     //Si pega en la barra
-    if(bar_side = ballHitBar()){
+    else if((bar_sides bar_side) = ballHitBar()){
         ballHitBarChangeDireccion(bar_side);
         ball_move();
     }else{

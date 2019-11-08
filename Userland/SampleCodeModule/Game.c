@@ -225,7 +225,7 @@ int ballBetween(int auxPos, int y1, int y2){
 
 //la pos de la pelota, punto de abajo a la izquierda y arriba a la derecha del cuadrado
 int insideSquare(int * auxPos, int * LLSquare, int * URSquare){
-    if(ballBetween(auxPos,LLSquare[X], URSquare[X]) && ballBetween(auxPos, URSquare[Y], LLSquare[Y])){
+    if(ballBetween(auxPos[X],LLSquare[X], URSquare[X]) && ballBetween(auxPos[Y], URSquare[Y], LLSquare[Y])){
         return 1;
     }
     return 0;

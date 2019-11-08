@@ -4,7 +4,7 @@
 #include <stdio.h>
 typedef enum ballDirec{LU, U, RU, RD, D, LD} ball_dir;                                                         //Left up, up, right up, right down, down, left down
 typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } wall;           //los bordes de la pantalla
-typedef enum barSides{N, L, R, UL, UM, UR} bar_side;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
+typedef enum barSides{N, L, R, UL, UM, UR} bar_sides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
 
 #define R_BLOCKS  4                                   //Cantidad de filas de bloques
 #define C_BLOCKS  5                                   //Cantidad de columnas de bloques

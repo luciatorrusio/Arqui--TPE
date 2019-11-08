@@ -1,6 +1,7 @@
-#include "../Include/String.h"
+#include <stdarg.h>
 #include <stdbool.h>
-
+#include "../Include/String.h"
+#include <stdarg.h>
 int strlen(char * str){
     int i = 0;
     while(str[i]!=0)
@@ -149,3 +150,47 @@ void removeAllOcurrences(char * str, char ch){
 
 }
 
+void snprintf(char * string, int size, char * format, va_list args){
+	int i=0,k=0;
+	char c;
+	while(((c=(*(format+i)))!=0)&& k<size){
+		if(c=='%'){
+			i++;
+			handleFormat(*(format+i),&k,string,size,args);
+		}
+		else{
+			*(string+k)=*(format+i);	
+			k++;
+		}
+		i++;
+	}
+	*(string+k)=0;
+}
+
+void handleFormat(char type,int * k,char * string,int size,va_list args){
+	switch(type){
+		case 'c':{
+			char aux=va_arg(args,int);
+			*(string+(*k))=aux;
+			break;
+		}
+		case 'd':
+		case 'i':
+		{	int aux1=va_arg(args,int);
+			IntToString(string+(*k),size-1-(*k),aux1);
+			break;}
+		case 's':
+			{char * aux2 =va_arg(args,char *);
+			append(aux2,string+(*k),size-1-(*k));	
+			break;}	
+		case 'x':
+		case 'X':
+		{	IntToString(string+(*k),size-1-(*k),va_arg(args,int));
+			break;}
+		default: 
+			{	*(string+(*k))='%';
+				*(string+(*k+1))=type;}
+	}
+			*k=strlen(string);	
+
+}

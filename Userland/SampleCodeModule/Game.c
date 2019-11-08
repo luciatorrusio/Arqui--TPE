@@ -3,12 +3,12 @@
 
 #define LIVESi  3                                     //cantidad de vidas al iniciar el juego    
 
-#define BAR_LENGTH
+#define BAR_LENGTH             7
 
-#define BLOCK_WIDTH            //COMPLETAR
-#define BLOCK_XSEPARATION      //COMPLETAR
-#define BLOCK_HEIGHT         //COMPLETAR
-#define BLOCK_YSEPARATION      //COMPLETAR
+#define BLOCK_WIDTH            7//COMPLETAR
+#define BLOCK_XSEPARATION      7//COMPLETAR
+#define BLOCK_HEIGHT           7//COMPLETAR
+#define BLOCK_YSEPARATION      7//COMPLETAR
 
 
 int X = 0;
@@ -327,7 +327,7 @@ walls ballHitWall(){
 }
 
 walls barHitWall(){
-    if( ( bar_pos+ bar_vel + (BAR_LENGTH/2) ) >= SCREEN_WIDTH){
+    if( ( bar_pos+ bar_vel + (BAR_LENGTH /2) ) >= SCREEN_WIDTH){
         return RIGHT;
     }else if(bar_pos -bar_vel- BAR_LENGTH/2 <= 0){
         return LEFT;
@@ -400,7 +400,11 @@ int ballBetweenXSides(int * auxPos, int c, int r){
 }
 
 int ballBetweenYSides(int * auxPos, int c, int r){
-    return  (auxPos[Y] - BALL_RADIO) < ((r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2) && (auxPos[Y] + BALL_RADIO) > ( r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION );
+    int topOfBall= auxPos[Y] - BALL_RADIO;
+    int bottomOfBall = auxPos[Y] + BALL_RADIO;
+    int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ;
+    int upperSideOfBlock =  r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
+    return   (topOfBall < lowerSideOfBlock) || ( bottomOfBall > upperSideOfBlock ); 
 }
 
 

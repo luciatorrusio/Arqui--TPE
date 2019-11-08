@@ -18,7 +18,7 @@ void int_82(int timeID, int * value);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
-void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
+void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm ) {
 
 	switch (irq) {
 		case 0:

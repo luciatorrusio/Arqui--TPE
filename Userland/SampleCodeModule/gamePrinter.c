@@ -1,4 +1,4 @@
-#include "../include/gamePrinter.h"
+#include "./include/gamePrinter.h"
 #include "../Include/Syscalls.h"
 
 void printOnScreen(type type,int x,int y,int lenght,int height,int color){

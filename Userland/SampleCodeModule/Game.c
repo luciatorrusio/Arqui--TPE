@@ -4,15 +4,15 @@
 #define LIVESi  3               //cantidad de vidas al iniciar el juego    
 
 #define BAR_LENGTH             7//complestar
-#define BAR_YPOS               8//completar                
+#define BAR_HEIGHT               8//completar                
 
 #define BLOCK_WIDTH            7//COMPLETAR
 #define BLOCK_XSEPARATION      7//COMPLETAR
 #define BLOCK_HEIGHT           7//COMPLETAR
 #define BLOCK_YSEPARATION      7//COMPLETAR
 
-#define BLACK 
-#define WHITE
+#define BLACK 0xFFFFFFFF
+#define WHITE 0xFFFFFFFF
 
 int X = 0;
 int Y = 1;
@@ -50,7 +50,8 @@ int runGame(void){
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=1;                         
-    bar_pos[]={SCREEN_WIDTH/2, BAR_YPOS}; 
+    bar_pos[0]=SCREEN_WIDTH/2;
+    bar_pos[1]=BAR_HEIGHT; 
     ball_dir = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
 
     //pongo la matriz de bloques todos en uno, (osea que estan)
@@ -491,8 +492,8 @@ void print_ball(int * ball_pos,int color){
     printOnScreen(BALL,ball_pos[x],ball_pos[y],BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
-void print_bar(int * bar_pos,int color){
-    printOnScreen(BAR,bar_pos[x],bar_pos[y],BAR_LENGTH,BAR_HEIGHT,color);
+void print_bar(int bar_pos,int color){
+    printOnScreen(BAR,bar_pos,bar_Ycord,BAR_LENGTH,BAR_HEIGHT,color);
 }
 void print_block(int x,int y,int color){
     printOnScreen(BLOCK,x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);

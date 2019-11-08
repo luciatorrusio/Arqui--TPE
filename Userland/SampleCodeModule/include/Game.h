@@ -16,11 +16,11 @@ typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                        
 // BORRAR ESTAS FINCIONES SOLO POR WARNINGS
 
 int stopKeyPressed();
-void print_ball(int* ball_pos);
-void print_bar(int bar_pos);
+void print_ball(int* ball_pos,int color);
+void print_bar(int bar_pos,int color);
 int left_arrow_pressed();
 int right_arrow_pressed();
-void print_block(int x, int y);
+void print_block(int x, int y,color);
 
 //TODO EL RESTO OK
 
@@ -60,10 +60,10 @@ barSides ballHitBar();
 void invertDirection(walls wall);
 
 //devuelve que pared le esta pegando y false(osea 0) si no le pega a ninguna
-wall ballHitWall();
+walls ballHitWall();
 
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
-wall barHitWall();
+walls barHitWall();
 
 //Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
 void ballHitBlock(int* block);

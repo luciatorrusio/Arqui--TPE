@@ -3,14 +3,6 @@
 
 #define LIVESi  3                                     //cantidad de vidas al iniciar el juego    
 
-<<<<<<< HEAD
-#define BAR_LENGTH
-
-#define BLOCK_WIDTH            //COMPLETAR
-#define BLOCK_XSEPARATION      //COMPLETAR
-#define BLOCK_HEIGHT         //COMPLETAR
-#define BLOCK_YSEPARATION      //COMPLETAR
-=======
 #define BAR_LENGTH             7//complestar
 #define BAR_YPOS               8//completar                
 
@@ -18,7 +10,6 @@
 #define BLOCK_XSEPARATION      7//COMPLETAR
 #define BLOCK_HEIGHT           7//COMPLETAR
 #define BLOCK_YSEPARATION      7//COMPLETAR
->>>>>>> lucia
 
 
 int X = 0;
@@ -31,15 +22,6 @@ int lives;                                          //cantidad de vidas que tien
 
 int ball_pos[2];                                    //pelota en el medio de ls pantalla
 int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
-<<<<<<< HEAD
-ball_dir ball_direc;
-int bar_vel= 1;                                     //velocidad de la barra 
-int bar_pos;
-
-int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
-int NO_BLOCK[]={-1,-1,-1};
-
-=======
 ballDirec ball_dir;
 int BALL_RADIO;
 
@@ -49,7 +31,6 @@ int* bar_pos;
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 int NO_BLOCK[]={-1,-1,-1};
 int blocks_left=R_BLOCKS*C_BLOCKS;
->>>>>>> lucia
 
 int time_past;
 int relative_startTime[6];
@@ -63,22 +44,12 @@ int SCREEN_WIDTH;
 //para inicializar el juego
 int runGame(void){
     time_past=0;
-<<<<<<< HEAD
-    lives = LIVESi;                     
-    //blocks[R_BLOCKS][C_BLOCKS];         
-    ball_pos[0]=SCREEN_WIDTH/2;
-    ball_pos[1]=SCREEN_HEIGHT/2;      
-    ball_vel=1;                         
-    bar_pos=XMIDDLE; //pos_bar = XMIDDLE; QUISISTE DECIR ESO?
-    ball_direc = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
-=======
     lives = LIVESi;                            
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=1;                         
     bar_pos[]={SCREEN_WIDTH/2, BAR_YPOS}; 
     ball_dir = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
->>>>>>> lucia
 
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
@@ -136,65 +107,33 @@ int startGameRec(void){
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
-<<<<<<< HEAD
-        handleBallMov(block);
-=======
     handleBallMov();
->>>>>>> lucia
     //modificar velocidad de 
 
     if(relative_time >= 15){
         ball_vel++;
-<<<<<<< HEAD
-        relative_startTime={GetYear(), GetDay(), GetHour(), GetMinutes(), GetSeconds()};
-=======
         setRelativeStartTime();
->>>>>>> lucia
     }
 
 
     startGameRec();
-<<<<<<< HEAD
-=======
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
->>>>>>> lucia
 }
 
 void handleBarMov(){
         //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
     if(left_arrow_pressed()){
        if(!(barHitWall() == LEFT)){      
-<<<<<<< HEAD
-             bar_pos  -= bar_vel;                     //muevo la barra para la izquierda
-       }
-    }
-    if(right_arrow_pressed()){
-        if(!barHitWall()== RIGHT)){
-            bar_pos += bar_vel;                     //muevo la barra para la derecha
-=======
              bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
        }
     }
     if(right_arrow_pressed()){
         if(!(barHitWall()== RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
->>>>>>> lucia
         }
     }
 
 }
-<<<<<<< HEAD
-void handleBallMov(int * block){
-            //si pega contra una pared
-    switch(wall = ballHitWall()){
-        case NONE:
-            ball_move();
-        case FLOOR:
-            lives -=1; 
-            ball_pos[]={XMIDDLE, YMIDDLE};
-            ball_direc= D;
-            pos_bar = XMIDDLE;
-=======
 void handleBallMov(void){
     //si pega contra una pared
     walls wall;
@@ -210,7 +149,6 @@ void handleBallMov(void){
                 ball_dir= D;
                 bar_pos[X] = SCREEN_WIDTH/2;
                 return;
->>>>>>> lucia
             break;
             case LEFT:    
             case RIGHT:
@@ -238,11 +176,6 @@ void handleBallMov(void){
     else if( (bar_side = ballHitBar()) ){
         ballHitBarChangeDireccion(bar_side);
     }
-<<<<<<< HEAD
-}
-
-void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
-=======
     ballMove();
 }
 
@@ -301,7 +234,6 @@ int insideSquare(int * auxPos, int * LLSquare, int * URSquare){
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
     int x;
     int y;
->>>>>>> lucia
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
             if( blocks[i][j] == 1){
@@ -313,13 +245,8 @@ void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
     }
 }
 
-<<<<<<< HEAD
-void ballHitBarChangeDireccion(bar_side side){
-    //enum ballDirec{LU, U, RU, RD,D, LD}ball_direc
-=======
 void ballHitBarChangeDireccion(barSides side){
     //enum ballDirec{LU, U, RU, RD,D, LD}ballDirec
->>>>>>> lucia
     switch(side){
         case L:
             ball_dir = LD;
@@ -343,16 +270,10 @@ void ballMove(){
     ballNextPos(ball_pos);
 }
 
-<<<<<<< HEAD
-int * ballNextPos(){
-    int auxPos[] =ball_pos; 
-    switch(ball_direc){
-=======
 void ballNextPos(int * auxPos){
     auxPos[X] =ball_pos[X];
     auxPos[Y] = ball_pos[Y]; 
     switch(ball_dir){
->>>>>>> lucia
         case LU:
             auxPos[X] -= ( ball_vel * 0.7071); 
             auxPos[Y] += ( ball_vel * 0.7071);
@@ -525,29 +446,18 @@ walls ballTouchingWall(int c, int r){
 }
 
 int ballBetweenXSides(int * auxPos, int c, int r){
-<<<<<<< HEAD
-    if(((auxPos[x] - BALL_RADIO) < ((c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION)) && ((auxPos[X] + BALL_RADIO) > (c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION))){
-=======
     if(((auxPos[X] - BALL_RADIO) < ((c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION)) && ((auxPos[X] + BALL_RADIO) > (c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION))){
->>>>>>> lucia
         return 1;
     }
     return 0;
 }
 
 int ballBetweenYSides(int * auxPos, int c, int r){
-<<<<<<< HEAD
-    if(((auxPos[Y] - BALL_RADIO) < ((r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2)) && ((auxPos[Y] + BALL_RADIO) > ((r)* BLOCK_HEIGHT + (r+1)*BLOCK_YSEPARATION))){
-        return 1;
-    }
-    return 0;
-=======
     int topOfBall= auxPos[Y] - BALL_RADIO;
     int bottomOfBall = auxPos[Y] + BALL_RADIO;
     int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ;
     int upperSideOfBlock =  r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
     return   (topOfBall < lowerSideOfBlock) || ( bottomOfBall > upperSideOfBlock ); 
->>>>>>> lucia
 }
 
 
@@ -564,10 +474,6 @@ int past_time(){
     return (relative_time + relative_startTime[0] - start_time[0] + relative_startTime[1] - start_time[1] + relative_startTime[2] - start_time[2] + relative_startTime[3] - start_time[3] + relative_startTime[4] - start_time[4]);
 }
 
-<<<<<<< HEAD
-int past_time(){
-    return relative_time + relative_startTime[0] - start_time[0] + relative_startTime[1] - start_time[1] + relative_startTime[2] - start_time[2] + relative_startTime[3] - start_time[3] + relative_startTime[4] - start_time[4];
-=======
 
 void setRelativeStartTime(){
     relative_startTime[0]=GetYear();
@@ -576,7 +482,6 @@ void setRelativeStartTime(){
     relative_startTime[3]= GetHours();
     relative_startTime[4]= GetMinutes();
     relative_startTime[5]= GetSeconds();
->>>>>>> lucia
 }
 
 
@@ -589,9 +494,5 @@ void setRelativeStartTime(){
     .print_ball(ball_pos)
     .print_bar(bar_pos) 
     .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
-<<<<<<< HEAD
-
-=======
     .barSides ballHitBar()
->>>>>>> lucia
 */

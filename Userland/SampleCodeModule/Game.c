@@ -1,24 +1,30 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
 
-#define LIVESi  3               //cantidad de vidas al iniciar el juego    
+int LIVESi;  //3               //cantidad de vidas al iniciar el juego    
 
-#define BAR_LENGTH             7//complestar
-#define BAR_HEIGHT               8//completar                
+int BAR_LENGTH;//             7//complestar
+int BAR_HEIGHT;//               8//completar                
 
-#define BLOCK_WIDTH            7//COMPLETAR
-#define BLOCK_XSEPARATION      7//COMPLETAR
-#define BLOCK_HEIGHT           7//COMPLETAR
-#define BLOCK_YSEPARATION      7//COMPLETAR
+int BLOCK_WIDTH;//            7//COMPLETAR
+int BLOCK_XSEPARATION;//      7//COMPLETAR
+int BLOCK_HEIGHT;//           7//COMPLETAR
+int BLOCK_YSEPARATION;//      7//COMPLETAR
 
-#define BLACK 0xFFFFFFFF
-#define WHITE 0xFFFFFFFF
+int BLACK;// 0xFFFFFFFF
+int WHITE;// 0xFFFFFFFF
 
-int X = 0;
-int Y = 1;
+int X;//  0
+int Y;//  1
 
-int WON=1;
-int LOST =0;
+int WON 1;//
+int LOST 0;//
+int NO_BLOCK;//  {-1,-1,-1}
+int SCREEN_HEIGHT;// 9
+int SCREEN_WIDTH;//  9
+
+
+//arriba todos defines
 
 int lives;                                          //cantidad de vidas que tiene
 
@@ -27,26 +33,24 @@ int ball_vel;                                       //la velocidad cuenta de a c
 ballDirec ball_dir;
 int BALL_RADIO;
 
-int bar_vel= 1;                                     //velocidad de la barra 
+int bar_vel;                                     //velocidad de la barra 
 int* bar_pos;
 
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
-int NO_BLOCK[]={-1,-1,-1};
-int blocks_left=R_BLOCKS*C_BLOCKS;
+int blocks_left; 
 
 int time_past;
 int relative_startTime[6];
 int relative_time;
 int start_time[6];
 
-int SCREEN_HEIGHT; 
-int SCREEN_WIDTH;
 
 
 //para inicializar el juego
 int runGame(void){
     time_past=0;
-    lives = LIVESi;                            
+    lives = LIVESi;
+    blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=1;                         

@@ -65,6 +65,8 @@ walls barHitWall();
 //Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
 void ballHitBlock(int* block);
 
+//para ver si la la pelota(auxPos), esta dentro del rectangulo marcado
+int insideSquare(int * auxPos, int * LLSquare, int * URSquare)
 
 //devuelve que borde del bloque esta chocando la pelota, se devuelve la pared que representa ese borde(ya que actua de la misma forma)
 walls ballTouchingWall(int c, int r);

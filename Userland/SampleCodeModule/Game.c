@@ -189,7 +189,41 @@ void handleBallMov(void){
 */
 barSides ballHitBar(){
     int bar_Xcord[]={bar_pos[X] - BAR_LENGTH/2, bar_pos[X] - BAR_LENGTH/6, bar_pos[X] + BAR_LENGTH/6, bar_pos[X] + BAR_LENGTH/2};
-    int bar_Ycord[] = {bar_pos[Y] - BAR_HEIGHT / 2, bar_pos[Y] + BAR_HEIGHT / 2 }
+    int bar_Ycord[] = {bar_pos[Y] - BAR_HEIGHT / 2, bar_pos[Y] + BAR_HEIGHT / 2 };
+    int nextPos[2];
+    ballNextPos(nextPos);
+    if(ballBetweenX(nextPos, bar_Xcord[0], bar_Xcord[1]) && ballBetweenX(ball_pos, bar_Xcord[0], bar_Xcord[1]) && ballBetweenY(auxPos, bar_Ycord[0], bar_Xcord[1])){
+        return UL;
+    }
+    if(ballBetweenY(auxPos, c, r) && ballBetweenYSides(ball_pos, c, r) && ballBetweenXSides(auxPos, c, r)){
+        blocks_left -=1;
+        if(ball_dir == LU || ball_dir == LD){
+            return LEFT;
+        }
+        if(ball_dir == RU || ball_dir == RD){
+            return RIGHT; 
+        }
+    }if(ballBetweenXSides(auxPos, c, r) && ballBetweenYSides(auxPos, c, r) && !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
+        blocks_left -=1;
+        switch(ball_dir){
+            case LU:
+                return ULCORNER;    
+            break;
+            case RU:
+                return URCORNER;
+            break;
+            case LD:
+                return  LLCORNER;
+            break;
+            case RD:
+                return LRCORNER;
+            break;
+            
+        }
+    }
+    return NONE;
+
+    }
 }
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){

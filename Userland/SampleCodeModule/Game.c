@@ -326,7 +326,8 @@ walls barHitWall(){
     }
 }
 
-int[] ballHitBlock(){
+//se fija si 
+int * ballHitBlock(){
     walls auxWall;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
@@ -336,6 +337,7 @@ int[] ballHitBlock(){
             }       
         }
     }
+    return NO_BLOCK;
 }
 
 

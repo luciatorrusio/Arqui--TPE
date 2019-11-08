@@ -49,7 +49,7 @@ walls ballHitWall();
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
 walls barHitWall();
 
-//Devuelve la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve falso
+//Devuelve la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
 int * ballHitBlock();
 
 

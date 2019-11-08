@@ -13,16 +13,13 @@ typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                        
 
 
 
-// BORRAR ESTAS FINCIONES SOLO POR WARNINGS
 
 int stopKeyPressed();
 void print_ball(int* ball_pos,int color);
 void print_bar(int bar_pos,int color);
 int left_arrow_pressed();
 int right_arrow_pressed();
-void print_block(int x, int y,color);
-
-//TODO EL RESTO OK
+void print_block(int x, int y,int color);
 
 //Inicialiizar el juego desde cero
 int runGame(void);

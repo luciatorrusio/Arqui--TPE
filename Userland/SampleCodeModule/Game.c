@@ -103,9 +103,9 @@ int startGameRec(void){
     }
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-    print_ball(ball_pos);
+    print_ball(ball_pos, WHITE );
     print_blocks(blocks);
-    print_bar(bar_pos);
+    print_bar(bar_pos[X], WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();

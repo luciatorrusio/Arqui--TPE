@@ -2,14 +2,8 @@
 #define GAME_H
 
 #include <stdio.h>
-<<<<<<< HEAD
-typedef enum ballDirec{LU, U, RU, RD, D, LD} ball_dir;                                                         //Left up, up, right up, right down, down, left down
-typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } wall;           //los bordes de la pantalla
-typedef enum barSides{N, L, R, UL, UM, UR} bar_side;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
+#include "gamePrinter.h"
 
-#define R_BLOCKS  4                                   //Cantidad de filas de bloques
-#define C_BLOCKS  5                                   //Cantidad de columnas de bloques
-=======
 typedef enum ballDirec{LU, U, RU, RD, D, LD} ballDirec;                                                         //Left up, up, right up, right down, down, left down
 typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } walls;           //los bordes de la pantalla
 typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
@@ -29,7 +23,6 @@ int right_arrow_pressed();
 void print_block(int x, int y);
 
 //TODO EL RESTO OK
->>>>>>> lucia
 
 //Inicialiizar el juego desde cero
 int runGame(void);
@@ -44,11 +37,7 @@ void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]);
 
 int past_time();
 
-<<<<<<< HEAD
-void handleBallMov(int * block);
-=======
 void handleBallMov();
->>>>>>> lucia
 
 void handleBarMov();
 /*Le cambia la direccion a la pelota dependiendo exactamente donde cae en la barra
@@ -60,7 +49,7 @@ void handleBarMov();
         derecha: sale a -45 grados(RD)
         izquierda: sale a 225 grados(RD)
 */
-void ballHitBarChangeDireccion(bar_side side);
+void ballHitBarChangeDireccion(barSides side);
 
 //Le cambia la posicion a la pelota dependiendo su pos y direccion y vel
 void ballMove();
@@ -68,7 +57,7 @@ void ballMove();
 barSides ballHitBar();
 
 //hace que la pelotita cambie de direccion si choca con una pared o bloque
-void invertDirection(wall wall);
+void invertDirection(walls wall);
 
 //devuelve que pared le esta pegando y false(osea 0) si no le pega a ninguna
 wall ballHitWall();
@@ -76,13 +65,8 @@ wall ballHitWall();
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
 wall barHitWall();
 
-<<<<<<< HEAD
-//Devuelve la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve falso
-int * ballHitBlock();
-=======
 //Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
 void ballHitBlock(int* block);
->>>>>>> lucia
 
 
 //devuelve que borde del bloque esta chocando la pelota, se devuelve la pared que representa ese borde(ya que actua de la misma forma)

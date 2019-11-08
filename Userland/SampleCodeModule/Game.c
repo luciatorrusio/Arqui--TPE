@@ -96,8 +96,7 @@ int startGameRec(void){
         return 0;
     }
 
-    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;
-    int block[3];                       
+    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
     print_ball(ball_pos);
     print_blocks(blocks);
     print_bar(bar_pos);
@@ -105,7 +104,7 @@ int startGameRec(void){
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
-    handleBallMov(block);
+    handleBallMov();
     //modificar velocidad de 
 
     if(relative_time >= 15){
@@ -132,48 +131,44 @@ void handleBarMov(){
     }
 
 }
-void handleBallMov(int * block){
+void handleBallMov(void){
     //si pega contra una pared
     walls wall;
     barSides bar_side;
-    if((wall = ballHitWall())!=NONE){
-    switch(wall){
-        case FLOOR:
-            lives -=1; 
-            ball_pos[0]=SCREEN_WIDTH/2;
-            ball_pos[0]=SCREEN_HEIGHT/2;
-            ball_dir= D;
-            bar_pos = SCREEN_WIDTH/2;
+    int block[3];
+    if(wall = ballHitWall()){   //NONE = 0 entonces devuelve FALSE
+        switch(wall){
+            case FLOOR:
+                lives -=1; 
+                ball_pos[0]=SCREEN_WIDTH/2;
+                ball_pos[0]=SCREEN_HEIGHT/2;
+                ball_dir= D;
+                bar_pos = SCREEN_WIDTH/2;
+                return;
             break;
-        case LEFT:    
-        case RIGHT:
-        case UPPER:
-            invertDirection(wall);
-            ballMove();
+            case LEFT:    
+            case RIGHT:
+            case UPPER:
+                invertDirection(wall);
             break;
-        case URCORNER:
-            ball_dir = LD;
-            ballMove();
-        break;
-        case ULCORNER:
-            ball_dir = RD;
-            ballMove();
-        break;
-    }
+            case URCORNER:
+                ball_dir = LD;
+            break;
+            case ULCORNER:
+                ball_dir = RD;
+            break;
+        }
     }
     //si pega contra un bloque
-    else if((block=ballHitBlock()) != NO_BLOCK){    
+    else if((block = ballHitBlock()) != NO_BLOCK){    
         blocks[block[0]][block[1]]=0;
         invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
-        ballMove();
     }
     //Si pega en la barra
     else if(bar_side = ballHitBar()){
         ballHitBarChangeDireccion(bar_side);
-        ballMove();
-    }else{
-        ballMove();
     }
+    ballMove();
 }
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){

@@ -1,7 +1,6 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
 #include "../Include/Curses.h"
-#include "./include/Terminal.h"
 
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    

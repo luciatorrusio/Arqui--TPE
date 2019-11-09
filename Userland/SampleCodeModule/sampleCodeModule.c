@@ -1,20 +1,21 @@
 /* sampleCodeModule.c */
-#include "../Include/Time.h"
-#include "../Include/String.h"
-#include "../Include/Syscalls.h"
+//#include "../Include/Time.h"
+//#include "../Include/String.h"
+//#include "../Include/Syscalls.h"
 
-#include "include/Terminal.h"
-#include "../Include/Curses.h"
-
-#include <stdlib.h>
+//#include "include/Terminal.h"
+//#include "../Include/Curses.h"
+#include "include/Game.h"
+//#include "include/gamePrinter.h"
+//#include <stdlib.h>
 
 
 
 int main() {
+	runGame();
+	//initializeTerminal();
 
-	initializeTerminal();
-
-	runTerminal();
+	//runTerminal();
 
 	return 0xDEA;
 }

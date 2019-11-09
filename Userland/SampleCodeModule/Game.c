@@ -3,18 +3,19 @@
 #include "../Include/Curses.h"
 
 
+
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define BAR_LENGTH                  7//complestar
-#define BAR_HEIGHT                  8//completar                
-#define BAR_YPOS                    6//completar
-#define BLOCK_WIDTH                 7//COMPLETAR
-#define BLOCK_XSEPARATION           7//COMPLETAR
-#define BLOCK_HEIGHT                7//COMPLETAR
-#define BLOCK_YSEPARATION           7//COMPLETAR
+#define BAR_LENGTH                  100//complestar
+#define BAR_HEIGHT                  800//completar                
+#define BAR_YPOS                   0//completar
+#define BLOCK_WIDTH                 700//COMPLETAR
+#define BLOCK_XSEPARATION           1//COMPLETAR
+#define BLOCK_HEIGHT                700//COMPLETAR
+#define BLOCK_YSEPARATION           2//COMPLETAR
 
 #define BLACK                       0xFFFFFFFF//completar
-#define WHITE                       0xFFFFFFFF//completar
+#define WHITE                       0x00000000//completar
 
 #define X                           0
 #define Y                           1
@@ -22,8 +23,8 @@
 #define WON                         1
 #define LOST                        0
 #define NO_BLOCK                    -1
-#define SCREEN_HEIGHT               9//completar
-#define SCREEN_WIDTH                9//completar
+#define SCREEN_HEIGHT               900//completar
+#define SCREEN_WIDTH                900//completar
 
 
 

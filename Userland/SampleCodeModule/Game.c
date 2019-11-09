@@ -1,30 +1,30 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
 
-int LIVESi;  //3               //cantidad de vidas al iniciar el juego    
+#define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-int BAR_LENGTH;//             7//complestar
-int BAR_HEIGHT;//               8//completar                
-int BAR_YPOS;
-int BLOCK_WIDTH;//            7//COMPLETAR
-int BLOCK_XSEPARATION;//      7//COMPLETAR
-int BLOCK_HEIGHT;//           7//COMPLETAR
-int BLOCK_YSEPARATION;//      7//COMPLETAR
+#define BAR_LENGTH                  7//complestar
+#define BAR_HEIGHT                  8//completar                
+#define BAR_YPOS                    6//completar
+#define BLOCK_WIDTH                 7//COMPLETAR
+#define BLOCK_XSEPARATION           7//COMPLETAR
+#define BLOCK_HEIGHT                7//COMPLETAR
+#define BLOCK_YSEPARATION           7//COMPLETAR
 
-int BLACK;// 0xFFFFFFFF
-int WHITE;// 0xFFFFFFFF
+#define BLACK                       0xFFFFFFFF//completar
+#define WHITE                       0xFFFFFFFF//completar
 
-int X;//  0
-int Y;//  1
+#define X                           0
+#define Y                           1
 
-int WON;// 1
-int LOST;// 0
-int NO_BLOCK;//  {-1,-1,-1}
-int SCREEN_HEIGHT;// 9
-int SCREEN_WIDTH;//  9
+#define WON                         1
+#define LOST                        0
+#define NO_BLOCK                    -1
+#define SCREEN_HEIGHT               9//completar
+#define SCREEN_WIDTH                9//completar
 
 
-//arriba todos defines
+
 
 int lives;                                          //cantidad de vidas que tiene
 
@@ -109,7 +109,7 @@ int startGameRec(void){
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
     print_ball(ball_pos, WHITE );
     print_blocks(blocks);
-    print_bar(bar_pos[X], WHITE);
+    print_bar(bar_pos, WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
@@ -175,7 +175,7 @@ void handleBallMov(void){
         }
     }
     //si pega contra un bloque
-    else if(block != NO_BLOCK){    
+    else if(block[0] != NO_BLOCK){    
         blocks[block[0]][block[1]]=0;
         invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
     }
@@ -239,6 +239,7 @@ barSides ballHitBar(){
             return UR;
         }
     }
+    return N;
 }
 
 void makeSquare(int * square, int x, int y){
@@ -433,6 +434,7 @@ void ballHitBlock(int * block){
             }       
         }
     }
+    block[0]= NO_BLOCK;
     return;
 }
 
@@ -520,7 +522,7 @@ void print_ball(int * ball_pos,int color){
     printOnScreen(ball_pos[X],ball_pos[Y],BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
-void print_bar(int bar_pos,int color){
+void print_bar(int * bar_pos,int color){
     printOnScreen(bar_pos[X],bar_pos[Y],BAR_LENGTH,BAR_HEIGHT,color);
 }
 void print_block(int x,int y,int color){
@@ -529,8 +531,5 @@ void print_block(int x,int y,int color){
 /* funciones a hacer=
     .printf();
     .bool stopKeyPressed()
-    .bool left_arrow_pressed()
-    .bool right_arrow_pressed()
-    .mainMenu()                             seria la funcion que se corre para mostrar si elegir la terminal o el juego
-    .barSides ballHitBar()
+    
 */

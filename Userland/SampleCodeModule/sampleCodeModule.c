@@ -12,8 +12,8 @@
 
 
 int main() {
-	initializeCurses();
-	println("HOLA");
+	
+	runGame();
 
 	return 0xDEA;
 }

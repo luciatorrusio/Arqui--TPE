@@ -62,3 +62,4 @@ dkms.conf
 *.sys
 .bash_history
 .bash_history
+/Toolchain/ModulePacker/*.bin

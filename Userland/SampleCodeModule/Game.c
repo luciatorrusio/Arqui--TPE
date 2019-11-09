@@ -14,6 +14,7 @@
 #define BLOCK_HEIGHT                40//COMPLETAR
 #define BLOCK_YSEPARATION           40//COMPLETAR
 #define BALL_RADIO                  10 
+#define bar_vel 20
 
 #define BLACK                       0x00000000//completar
 #define WHITE                       0xFFFFFFFF//completar
@@ -37,7 +38,7 @@ int ball_vel;                                       //la velocidad cuenta de a c
 ballDirec ball_dir;
 
 
-int bar_vel;                                     //velocidad de la barra 
+//int bar_vel;                                     //velocidad de la barra 
 int bar_pos[2];
 
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
@@ -57,7 +58,8 @@ int runGame(void){
     blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=500;      
-    ball_vel=1;                         
+    ball_vel=20;
+
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
     ball_dir = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
@@ -116,18 +118,18 @@ int startGameRec(void){
    print_bar(bar_pos, WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
-    //handleBarMov();
+    handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
-    //handleBallMov();
+    handleBallMov();
     //modificar velocidad de 
 
-    //if(relative_time >= 15){
-      //  ball_vel++;
-     //   setRelativeStartTime();
-    //}
+    if(relative_time >= 15){
+        ball_vel++;
+        setRelativeStartTime();
+    }
 
 
-    //startGameRec();
+    startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
@@ -543,14 +545,14 @@ int stopKeyPressed(){
 }
 int left_arrow_pressed(){
     char key = readKey();
-    if(key == -13){
+    if(key == 'j'){
         return 1;
     }
     return 0;
 }
 int right_arrow_pressed(){
     char key = readKey();
-    if(key == -14){
+    if(key == 'l'){
         return 1;
     }
     return 0;

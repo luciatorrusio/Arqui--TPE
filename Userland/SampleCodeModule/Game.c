@@ -5,7 +5,7 @@ int LIVESi;  //3               //cantidad de vidas al iniciar el juego
 
 int BAR_LENGTH;//             7//complestar
 int BAR_HEIGHT;//               8//completar                
-
+int BAR_YPOS;
 int BLOCK_WIDTH;//            7//COMPLETAR
 int BLOCK_XSEPARATION;//      7//COMPLETAR
 int BLOCK_HEIGHT;//           7//COMPLETAR
@@ -17,8 +17,8 @@ int WHITE;// 0xFFFFFFFF
 int X;//  0
 int Y;//  1
 
-int WON 1;//
-int LOST 0;//
+int WON;// 1
+int LOST;// 0
 int NO_BLOCK;//  {-1,-1,-1}
 int SCREEN_HEIGHT;// 9
 int SCREEN_WIDTH;//  9
@@ -34,7 +34,7 @@ ballDirec ball_dir;
 int BALL_RADIO;
 
 int bar_vel;                                     //velocidad de la barra 
-int* bar_pos;
+int bar_pos[2];
 
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 int blocks_left; 
@@ -54,8 +54,8 @@ int runGame(void){
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=1;                         
-    bar_pos[0]=SCREEN_WIDTH/2;
-    bar_pos[1]=BAR_HEIGHT; 
+    bar_pos[X]=SCREEN_WIDTH/2;
+    bar_pos[Y]=BAR_YPOS; 
     ball_dir = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
 
     //pongo la matriz de bloques todos en uno, (osea que estan)
@@ -199,28 +199,52 @@ barSides ballHitBar(){
     int bar_Ycord[] = {bar_pos[Y] - BAR_HEIGHT / 2, bar_pos[Y] + BAR_HEIGHT / 2 };
     int nextPos[2];
     ballNextPos(nextPos);
-    if(!insideSquare(nextPos, {bar_Xcord[0], bar_Ycord[1]}, {bar_Xcord[3], bar_Ycord[0]})){
+    int LLSquare[2];
+    int URSquare[2];
+    
+    makeSquare(LLSquare, bar_Xcord[0], bar_Ycord[1]);  
+    makeSquare(URSquare, bar_Xcord[3], bar_Ycord[0]);
+
+    if(!insideSquare(nextPos, LLSquare , URSquare)){
         return N;
     }else{
         //dentro de la primer parte de la barra
-        if(insideSquare(nextPos, {bar_Xcord[0], bar_Ycord[1]}, {bar_Xcord[1], bar_Ycord[0]})){
+        
+        makeSquare(LLSquare, bar_Xcord[0], bar_Ycord[1]);  
+        makeSquare(URSquare, bar_Xcord[1], bar_Ycord[0]);
+
+        if(insideSquare(nextPos, LLSquare, URSquare)){
             if(ballBetween(ball_pos[Y], bar_Ycord[0], bar_Ycord[1])){
                 return L;
             }
             return UL;
         }
         //dentro de la segunda parte de la barra
-        if(insideSquare(nextPos, {bar_Xcord[1], bar_Ycord[1]}, {bar_Xcord[2], bar_Ycord[0]})){
+
+        makeSquare(LLSquare, bar_Xcord[1], bar_Ycord[1]);  
+        makeSquare(URSquare, bar_Xcord[2], bar_Ycord[0]);
+
+        if(insideSquare(nextPos, LLSquare, URSquare)){
             return UM;
         }
         //dentro de la TERCER parte de la barra
-        if(insideSquare(nextPos, {bar_Xcord[2], bar_Ycord[1]}, {bar_Xcord[3], bar_Ycord[0]})){
+        
+        makeSquare(LLSquare, bar_Xcord[2], bar_Ycord[1]);  
+        makeSquare(URSquare, bar_Xcord[3], bar_Ycord[0]);
+
+        if(insideSquare(nextPos, LLSquare, URSquare)){
             if(ballBetween(ball_pos[Y], bar_Ycord[0], bar_Ycord[1])){
                 return R;
             }
             return UR;
         }
     }
+}
+
+void makeSquare(int * square, int x, int y){
+    square[X] = x;
+    square[Y] = y;
+    return;
 }
 
 int ballBetween(int auxPos, int y1, int y2){
@@ -493,11 +517,11 @@ void setRelativeStartTime(){
     relative_startTime[5]= GetSeconds();
 }
 void print_ball(int * ball_pos,int color){
-    printOnScreen(ball_pos[x],ball_pos[y],BALL_RADIO*2,BALL_RADIO*2,color);
+    printOnScreen(ball_pos[X],ball_pos[Y],BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
 void print_bar(int bar_pos,int color){
-    printOnScreen(bar_pos,bar_Ycord,BAR_LENGTH,BAR_HEIGHT,color);
+    printOnScreen(bar_pos[X],bar_pos[Y],BAR_LENGTH,BAR_HEIGHT,color);
 }
 void print_block(int x,int y,int color){
     printOnScreen(x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);

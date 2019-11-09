@@ -498,9 +498,9 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 int finishGame(int time_past, int result){
     if(result == WON){
-        printf("congratulations you've won!! it took you %d seconds", time_past);
+        //printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{
-        printf("better luck next time! time: %d seconds", time_past);
+        //printf("better luck next time! time: %d seconds", time_past);
     }
     return 0;
 }
@@ -527,6 +527,28 @@ void print_bar(int * bar_pos,int color){
 }
 void print_block(int x,int y,int color){
     printOnScreen(x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+}
+
+int stopKeyPressed(){
+    char key = read();
+    if(key == 'q'){
+        return 1;
+    }
+    return 0;
+}
+int left_arrow_pressed(){
+    char key = read();
+    if(key == '9'){
+        return 1;
+    }
+    return 0;
+}
+int right_arrow_pressed(){
+    char key = read();
+    if(key == '7'){
+        return 1;
+    }
+    return 0;
 }
 /* funciones a hacer=
     .printf();

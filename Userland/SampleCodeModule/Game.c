@@ -1,5 +1,6 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
+#include "./include/Terminal.h"
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
@@ -498,9 +499,9 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 int finishGame(int time_past, int result){
     if(result == WON){
-        //printf("congratulations you've won!! it took you %d seconds", time_past);
+        printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{
-        //printf("better luck next time! time: %d seconds", time_past);
+        printf("better luck next time! time: %d seconds", time_past);
     }
     return 0;
 }

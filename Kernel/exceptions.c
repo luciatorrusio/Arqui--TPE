@@ -5,24 +5,35 @@
 #include <deviceInfo.h>
 
 #define ZERO_EXCEPTION_ID 0
+#define CUSTOM_EXCEPTION 1
 
 
 
 
 static void zero_division();
 
+
 static bool isShown = false;
 
-void exceptionDispatcher(int exception) {
+void exceptionDispatcher(int exception, void * firstParam) {
 
 	if(!isShown){
 
-	if (exception == ZERO_EXCEPTION_ID)
-		zero_division();
-
-		isShown = true;
-
+	switch(exception){
+		case ZERO_EXCEPTION_ID:
+		{
+			PrintExceptionDetails("DIVISION BY ZERO")
+			break;
+		}
+		case CUSTOM_EXCEPTION:
+		{
+			PrintExceptionDetails(firstParam);
+			break;
+		}
 	}
+
+	isShown = true;
+
 }
 
 static void zero_division() {

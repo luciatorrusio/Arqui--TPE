@@ -10,9 +10,7 @@
 
 
 // Variables
-
-#define MAXPBUFF 1000
-#define MAXBUFFER (600)
+#define MAXBUFFER (200)
 
 static char TerminalDisplay [60][MAXBUFFER];
 static char TerminalType [MAXBUFFER];
@@ -163,12 +161,12 @@ void writeLineToTerminal(char * str){
     overwriteArray(temp,TerminalType);
     }
 void printf(char * format,...){
-    char string[MAXPBUFF];
-    for(int i=0;i<MAXPBUFF;i++)
+    char string[MAXBUFFER];
+    for(int i=0;i<MAXBUFFER;i++)
         *(string+i)=0;
     va_list args;
 	va_start(args,format);
-    snprintf(string,MAXPBUFF,format,args);
+    snprintf(string,MAXBUFFER,format,args);
     va_end(args);
     writeLineToTerminal(string);
 }

@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <stdio.h>
 #include "gamePrinter.h"
 
 typedef enum ballDirec{LU, U, RU, RD, D, LD} ballDirec;                                                         //Left up, up, right up, right down, down, left down

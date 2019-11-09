@@ -1,7 +1,6 @@
 #ifndef GAMEPRINTER_H
 #define GAMEPRINTER_H
 
-#include <stdio.h>
 #include <stdarg.h>
 #include <stdint.h>
 

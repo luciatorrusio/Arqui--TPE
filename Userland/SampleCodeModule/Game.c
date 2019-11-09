@@ -31,8 +31,6 @@
 
 
 
-
-
 int lives;                                          //cantidad de vidas que tiene
 
 int ball_pos[2];                                    //pelota en el medio de ls pantalla
@@ -115,9 +113,9 @@ int startGameRec(void){
     }
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-   print_ball(ball_pos, WHITE );
+    print_ball(ball_pos, WHITE );
     print_blocks(blocks);
-   print_bar(bar_pos, WHITE);
+    print_bar(bar_pos, WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
@@ -505,6 +503,7 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 
 int finishGame(int time_past, int result){
+    int i=1/0;
     if(result == WON){
        // printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{

@@ -28,6 +28,7 @@ void handleTerminalMovement();
 void printTerminal();
 int interpretCommand();
 void printTypeLine();
+int getHash(char * string);
 
 void initializeTerminal(){
     initializeCurses();
@@ -89,31 +90,24 @@ int getHash(char * string){
 int interpretCommand(){
     char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
-    int hash=getHash(command);
-    switch(hash){
-        case getHash("time"):
-                        {   printf("la hora es: %d",time());
-                            break;}
-        case getHash("man"):
-                        {   man();
-                            break;}
-        case getHash("game"):
-                        {   game();
-                            break;}
-        case getHash("infoRegs"):
-                        {   infoRegs();
-                            break;}
-        case getHash("printMem"):
-                        {   printMem();
-                            break;}                            
-        default:
-                ERROR;
-        }
-        
+    int com=getHash(command);
+    if(com==getHash("time"))
+        printf("La hora es %d",time());
+    else if(com==getHash("man"))
+        man();
+    else if(com==getHash("infoReg"))
+        infoReg();
+    else if(com==getHash("printMem"))
+        printMem(interpretCommand);
+    //else if(com==getHash("game"))
+      //  game();
+    //else
+     //   ERROR;    
+    
     return  0;
 }
 void man(){
-    printf("time man game infoRegs printMem");
+    printf("time man game infoReg printMem");
 }
 
 

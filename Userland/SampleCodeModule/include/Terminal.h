@@ -13,5 +13,6 @@ void printf(char * format,...);
 
 void putchar(char c);
 
+void man();
 
 #endif

@@ -13,6 +13,7 @@ static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
 static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm);
 
+
 static void int_21();
 void int_82(int timeID, int * value);
 
@@ -40,7 +41,7 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x83:
 			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam,sixParm);
 			break;
-		
+	
 	}
 }
 
@@ -140,7 +141,9 @@ void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	int height=fifthParam;
 	int fontColor=sixParm;
 
+	
+
 	print(x,y,lenght,height,fontColor);
 }
 
-	
+

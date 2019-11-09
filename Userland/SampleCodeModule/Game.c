@@ -6,16 +6,17 @@
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define BAR_LENGTH                  100//complestar
-#define BAR_HEIGHT                  800//completar                
-#define BAR_YPOS                   0//completar
-#define BLOCK_WIDTH                 700//COMPLETAR
-#define BLOCK_XSEPARATION           1//COMPLETAR
-#define BLOCK_HEIGHT                700//COMPLETAR
-#define BLOCK_YSEPARATION           2//COMPLETAR
+#define BAR_LENGTH                  150//complestar
+#define BAR_HEIGHT                  5//completar                
+#define BAR_YPOS                   700//completar
+#define BLOCK_WIDTH                 100//COMPLETAR
+#define BLOCK_XSEPARATION           80//COMPLETAR
+#define BLOCK_HEIGHT                40//COMPLETAR
+#define BLOCK_YSEPARATION           40//COMPLETAR
+#define BALL_RADIO                  10 
 
-#define BLACK                       0xFFFFFFFF//completar
-#define WHITE                       0x00000000//completar
+#define BLACK                       0x00000000//completar
+#define WHITE                       0xFFFFFFFF//completar
 
 #define X                           0
 #define Y                           1
@@ -34,7 +35,7 @@ int lives;                                          //cantidad de vidas que tien
 int ball_pos[2];                                    //pelota en el medio de ls pantalla
 int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
 ballDirec ball_dir;
-int BALL_RADIO;
+
 
 int bar_vel;                                     //velocidad de la barra 
 int bar_pos[2];
@@ -55,7 +56,7 @@ int runGame(void){
     lives = LIVESi;
     blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[0]=SCREEN_WIDTH/2;
-    ball_pos[1]=SCREEN_HEIGHT/2;      
+    ball_pos[1]=500;      
     ball_vel=1;                         
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
@@ -64,7 +65,7 @@ int runGame(void){
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
-            blocks[i][j]= 1;
+            blocks[j][i]= 1;
         }
     }
 
@@ -110,23 +111,23 @@ int startGameRec(void){
     }
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-    print_ball(ball_pos, WHITE );
+   print_ball(ball_pos, WHITE );
     print_blocks(blocks);
-    print_bar(bar_pos, WHITE);
+   print_bar(bar_pos, WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
-    handleBarMov();
+    //handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
-    handleBallMov();
+    //handleBallMov();
     //modificar velocidad de 
 
-    if(relative_time >= 15){
-        ball_vel++;
-        setRelativeStartTime();
-    }
+    //if(relative_time >= 15){
+      //  ball_vel++;
+     //   setRelativeStartTime();
+    //}
 
 
-    startGameRec();
+    //startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
@@ -269,12 +270,12 @@ int insideSquare(int * auxPos, int * LLSquare, int * URSquare){
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
     int x;
     int y;
-    for(int i = 0; i < C_BLOCKS ; i++){
-        for(int j = 0; j < R_BLOCKS; j++){
-                x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION ;
-                y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION ;
+    for(int i = 0; i < R_BLOCKS ; i++){
+        for(int j = 0; j <C_BLOCKS ; j++){
+                x = (j * BLOCK_WIDTH) + BLOCK_XSEPARATION*(j+1) ;
+                y =  (i * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(i+1) ;
             if( blocks[i][j] == 1){
-                print_block( x , y,WHITE);
+                print_block( x ,y,WHITE);
             }
             else
                 print_block( x , y,BLACK);
@@ -522,6 +523,7 @@ void setRelativeStartTime(){
     relative_startTime[5]= GetSeconds();
 }
 void print_ball(int * ball_pos,int color){
+
     printOnScreen(ball_pos[X],ball_pos[Y],BALL_RADIO*2,BALL_RADIO*2,color);
 }
 

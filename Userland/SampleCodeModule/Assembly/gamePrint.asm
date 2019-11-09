@@ -4,6 +4,7 @@ section .text:
 
 printAt:
     enter 0,0
+    
     mov rax,1       ; ID
     mov rbx,rdi     ; x
     mov r9,rcx     ;height
@@ -14,3 +15,5 @@ printAt:
 
     leave
     ret
+
+ 

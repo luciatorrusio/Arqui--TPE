@@ -6,18 +6,21 @@
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define BAR_LENGTH                  150//complestar
-#define BAR_HEIGHT                  5//completar                
-#define BAR_YPOS                   700//completar
-#define BLOCK_WIDTH                 100//COMPLETAR
-#define BLOCK_XSEPARATION           80//COMPLETAR
-#define BLOCK_HEIGHT                40//COMPLETAR
-#define BLOCK_YSEPARATION           40//COMPLETAR
-#define BALL_RADIO                  10 
-#define bar_vel 20
+#define SCREEN_HEIGHT               900//completar
+#define SCREEN_WIDTH                900//completar
 
-#define BLACK                       0x00000000//completar
-#define WHITE                       0xFFFFFFFF//completar
+#define BAR_LENGTH                  (17/100)*SCREEN_WIDTH
+#define BAR_HEIGHT                  (1/100)*SCREEN_HEIGHT                
+#define BAR_YPOS                    (78/100)*SCREEN_HEIGHT
+#define BLOCK_WIDTH                 (1/9)*SCREEN_WIDTH
+#define BLOCK_XSEPARATION           (9/100)*SCREEN_WIDTH
+#define BLOCK_HEIGHT                (4/100)*SCREEN_HEIGHT
+#define BLOCK_YSEPARATION           (4/100)*SCREEN_HEIGHT
+#define BALL_RADIO                  (1/100)*SCREEN_HEIGHT 
+#define bar_vel                     (2/100)*SCREEN_WIDTH
+
+#define BLACK                       0x00000000
+#define WHITE                       0xFFFFFFFF
 
 #define X                           0
 #define Y                           1
@@ -25,8 +28,7 @@
 #define WON                         1
 #define LOST                        0
 #define NO_BLOCK                    -1
-#define SCREEN_HEIGHT               900//completar
-#define SCREEN_WIDTH                900//completar
+
 
 
 

@@ -13,16 +13,18 @@ typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                        
 
 
 
-// BORRAR ESTAS FINCIONES SOLO POR WARNINGS
 
 int stopKeyPressed();
-void print_ball(int* ball_pos,int color);
-void print_bar(int bar_pos,int color);
-int left_arrow_pressed();
-int right_arrow_pressed();
-void print_block(int x, int y,color);
 
-//TODO EL RESTO OK
+void print_ball(int* ball_pos,int color);
+
+void print_bar(int* bar_pos,int color);
+
+int left_arrow_pressed();
+
+int right_arrow_pressed();
+
+void print_block(int x, int y,int color);
 
 //Inicialiizar el juego desde cero
 int runGame(void);
@@ -68,6 +70,10 @@ walls barHitWall();
 //Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
 void ballHitBlock(int* block);
 
+//para ver si la la pelota(auxPos), esta dentro del rectangulo marcado
+int insideSquare(int * auxPos, int * LLSquare, int * URSquare);
+
+void makeSquare(int * square, int x, int y);
 
 //devuelve que borde del bloque esta chocando la pelota, se devuelve la pared que representa ese borde(ya que actua de la misma forma)
 walls ballTouchingWall(int c, int r);
@@ -77,6 +83,8 @@ int ballBetweenYSides(int * auxPos, int c, int r);
 
 //Se fija si la pelota esta o no en el rango x del bloque correspondiente a {c,r} (column , row)
 int ballBetweenXSides(int * auxPos, int c, int r);
+
+int ballBetween(int auxPos, int y1, int y2);
 
 int finishGame(int time_past, int result);
 

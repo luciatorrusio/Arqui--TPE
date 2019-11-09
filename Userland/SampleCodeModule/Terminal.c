@@ -90,25 +90,25 @@ int interpretCommand(){
     char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
     int hash=getHash(command);
-    switch(hash){
-        case getHash("time"):
-                        {   printf("la hora es: %d",time());
-                            break;}
-        case getHash("man"):
-                        {   man();
-                            break;}
-        case getHash("game"):
-                        {   game();
-                            break;}
-        case getHash("infoRegs"):
-                        {   infoRegs();
-                            break;}
-        case getHash("printMem"):
-                        {   printMem();
-                            break;}                            
-        default:
-                ERROR;
-        }
+    // switch(hash){
+    //     case getHash("time"):
+    //                     {   printf("la hora es: %d",time());
+    //                         break;}
+    //     case getHash("man"):
+    //                     {   man();
+    //                         break;}
+    //     case getHash("game"):
+    //                     {   game();
+    //                         break;}
+    //     case getHash("infoRegs"):
+    //                     {   infoRegs();
+    //                         break;}
+    //     case getHash("printMem"):
+    //                     {   printMem();
+    //                         break;}                            
+    //     default:
+    //             ERROR;
+    //     }
         
     return  0;
 }

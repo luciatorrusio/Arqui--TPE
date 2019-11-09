@@ -20,7 +20,7 @@ void _irq80Handler(void* ptr, int interval);
 void _irq81Handler(void * ptr, void * ptr2, void * ptr3);
 void _irq82Handler(void * ptr, void * timeid, void * saveTime);
 void _irq83Handler(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm);
-
+void _irq84Handler(void * firstParam,void * secondParam);
 
 
 void _exception0Handler(void);

@@ -85,6 +85,10 @@ int startGame(){
     start_time[3]=relative_startTime[3];
     start_time[4]=relative_startTime[4];
     start_time[5]=relative_startTime[5];
+    int * lenght;
+    int * height;
+    screenSizes(lenght,height);
+
     startGameRec();
     return 0;
 }
@@ -557,6 +561,9 @@ int right_arrow_pressed(){
     }
     return 0;
 }
+
+ 
+
 /* funciones a hacer=
     .printf();
     .bool stopKeyPressed()

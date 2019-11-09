@@ -16,6 +16,7 @@ GLOBAL _irq80Handler
 GLOBAL _irq81Handler
 GLOBAL _irq82Handler
 GLOBAL _irq83Handler
+GLOBAL _irq84Handler
 
 
 GLOBAL _exception0Handler
@@ -163,7 +164,9 @@ _irq82Handler:
 _irq83Handler:
 	irqHandlerMaster 83h	
 
-	
+; getScreenSize
+_irq84Handler:
+	irqHandlerMaster 84h	
 
 ;USB
 _irq05Handler:

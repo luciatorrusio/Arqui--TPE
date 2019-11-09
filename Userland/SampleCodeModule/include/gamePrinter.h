@@ -6,5 +6,6 @@
 
 
 void printOnScreen(int x,int y,int lenght,int height,int fontColor);
+void screenSizes(int * lenght,int * height);
 
 #endif

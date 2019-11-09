@@ -111,3 +111,10 @@ void print(int x,int y,int lenght,int height,int fontColor){
 		}
 	}
 }
+
+int getHeight(){
+	return screenData->height;
+}
+int getLenght(){
+	return screenData->width;
+}

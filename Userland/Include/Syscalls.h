@@ -11,5 +11,6 @@ extern void read(int fd,char * buff, unsigned int size);
 
 extern void printAt(int x,int y,int lenght,int height,int fontColor);
 
+void getScreenSizes(int * lenght,int * height);
 
 #endif

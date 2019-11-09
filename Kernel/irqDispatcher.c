@@ -12,7 +12,7 @@
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
 static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm);
-
+static void int_84(void * firstParam,void * secondParam);
 
 static void int_21();
 void int_82(int timeID, int * value);
@@ -40,6 +40,9 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 			break;
 		case 0x83:
 			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam,sixParm);
+			break;
+		case 0x84:
+			int_84(firstParam,secondParam);
 			break;
 	
 	}
@@ -146,4 +149,10 @@ void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	print(x,y,lenght,height,fontColor);
 }
 
+void int_84(void * firstParam,void * secondParam){
+	int * lenght=firstParam;
+	int * height=secondParam;
+	*lenght=getLenght();
+	*height=getHeight();
+}
 

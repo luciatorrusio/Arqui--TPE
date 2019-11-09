@@ -1,6 +1,8 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
+#include "../Include/Curses.h"
 #include "./include/Terminal.h"
+
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
@@ -499,9 +501,9 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 int finishGame(int time_past, int result){
     if(result == WON){
-        printf("congratulations you've won!! it took you %d seconds", time_past);
+       // printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{
-        printf("better luck next time! time: %d seconds", time_past);
+        //printf("better luck next time! time: %d seconds", time_past);
     }
     return 0;
 }
@@ -531,22 +533,22 @@ void print_block(int x,int y,int color){
 }
 
 int stopKeyPressed(){
-    char key = read();
+    char key = readKey();
     if(key == 'q'){
         return 1;
     }
     return 0;
 }
 int left_arrow_pressed(){
-    char key = read();
-    if(key == '9'){
+    char key = readKey();
+    if(key == -13){
         return 1;
     }
     return 0;
 }
 int right_arrow_pressed(){
-    char key = read();
-    if(key == '7'){
+    char key = readKey();
+    if(key == -14){
         return 1;
     }
     return 0;

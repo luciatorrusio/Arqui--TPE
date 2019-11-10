@@ -60,7 +60,7 @@ int runGame(void){
     blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[0]=SCREEN_WIDTH/2;
     ball_pos[1]=500;      
-    ball_vel=20;
+    ball_vel=1;
 
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
@@ -103,15 +103,13 @@ int startGameRec(void){
         //mainMenu(); esto va?
         return 0;
     }
-    if(lives == 0){
+    if(lives == 0 || blocks_left == 0){        
         time_past=past_time();
-        finishGame(time_past, LOST);
-        return 0;        
-    }
-    if(blocks_left == 0){
-        time_past=past_time();
+        if(lives == 0){
+            finishGame(time_past, LOST);
+        }
         finishGame(time_past, WON);
-        return 0;
+        return 0;        
     }
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       

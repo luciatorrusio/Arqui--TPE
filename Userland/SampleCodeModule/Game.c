@@ -9,15 +9,15 @@
 #define SCREEN_HEIGHT               900//completar
 #define SCREEN_WIDTH                900//completar
 
-#define BAR_LENGTH                  (17/100)*SCREEN_WIDTH
-#define BAR_HEIGHT                  (1/100)*SCREEN_HEIGHT                
-#define BAR_YPOS                    (78/100)*SCREEN_HEIGHT
-#define BLOCK_WIDTH                 (1/9)*SCREEN_WIDTH
-#define BLOCK_XSEPARATION           (9/100)*SCREEN_WIDTH
-#define BLOCK_HEIGHT                (4/100)*SCREEN_HEIGHT
-#define BLOCK_YSEPARATION           (4/100)*SCREEN_HEIGHT
-#define BALL_RADIO                  (1/100)*SCREEN_HEIGHT 
-#define bar_vel                     (2/100)*SCREEN_WIDTH
+#define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
+#define BAR_HEIGHT                  (1*SCREEN_HEIGHT/100)                
+#define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
+#define BLOCK_WIDTH                 (1*SCREEN_WIDTH/9)
+#define BLOCK_XSEPARATION           (9*SCREEN_WIDTH/100)
+#define BLOCK_HEIGHT                (4*SCREEN_HEIGHT/100)
+#define BLOCK_YSEPARATION           (4*SCREEN_HEIGHT/100)
+#define BALL_RADIO                  (1*SCREEN_HEIGHT/100) 
+#define bar_vel                     (2*SCREEN_WIDTH/100)
 
 #define BLACK                       0x00000000
 #define WHITE                       0xFFFFFFFF

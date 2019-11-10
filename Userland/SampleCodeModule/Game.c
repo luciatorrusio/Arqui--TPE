@@ -94,7 +94,11 @@ int startGame(){
  //juega recursivamente
 
 int startGameRec(void){ 
-    
+        // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
+    print_ball(ball_pos, WHITE );
+    print_blocks(blocks);
+    print_bar(bar_pos, WHITE);
+
     relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
@@ -111,11 +115,12 @@ int startGameRec(void){
         finishGame(time_past, WON);
         return 0;
     }
-
-    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-    print_ball(ball_pos, WHITE );
-    print_blocks(blocks);
-    print_bar(bar_pos, WHITE);
+    int ballCurrentPos[2];
+    ballCurrentPos[X] = ball_pos[X];
+    ballCurrentPos[Y] = ball_pos[Y];
+    int barCurrentPos[2];
+    barCurrentPos[X] = bar_pos[X];
+    barCurrentPos[Y] = bar_pos[Y];
 
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
@@ -128,10 +133,17 @@ int startGameRec(void){
         setRelativeStartTime();
     }
 
+    print_ball(ballCurrentPos, BLACK );
+    print_bar(barCurrentPos, BLACK);
 
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
+
+
+
+
+
 
 void handleBarMov(){
         //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
@@ -147,6 +159,11 @@ void handleBarMov(){
     }
 
 }
+
+
+
+
+
 void handleBallMov(void){
     //si pega contra una pared
     walls wall;
@@ -503,7 +520,7 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 
 int finishGame(int time_past, int result){
-    int i=1/0;
+
     if(result == WON){
        // printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{

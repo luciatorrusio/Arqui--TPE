@@ -6,17 +6,17 @@
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define SCREEN_HEIGHT               900//completar
-#define SCREEN_WIDTH                900//completar
+#define SCREEN_HEIGHT               450//completar
+#define SCREEN_WIDTH                450//completar
 
-#define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
-#define BAR_HEIGHT                  (1*SCREEN_HEIGHT/100)                
+#define BAR_LENGTH                  (40*SCREEN_WIDTH/100)
+#define BAR_HEIGHT                  (5*SCREEN_HEIGHT/100)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
 #define BLOCK_WIDTH                 (1*SCREEN_WIDTH/9)
 #define BLOCK_XSEPARATION           (9*SCREEN_WIDTH/100)
 #define BLOCK_HEIGHT                (4*SCREEN_HEIGHT/100)
 #define BLOCK_YSEPARATION           (4*SCREEN_HEIGHT/100)
-#define BALL_RADIO                  (1*SCREEN_HEIGHT/100) 
+#define BALL_RADIO                  (2*SCREEN_HEIGHT/100) 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
 #define BLACK                       0x00000000
@@ -57,7 +57,7 @@ int runGame(void){
     lives = LIVESi;
     blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[0]=SCREEN_WIDTH/2;
-    ball_pos[1]=500;      
+    ball_pos[1]=SCREEN_HEIGHT/2;      
     ball_vel=20;
 
     bar_pos[X]=SCREEN_WIDTH/2;
@@ -94,7 +94,7 @@ int startGame(){
  //juega recursivamente
 
 int startGameRec(void){ 
-        // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
+    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
     print_ball(ball_pos, WHITE );
     print_blocks(blocks);
     print_bar(bar_pos, WHITE);
@@ -110,6 +110,7 @@ int startGameRec(void){
         finishGame(time_past, LOST);
         return 0;        
     }
+    
     if(blocks_left == 0){
         time_past=past_time();
         finishGame(time_past, WON);
@@ -132,15 +133,23 @@ int startGameRec(void){
         ball_vel++;
         setRelativeStartTime();
     }
-
     print_ball(ballCurrentPos, BLACK );
     print_bar(barCurrentPos, BLACK);
-
+    wait(4);
+    
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
 
+void wait(int sec){
+    int seconds = GetSeconds();
+    int seconds_passed;
+    do{
+        seconds_passed = GetSeconds() - seconds; 
+    }while(seconds_passed <=sec);
+    
+}
 
 
 

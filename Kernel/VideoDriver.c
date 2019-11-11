@@ -104,10 +104,10 @@ void print(int x,int y,int lenght,int height,int fontColor){
 	
 	for(int i=0;i<lenght/2;i++){
 		for(int j=0;j<height/2;j++){
-			drawPixel(x+i,y+j,0XFFFFFFFF);
-			drawPixel(x+i,y-j,0XFFFFFFFF);
-			drawPixel(x-i,y+j,0XFFFFFFFF);
-			drawPixel(x-i,y-j,0XFFFFFFFF);
+			drawPixel(x+i,y+j,fontColor);
+			drawPixel(x+i,y-j,fontColor);
+			drawPixel(x-i,y+j,fontColor);
+			drawPixel(x-i,y-j,fontColor);
 		}
 	}
 }

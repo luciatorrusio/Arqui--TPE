@@ -19,6 +19,8 @@ void print_ball(int* ball_pos,int color);
 
 void print_bar(int* bar_pos,int color);
 
+void wait(int sec);
+
 int left_arrow_pressed();
 
 int right_arrow_pressed();

@@ -20,8 +20,8 @@
 #define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
-#define BLACK                       0x00000000
-#define WHITE                       0xFFFFFFFF
+#define BLACK                       0x000000
+#define WHITE                       0xFFFFFF
 
 #define X                           0
 #define Y                           1
@@ -52,7 +52,7 @@ int relative_startTime[6];
 int relative_time;
 int start_time[6];
 
-
+void printObjects();
 
 //para inicializar el juego
 int runGame(void){
@@ -98,6 +98,8 @@ int startGame(){
 
 int startGameRec(void){ 
     
+    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
+    
     relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
@@ -115,11 +117,9 @@ int startGameRec(void){
         return 0;
     }
 
-    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-    print_ball(ball_pos, WHITE );
-    print_blocks(blocks);
-    print_bar(bar_pos, WHITE);
+    int curr_BallPos[]={ball_pos[X], ball_pos[Y]};
 
+    int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
@@ -130,12 +130,19 @@ int startGameRec(void){
         ball_vel++;
         setRelativeStartTime();
     }*/
-
+    printObjects();
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
+void printObjects(){
+    print_ball(curr_BallPos,BLACK );
+    print_bar(curr_BarPos, BLACK); 
+    print_ball(ball_pos, WHITE );
+    print_blocks(blocks);
+    print_bar(bar_pos, WHITE);
 
+}
 
 void handleBarMov(){
         //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
@@ -442,6 +449,7 @@ void ballHitBlock(int * block){
                 block[0]=i;
                 block[1]=j;
                 block[2]=auxWall;
+                return;
             }       
         }
     }
@@ -455,11 +463,14 @@ walls ballTouchingWall(int c, int r){
     int nextPos[2];
     ballNextPos(nextPos);
     
+
     if(ballBetweenXSides(nextPos, c, r) && ballBetweenYSides(nextPos, c, r)){
         blocks_left -=1;
+        
         if( ballBetweenXSides(ball_pos, c, r) ){
             
             if(ball_dir == U || ball_dir == LU || ball_dir == RU){
+                
                 return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
             }
             if(ball_dir == D || ball_dir == LD || ball_dir == RD){
@@ -536,14 +547,15 @@ void setRelativeStartTime(){
 }
 void print_ball(int * ball_pos,int color){
 
-    printOnScreen(ball_pos[X],ball_pos[Y],BALL_RADIO*2,BALL_RADIO*2,color);
+    printOnScreen(ball_pos,BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
 void print_bar(int * bar_pos,int color){
-    printOnScreen(bar_pos[X],bar_pos[Y],BAR_LENGTH,BAR_HEIGHT,color);
+    printOnScreen(bar_pos,BAR_LENGTH,BAR_HEIGHT,color);
 }
 void print_block(int x,int y,int color){
-    printOnScreen(x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+    int pos[]= {x, y};
+    printOnScreen(pos,BLOCK_WIDTH,BLOCK_HEIGHT,color);
 }
 
 int stopKeyPressed(){

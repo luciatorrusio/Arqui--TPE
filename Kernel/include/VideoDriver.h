@@ -12,6 +12,6 @@ void clearScreen();
 
 void drawChar(int x, int y, char character, int fontColor, int background);
 
-void print(int x,int y,int lenght,int height,int fontColor);
+void print(int *pos,int lenght,int height,int fontColor);
 
 #endif

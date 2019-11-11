@@ -64,8 +64,7 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 	
-
-	mov r10,r8 ;sexto Param	
+	
 	mov r9, r9 ; Quinto Param
 	mov r8, rdx ; Cuarto Param
 	mov rcx,rcx ; Tercer Param

@@ -33,7 +33,7 @@ int getHash(char * string);
 
 void initializeTerminal(){
     initializeCurses();
-    getConsoleDimensions(&columns,&rows);    
+    getConsoleDimensions(&columns,&rows);  
 }
 
 int runTerminal(){
@@ -43,7 +43,10 @@ int runTerminal(){
 	do{
 		
 		int key = readKey();
+
 		if(key >0){
+         int a = 1/0;
+           
             if(key == 8 ){
                 if(TypeIndex>0)
                     TerminalType[--TypeIndex] = 0;

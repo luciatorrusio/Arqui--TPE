@@ -78,6 +78,7 @@ static unsigned int returnIndex = 0;
 
 void readKey()
 {
+
     if(bufferIndex + 1 == returnIndex )
         returnIndex++;
         

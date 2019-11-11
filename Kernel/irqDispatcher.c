@@ -133,9 +133,6 @@ void int_82(int timeID, int * value){
 }
 
 void int_85(char * firstParam){
-
-
-
 	char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
 	Registers reg = getRegisters();
 
@@ -206,5 +203,15 @@ void int_85(char * firstParam){
 	println("\nR15: 0X");
 	HexToString(temp,17,reg.r15);
 	println(temp);
+
+	println("\n\n\nPress any key to continue");
+
+	do{
+		readKey();
+	}
+	while (returnKey() == -1);
+
+	clearConsole();
+
 
 }

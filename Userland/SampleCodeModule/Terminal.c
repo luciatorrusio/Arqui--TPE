@@ -44,9 +44,7 @@ int runTerminal(){
 		
 		int key = readKey();
 
-		if(key >0){
-         int a = 1/0;
-           
+		if(key >0){           
             if(key == 8 ){
                 if(TypeIndex>0)
                     TerminalType[--TypeIndex] = 0;

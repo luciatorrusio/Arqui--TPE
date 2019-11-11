@@ -23,7 +23,7 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0:
 			int_20();
 			break;
-		case 0x21:
+		case 1:
 			int_21();
 			break;
 		case 0x80:

@@ -84,6 +84,7 @@ void readKey()
         
     int temp = processKeyboardInput(__ReadKey__());
    
+   //println(keyboardBuffer);
 
     if(temp != -1)
         keyboardBuffer[bufferIndex++ % BUFFER_SIZE] = temp;

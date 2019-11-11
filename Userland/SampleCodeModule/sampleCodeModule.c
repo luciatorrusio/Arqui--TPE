@@ -7,14 +7,18 @@
 #include "../Include/Curses.h"
 
 #include <stdlib.h>
+#include "../include/Debugger.h"
 
 
 
 int main() {
 
-	//initializeTerminal();
+	assertNotEqual(2,1);
 
-	//runTerminal();
+	 initializeTerminal();
+
+	 runTerminal();
+
 
 	return 0xDEA;
 }

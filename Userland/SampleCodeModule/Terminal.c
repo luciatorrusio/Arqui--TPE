@@ -32,9 +32,7 @@ int getHash(char * string);
 
 void initializeTerminal(){
     initializeCurses();
-
-
-    getConsoleDimensions(&columns,&rows);
+    getConsoleDimensions(&columns,&rows);  
 }
 
 int runTerminal(){
@@ -44,7 +42,8 @@ int runTerminal(){
 	do{
 		
 		int key = readKey();
-		if(key >0){
+
+		if(key >0){           
             if(key == 8 ){
                 if(TypeIndex>0)
                     TerminalType[--TypeIndex] = 0;
@@ -59,30 +58,19 @@ int runTerminal(){
                     handleTerminalMovement();
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    printTerminal();
-
-                    
-
-                    
-
-    
+                    printTerminal();    
                 }else{
                      printTypeLine();
                 }
             }
-           
-
-            
-            
-
         }
-
 	}while(1);
 }
+
 int getHash(char * string){
     int hash=0;
     for(int i=0;*(string+i)!=0;i++){
-        hash=hash*255+*(string+i);
+        hash=hash*0xFF+*(string+i);
     }
     return hash;
 }
@@ -90,6 +78,7 @@ int getHash(char * string){
 int interpretCommand(){
     char command[MAXBUFFER];
     overwriteArray(TerminalType,command);
+
     int com=getHash(command);
     if(com==getHash("time"))
         printf("La hora es %d",time());

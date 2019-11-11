@@ -17,7 +17,12 @@ GLOBAL _irq81Handler
 GLOBAL _irq82Handler
 
 
+GLOBAL _irq85Handler
+
+
 GLOBAL _exception0Handler
+GLOBAL _exception1Handler
+
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
@@ -84,6 +89,7 @@ SECTION .text
 %macro exceptionHandler 1
 	pushState
 
+	mov rsi, rax ; pasaje del segundo parametro (string en el caso de excp custom)
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 
@@ -156,6 +162,12 @@ _irq82Handler:
 	irqHandlerMaster 82h
 
 
+
+; CustomExceptions
+_irq85Handler:
+	irqHandlerMaster 85h
+
+
 ;USB
 _irq05Handler:
 	irqHandlerMaster 5
@@ -164,6 +176,10 @@ _irq05Handler:
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
+
+
+; Excepciones custom
+
 
 haltcpu:
 	cli

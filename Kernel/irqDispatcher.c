@@ -6,6 +6,7 @@
 #include <deviceInfo.h>
 #include <Time.h>
 #include <ReadDispatcher.h>
+#include <Debugger.h>
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
@@ -13,6 +14,7 @@ static void int_21();
 void int_82(int timeID, int * value);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
+static void int_85(char * firstParam);
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
 
@@ -20,7 +22,6 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0:
 			int_20();
 			break;
-		case 0x21:
 		case 1:
 			int_21();
 			break;
@@ -33,6 +34,12 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x82:
 			int_82(firstParam,secondParam);
 			break;
+		case 0x85:{		
+			
+			int_85(firstParam);
+
+			break;
+		}
 	}
 }
 
@@ -124,5 +131,6 @@ void int_82(int timeID, int * value){
 	*value = handleTimeRequest(timeID);
 }
 
-
-	
+void int_85(char * firstParam){
+	ThrowCustomException(firstParam);
+}

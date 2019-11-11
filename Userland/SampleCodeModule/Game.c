@@ -103,7 +103,7 @@ int startGameRec(void){
         //mainMenu(); esto va?
         return 0;
     }
-    /*if(lives == 0){
+    if(lives == 0){
         time_past=past_time();
         finishGame(time_past, LOST);
         return 0;        
@@ -118,7 +118,7 @@ int startGameRec(void){
         ball_vel++;
         setRelativeStartTime();
     }
-    */
+    
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
     print_ball(ball_pos, WHITE );

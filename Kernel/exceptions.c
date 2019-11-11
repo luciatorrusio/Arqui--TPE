@@ -5,7 +5,7 @@
 #include <deviceInfo.h>
 
 #define ZERO_EXCEPTION_ID 0
-#define CUSTOM_EXCEPTION 1
+#define CUSTOM_EXCEPTION 0x20
 
 
 
@@ -16,23 +16,29 @@ static void zero_division();
 static bool isShown = false;
 
 void exceptionDispatcher(int exception, void * firstParam) {
+	
 
 	if(!isShown){
 
-	switch(exception){
-		case ZERO_EXCEPTION_ID:
-		{
-			PrintExceptionDetails("DIVISION BY ZERO")
-			break;
+		switch(exception){
+			case ZERO_EXCEPTION_ID:
+			{
+				PrintExceptionDetails("DIVISION BY ZERO");
+				break;
+			}
+			case CUSTOM_EXCEPTION:
+			{
+				//PrintExceptionDetails(firstParam);
+				break;
+			}
+			default:{
+				PrintExceptionDetails("UNKNOWN EXCEPTION");
+			}
 		}
-		case CUSTOM_EXCEPTION:
-		{
-			PrintExceptionDetails(firstParam);
-			break;
-		}
+		isShown = true;
 	}
 
-	isShown = true;
+	
 
 }
 
@@ -45,10 +51,11 @@ static void zero_division() {
 
 void PrintExceptionDetails(char * name){
 
+
 	char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
 	Registers reg = getRegisters();
 
-	clearConsole();
+	//clearConsole();
 	
 	//setColor(Red,Black);
 	println("EXCEPTION: ");

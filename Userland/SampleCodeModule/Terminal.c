@@ -5,6 +5,7 @@
 #include "include/Commands.h"
 #include "../Include/String.h"
 #include <stdlib.h>
+#include "../include/exception.h"
 
 
 
@@ -32,9 +33,7 @@ int getHash(char * string);
 
 void initializeTerminal(){
     initializeCurses();
-
-
-    getConsoleDimensions(&columns,&rows);
+    getConsoleDimensions(&columns,&rows);    
 }
 
 int runTerminal(){
@@ -59,26 +58,15 @@ int runTerminal(){
                     handleTerminalMovement();
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    printTerminal();
-
-                    
-
-                    
-
-    
+                    printTerminal();    
                 }else{
                      printTypeLine();
                 }
             }
-           
-
-            
-            
-
         }
-
 	}while(1);
 }
+
 int getHash(char * string){
     int hash=0;
     for(int i=0;*(string+i)!=0;i++){

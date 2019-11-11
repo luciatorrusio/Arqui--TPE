@@ -17,6 +17,9 @@ GLOBAL _irq81Handler
 GLOBAL _irq82Handler
 
 
+GLOBAL _irq85Handler
+
+
 GLOBAL _exception0Handler
 GLOBAL _exception1Handler
 
@@ -159,6 +162,12 @@ _irq82Handler:
 	irqHandlerMaster 82h
 
 
+
+; CustomExceptions
+_irq85Handler:
+	irqHandlerMaster 85h
+
+
 ;USB
 _irq05Handler:
 	irqHandlerMaster 5
@@ -170,8 +179,7 @@ _exception0Handler:
 
 
 ; Excepciones custom
-_exception1Handler:
-	exceptionHandler 1
+
 
 haltcpu:
 	cli

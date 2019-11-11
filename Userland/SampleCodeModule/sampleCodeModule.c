@@ -12,9 +12,10 @@
 
 int main() {
 
-	initializeTerminal();
+//CreateCustomException("TP de Mierda");
+	 initializeTerminal();
 
-	runTerminal();
+	 runTerminal();
 
 	return 0xDEA;
 }

@@ -9,7 +9,7 @@ CreateCustomException:
     enter 0,0
 
     mov rax, rdi
-    int 01h
+    int 85h
 
     leave
     ret

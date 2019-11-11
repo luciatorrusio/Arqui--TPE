@@ -181,6 +181,7 @@ void printf(char * format,...){
     va_end(args);
     writeLineToTerminal(string);
 }
-void putchar(char c){
-	//ncPrintChar(c);
+char getchar(){
+	char c=readKey();
+    return c;
 }

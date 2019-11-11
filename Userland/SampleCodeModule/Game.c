@@ -12,11 +12,12 @@
 #define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
 #define BAR_HEIGHT                  (4*SCREEN_HEIGHT/100)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
-#define BLOCK_WIDTH                 (1*SCREEN_WIDTH/9)
-#define BLOCK_XSEPARATION           (9*SCREEN_WIDTH/100)
-#define BLOCK_HEIGHT                (4*SCREEN_HEIGHT/100)
-#define BLOCK_YSEPARATION           (4*SCREEN_HEIGHT/100)
-#define BALL_RADIO                  (1*SCREEN_HEIGHT/100) 
+
+#define BLOCK_WIDTH                 ((2*SCREEN_WIDTH/3) / C_BLOCKS)
+#define BLOCK_XSEPARATION           ((SCREEN_WIDTH/3) / C_BLOCKS)
+#define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )//(4*SCREEN_HEIGHT/100)
+#define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))//(4*SCREEN_HEIGHT/100)
+#define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
 #define BLACK                       0x00000000
@@ -60,7 +61,7 @@ int runGame(void){
     blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[X]=SCREEN_WIDTH/2;
     ball_pos[Y]=SCREEN_HEIGHT/2;      
-    ball_vel=20;
+    ball_vel=5;
 
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
@@ -115,9 +116,9 @@ int startGameRec(void){
     }
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-   print_ball(ball_pos, WHITE );
+    print_ball(ball_pos, WHITE );
     print_blocks(blocks);
-   print_bar(bar_pos, WHITE);
+    print_bar(bar_pos, WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
@@ -566,8 +567,3 @@ int right_arrow_pressed(){
     }
     return 0;
 }
-/* funciones a hacer=
-    .printf();
-    .bool stopKeyPressed()
-    
-*/

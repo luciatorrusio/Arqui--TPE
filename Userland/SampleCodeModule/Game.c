@@ -19,8 +19,8 @@
 #define BALL_RADIO                  (1*SCREEN_HEIGHT/100) 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
-#define BLACK                       0x00000000
-#define WHITE                       0xFFFFFFFF
+#define BLACK                       0x000000
+#define WHITE                       0xFFFFFF
 
 #define X                           0
 #define Y                           1

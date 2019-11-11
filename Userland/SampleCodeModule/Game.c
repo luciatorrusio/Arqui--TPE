@@ -27,7 +27,7 @@
 
 #define WON                         1
 #define LOST                        0
-#define NO_BLOCK                    -1
+#define NO_BLOCK                   -1
 
 
 
@@ -103,7 +103,7 @@ int startGameRec(void){
         //mainMenu(); esto va?
         return 0;
     }
-    if(lives == 0){
+    /*if(lives == 0){
         time_past=past_time();
         finishGame(time_past, LOST);
         return 0;        
@@ -113,11 +113,17 @@ int startGameRec(void){
         finishGame(time_past, WON);
         return 0;
     }
+    
+    if(relative_time >= 15){
+        ball_vel++;
+        setRelativeStartTime();
+    }
+    */
 
     // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-   print_ball(ball_pos, WHITE );
+    print_ball(ball_pos, WHITE );
     print_blocks(blocks);
-   print_bar(bar_pos, WHITE);
+    print_bar(bar_pos, WHITE);
 
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
@@ -125,10 +131,6 @@ int startGameRec(void){
     handleBallMov();
     //modificar velocidad de 
 
-    if(relative_time >= 15){
-        ball_vel++;
-        setRelativeStartTime();
-    }
 
 
     startGameRec();

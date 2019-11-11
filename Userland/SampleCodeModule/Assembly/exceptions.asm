@@ -1,10 +1,9 @@
-GLOBAL CreateCustomException
-
+GLOBAL ThrowCustomException
 
 
 section .text
 
-CreateCustomException:
+ThrowCustomException:
 
     enter 0,0
 

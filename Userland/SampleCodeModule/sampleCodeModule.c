@@ -7,12 +7,14 @@
 #include "../Include/Curses.h"
 
 #include <stdlib.h>
+#include "../include/Debugger.h"
 
 
 
 int main() {
 
-//CreateCustomException("TP de Mierda");
+	assertNotEqual(2,1);
+
 	 initializeTerminal();
 
 	 runTerminal();

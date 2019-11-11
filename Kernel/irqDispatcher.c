@@ -6,6 +6,7 @@
 #include <deviceInfo.h>
 #include <Time.h>
 #include <ReadDispatcher.h>
+#include <Debugger.h>
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
@@ -14,8 +15,6 @@ void int_82(int timeID, int * value);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 static void int_85(char * firstParam);
-
-static int _85Control = 0;
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
 
@@ -133,85 +132,5 @@ void int_82(int timeID, int * value){
 }
 
 void int_85(char * firstParam){
-	char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
-	Registers reg = getRegisters();
-
-	clearConsole();
-	
-	//setColor(Red,Black);
-	println("EXCEPTION: ");
-	println(firstParam);
-	println("  @ IP: 0X");
-
-	HexToString(temp,17,reg.rip);
-	println(temp);
-
-	println("\nRAX: 0X");
-	HexToString(temp,17,reg.rax);
-	println(temp);
-	
-	println("\nRBX: 0X");
-	HexToString(temp,17,reg.rbx);
-	println(temp);
-
-	
-	println("\nRCX: 0X");
-	HexToString(temp,17,reg.rcx);
-	println(temp);
-
-	
-	println("\nRDX: 0X");
-	HexToString(temp,17,reg.rdx);
-	println(temp);
-	
-	println("\nRSI: 0X");
-	HexToString(temp,17,reg.rsi);
-	println(temp);
-	
-	println("\nRDI: 0X");
-	HexToString(temp,17,reg.rdi);
-	println(temp);
-	
-	println("\nR8:  0X");
-	HexToString(temp,17,reg.r8);
-	println(temp);
-
-	println("\nR9:  0X");
-	HexToString(temp,17,reg.r9);
-	println(temp);
-
-	println("\nR10: 0X");
-	HexToString(temp,17,reg.r10);
-	println(temp);
-
-	println("\nR11: 0X");
-	HexToString(temp,17,reg.r11);
-	println(temp);
-
-	println("\nR12: 0X");
-	HexToString(temp,17,reg.r12);
-	println(temp);
-
-	println("\nR13: 0X");
-	HexToString(temp,17,reg.r13);
-	println(temp);
-
-	println("\nR14: 0X");
-	HexToString(temp,17,reg.r14);
-	println(temp);
-
-	println("\nR15: 0X");
-	HexToString(temp,17,reg.r15);
-	println(temp);
-
-	println("\n\n\nPress any key to continue");
-
-	do{
-		readKey();
-	}
-	while (returnKey() == -1);
-
-	clearConsole();
-
-
+	ThrowCustomException(firstParam);
 }

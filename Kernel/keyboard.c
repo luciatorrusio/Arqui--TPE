@@ -78,14 +78,11 @@ static unsigned int returnIndex = 0;
 
 void readKey()
 {
-
     if(bufferIndex + 1 == returnIndex )
         returnIndex++;
         
     int temp = processKeyboardInput(__ReadKey__());
    
-   //println(keyboardBuffer);
-
     if(temp != -1)
         keyboardBuffer[bufferIndex++ % BUFFER_SIZE] = temp;
 }

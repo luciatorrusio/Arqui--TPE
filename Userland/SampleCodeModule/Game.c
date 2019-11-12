@@ -102,19 +102,15 @@ int startGameRec(void){
     relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
-        //mainMenu(); esto va?
+        //COMPLETAR!!! TIENE QUE PASAR ALGO
         return 0;
     }
-    if(lives == 0){
+    if(lives == 0  || blocks_left == 0 ){
         time_past=past_time();
-        finishGame(time_past, LOST);
+        finishGame(time_past);
         return 0;        
     }
-    if(blocks_left == 0){
-        time_past=past_time();
-        finishGame(time_past, WON);
-        return 0;
-    }
+   
     
     if(relative_time >= 15){
         ball_vel++;
@@ -524,7 +520,7 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 
 int finishGame(int time_past, int result){
-    if(result == WON){
+    if(blocks_left == 0){
        // printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{
         //printf("better luck next time! time: %d seconds", time_past);

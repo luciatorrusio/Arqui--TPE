@@ -18,6 +18,7 @@
 #define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )//(4*SCREEN_HEIGHT/100)
 #define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))//(4*SCREEN_HEIGHT/100)
 #define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
+
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
 #define BLACK                       0x000000
@@ -28,7 +29,7 @@
 
 #define WON                         1
 #define LOST                        0
-#define NO_BLOCK                    -1
+#define NO_BLOCK                   -1
 
 
 
@@ -97,9 +98,7 @@ int startGame(){
  //juega recursivamente
 
 int startGameRec(void){ 
-    
-    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-    
+     
     relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
@@ -116,9 +115,14 @@ int startGameRec(void){
         finishGame(time_past, WON);
         return 0;
     }
+    
+    if(relative_time >= 15){
+        ball_vel++;
+        setRelativeStartTime();
+    }
+    
 
     int curr_BallPos[]={ball_pos[X], ball_pos[Y]};
-
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
@@ -126,16 +130,12 @@ int startGameRec(void){
     handleBallMov();
     //modificar velocidad de 
 
-   /* if(relative_time >= 15){
-        ball_vel++;
-        setRelativeStartTime();
-    }*/
-    printObjects();
+    printObjects(curr_BallPos, curr_BarPos);
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
-void printObjects(){
+void printObjects(int * curr_BallPos, int * curr_BarPos){
     print_ball(curr_BallPos,BLACK );
     print_bar(curr_BarPos, BLACK); 
     print_ball(ball_pos, WHITE );

@@ -31,9 +31,7 @@ void overwriteArrayUpTo(char * src, char * dest,char c);
 int strcmp(char * s1,char * s2);
 void initializeTerminal(){
     initializeCurses();
-
-
-    getConsoleDimensions(&columns,&rows);
+    getConsoleDimensions(&columns,&rows);  
 }
 
 int runTerminal(){
@@ -43,7 +41,8 @@ int runTerminal(){
     do{
 	
 		int key = readKey();
-		if(key >0){
+
+		if(key >0){           
             if(key == 8 ){
                 if(TypeIndex>0)
                     TerminalType[--TypeIndex] = 0;
@@ -58,24 +57,12 @@ int runTerminal(){
                     handleTerminalMovement();
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    printTerminal();
-
-                    
-
-                    
-
-    
+                    printTerminal();    
                 }else{
                      printTypeLine();
                 }
             }
-           
-
-            
-            
-
         }
-
 	}while(1);
 }
 

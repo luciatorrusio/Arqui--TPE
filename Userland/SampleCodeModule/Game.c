@@ -574,14 +574,14 @@ int stopKeyPressed(){
 }
 int left_arrow_pressed(){
     char key = readKey();
-    if(key == 'j'){
+    if(key == 'a'){
         return 1;
     }
     return 0;
 }
 int right_arrow_pressed(){
     char key = readKey();
-    if(key == 'l'){
+    if(key == 'd'){
         return 1;
     }
     return 0;

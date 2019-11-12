@@ -58,14 +58,20 @@ static int bar_pos[2];
 static int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 static int blocks_left; 
 
-static int time_past;
-int relative_startTime[6];
-int relative_time;
-int start_time[6];
+//TIEMPO
+    //tiempo total
+    static int time_past;
+    //tiempo de inicio de juego
+    int relative_startTime[6];
+    //va de 0 a 15 segundos
+    int relative_time;
+    int start_time[6];
 
 
-//FUNCIONES
-void printObjects();
+//DECLARACION DE FUNCIONES
+    void printObjects();
+    void print_time();
+
 
 //para inicializar el juego
 int runGame(void){
@@ -149,7 +155,7 @@ void printObjects(int * curr_BallPos, int * curr_BarPos){
     print_ball(ball_pos, WHITE );
     print_blocks(blocks);
     print_bar(bar_pos, WHITE);
-
+    print_time();
 }
 
 void handleBarMov(){

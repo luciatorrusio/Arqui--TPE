@@ -11,7 +11,7 @@
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
-static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm);
+static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam);
 
 
 static void int_21();
@@ -19,7 +19,7 @@ void int_82(int timeID, int * value);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
-void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm ) {
+void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam) {
 
 	switch (irq) {
 		case 0:
@@ -39,7 +39,7 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 			int_82(firstParam,secondParam);
 			break;
 		case 0x83:
-			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam,sixParm);
+			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 			break;
 	
 	}
@@ -133,17 +133,15 @@ void int_82(int timeID, int * value){
 	*value = handleTimeRequest(timeID);
 }
 
-void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam,void * sixParm){
+void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam){
 	int id = firstParam;
-	int x = secondParam;
-	int y= thirdParam;
-	int lenght=fourthParam;
-	int height=fifthParam;
-	int fontColor=sixParm;
-
+	int * pos = secondParam;
+	int length = thirdParam;
+	int height=fourthParam;
+	int fontColor=fifthParam;
 	
 
-	print(x,y,lenght,height,fontColor);
+	print(pos,length,height,fontColor);
 }
 
 

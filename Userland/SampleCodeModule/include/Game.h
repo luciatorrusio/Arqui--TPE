@@ -7,8 +7,8 @@ typedef enum ballDirec{LU, U, RU, RD, D, LD} ballDirec;                         
 typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } walls;           //los bordes de la pantalla
 typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
 
-#define R_BLOCKS  4                                   //Cantidad de filas de bloques
-#define C_BLOCKS  5                                   //Cantidad de columnas de bloques
+#define R_BLOCKS  5                                   //Cantidad de filas de bloques
+#define C_BLOCKS  8                                   //Cantidad de columnas de bloques
 
 
 

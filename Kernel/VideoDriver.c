@@ -100,14 +100,16 @@ void drawChar(int x, int y, char character, int fontColor, int background){
 
 
 }
-void print(int x,int y,int lenght,int height,int fontColor){
+void print(int *pos,int lenght,int height,int fontColor){
+	int x = pos[0];
+	int y = pos[1];
 	
 	for(int i=0;i<lenght/2;i++){
 		for(int j=0;j<height/2;j++){
-			drawPixel(x+i,y+j,0XFFFFFFFF);
-			drawPixel(x+i,y-j,0XFFFFFFFF);
-			drawPixel(x-i,y+j,0XFFFFFFFF);
-			drawPixel(x-i,y-j,0XFFFFFFFF);
+			drawPixel(x+i,y+j,fontColor);
+			drawPixel(x+i,y-j,fontColor);
+			drawPixel(x-i,y+j,fontColor);
+			drawPixel(x-i,y-j,fontColor);
 		}
 	}
 }

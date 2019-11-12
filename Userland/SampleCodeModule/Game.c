@@ -6,17 +6,19 @@
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define SCREEN_HEIGHT               900//completar
-#define SCREEN_WIDTH                900//completar
+#define SCREEN_HEIGHT               600//completar
+#define SCREEN_WIDTH                600//completar
 
-#define BAR_LENGTH                  (17 * SCREEN_WIDTH/100)
-#define BAR_HEIGHT                  (1*SCREEN_HEIGHT/100)                
+#define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
+#define BAR_HEIGHT                  (4*SCREEN_HEIGHT/100)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
-#define BLOCK_WIDTH                 (1*SCREEN_WIDTH/9)
-#define BLOCK_XSEPARATION           (9*SCREEN_WIDTH/100)
-#define BLOCK_HEIGHT                (4*SCREEN_HEIGHT/100)
-#define BLOCK_YSEPARATION           (4*SCREEN_HEIGHT/100)
-#define BALL_RADIO                  (1*SCREEN_HEIGHT/100) 
+
+#define BLOCK_WIDTH                 ((2*SCREEN_WIDTH/3) / C_BLOCKS)
+#define BLOCK_XSEPARATION           ((SCREEN_WIDTH/3) / C_BLOCKS)
+#define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )//(4*SCREEN_HEIGHT/100)
+#define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))//(4*SCREEN_HEIGHT/100)
+#define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
+
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
 #define BLACK                       0x000000
@@ -51,16 +53,16 @@ int relative_startTime[6];
 int relative_time;
 int start_time[6];
 
-
+void printObjects();
 
 //para inicializar el juego
 int runGame(void){
     time_past=0;
     lives = LIVESi;
     blocks_left= R_BLOCKS*C_BLOCKS;                            
-    ball_pos[0]=SCREEN_WIDTH/2;
-    ball_pos[1]=500;      
-    ball_vel=20;
+    ball_pos[X]=SCREEN_WIDTH/2;
+    ball_pos[Y]=SCREEN_HEIGHT/2;      
+    ball_vel=5;
 
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
@@ -96,7 +98,7 @@ int startGame(){
  //juega recursivamente
 
 int startGameRec(void){ 
-    
+     
     relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
@@ -120,21 +122,26 @@ int startGameRec(void){
     }
     
 
-    // block[0]=posX de bloque que choco, block[1]=posY, block[2]=lado que choco del bloque;                       
-    print_ball(ball_pos, WHITE );
-    print_blocks(blocks);
-    print_bar(bar_pos, WHITE);
-
+    int curr_BallPos[]={ball_pos[X], ball_pos[Y]};
+    int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
     //modificar velocidad de 
 
-
-
+    printObjects(curr_BallPos, curr_BarPos);
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
+}
+
+void printObjects(int * curr_BallPos, int * curr_BarPos){
+    print_ball(curr_BallPos,BLACK );
+    print_bar(curr_BarPos, BLACK); 
+    print_ball(ball_pos, WHITE );
+    print_blocks(blocks);
+    print_bar(bar_pos, WHITE);
+
 }
 
 void handleBarMov(){
@@ -217,7 +224,8 @@ barSides ballHitBar(){
 
     if(!insideSquare(nextPos, LLSquare , URSquare)){
         return N;
-    }else{
+    }
+    else{
         //dentro de la primer parte de la barra
         
         makeSquare(LLSquare, bar_Xcord[0], bar_Ycord[1]);  
@@ -296,7 +304,7 @@ void ballHitBarChangeDireccion(barSides side){
             ball_dir = LD;
             break;
         case R:
-            ball_dir = RD;
+            ball_dir = RU;
             break;
         case UL:
             ball_dir = LU;
@@ -320,25 +328,25 @@ void ballNextPos(int * auxPos){
     switch(ball_dir){
         case LU:
             auxPos[X] -= ( ball_vel * 0.7071); 
-            auxPos[Y] += ( ball_vel * 0.7071);
+            auxPos[Y] -= ( ball_vel * 0.7071);
             break;
         case U:
-            auxPos[Y] += ball_vel;  
+            auxPos[Y] -= ball_vel;  
             break;
         case RU:
             auxPos[X] += ( ball_vel * 0.7071); 
-            auxPos[Y] += ( ball_vel * 0.7071);
+            auxPos[Y] -= ( ball_vel * 0.7071);
             break;
         case RD:
             auxPos[X] += ( ball_vel * 0.7071); 
-            auxPos[Y] -= ( ball_vel * 0.7071);
+            auxPos[Y] += ( ball_vel * 0.7071);
             break;
         case D: 
             auxPos[Y] += ball_vel * 0.7071;
             break;
         case LD:
             auxPos[X] -= ( ball_vel * 0.7071); 
-            auxPos[Y] -= ( ball_vel * 0.7071);
+            auxPos[Y] += ( ball_vel * 0.7071);
             break;
     }
     return;
@@ -441,6 +449,7 @@ void ballHitBlock(int * block){
                 block[0]=i;
                 block[1]=j;
                 block[2]=auxWall;
+                return;
             }       
         }
     }
@@ -450,59 +459,67 @@ void ballHitBlock(int * block){
 
 
 walls ballTouchingWall(int c, int r){
-    int auxPos[2];
-    ballNextPos(auxPos);
-    if(ballBetweenXSides(auxPos, c, r) && ballBetweenXSides(ball_pos, c, r) && ballBetweenYSides(auxPos, c, r)){
+    
+    int nextPos[2];
+    ballNextPos(nextPos);
+    
+
+    if(ballBetweenXSides(nextPos, c, r) && ballBetweenYSides(nextPos, c, r)){
         blocks_left -=1;
-        if(ball_dir == U || ball_dir == LU || ball_dir == RU){
-            return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
-        }
-        if(ball_dir == D || ball_dir == LD || ball_dir == RD){
-            return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
-        }
-    }
-    if(ballBetweenYSides(auxPos, c, r) && ballBetweenYSides(ball_pos, c, r) && ballBetweenXSides(auxPos, c, r)){
-        blocks_left -=1;
-        if(ball_dir == LU || ball_dir == LD){
-            return LEFT;
-        }
-        if(ball_dir == RU || ball_dir == RD){
-            return RIGHT; 
-        }
-    }if(ballBetweenXSides(auxPos, c, r) && ballBetweenYSides(auxPos, c, r) && !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
-        blocks_left -=1;
-        switch(ball_dir){
-            case LU:
-                return ULCORNER;    
-            break;
-            case RU:
-                return URCORNER;
-            break;
-            case LD:
-                return  LLCORNER;
-            break;
-            case RD:
-                return LRCORNER;
-            break;
+        
+        if( ballBetweenXSides(ball_pos, c, r) ){
             
+            if(ball_dir == U || ball_dir == LU || ball_dir == RU){
+                
+                return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+            }
+            if(ball_dir == D || ball_dir == LD || ball_dir == RD){
+                return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
+            }
+        }
+        if(ballBetweenYSides(ball_pos, c, r)){
+            
+            if(ball_dir == LU || ball_dir == LD){
+                return LEFT;
+            }
+            if(ball_dir == RU || ball_dir == RD){
+                return RIGHT; 
+            }
+        }
+        if( !ballBetweenYSides(ball_pos, c, r) && !ballBetweenXSides(ball_pos, c, r)){
+            
+            switch(ball_dir){
+                case LU:
+                    return ULCORNER;    
+                break;
+                case RU:
+                    return URCORNER;
+                break;
+                case LD:
+                    return  LLCORNER;
+                break;
+                case RD:
+                    return LRCORNER;
+                break;
+            
+            }
         }
     }
     return NONE;
 }
 
 int ballBetweenXSides(int * auxPos, int c, int r){
-    if(((auxPos[X] - BALL_RADIO) < ((c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION)) && ((auxPos[X] + BALL_RADIO) > (c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION))){
-        return 1;
-    }
-    return 0;
+    int x1=(c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION);
+    int x2=( (c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION );
+
+    return (ballBetween(auxPos[X], x1, x2 ))? 1:0;
 }
 
 int ballBetweenYSides(int * auxPos, int c, int r){
-    int topOfBall= auxPos[Y] - BALL_RADIO;
-    int bottomOfBall = auxPos[Y] + BALL_RADIO;
     int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ;
     int upperSideOfBlock =  r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
-    return   (topOfBall < lowerSideOfBlock) || ( bottomOfBall > upperSideOfBlock ); 
+
+    return   (ballBetween(auxPos[Y], upperSideOfBlock, lowerSideOfBlock))? 1:0; 
 }
 
 
@@ -530,14 +547,15 @@ void setRelativeStartTime(){
 }
 void print_ball(int * ball_pos,int color){
 
-    printOnScreen(ball_pos[X],ball_pos[Y],BALL_RADIO*2,BALL_RADIO*2,color);
+    printOnScreen(ball_pos,BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
 void print_bar(int * bar_pos,int color){
-    printOnScreen(bar_pos[X],bar_pos[Y],BAR_LENGTH,BAR_HEIGHT,color);
+    printOnScreen(bar_pos,BAR_LENGTH,BAR_HEIGHT,color);
 }
 void print_block(int x,int y,int color){
-    printOnScreen(x,y,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+    int pos[]= {x, y};
+    printOnScreen(pos,BLOCK_WIDTH,BLOCK_HEIGHT,color);
 }
 
 int stopKeyPressed(){
@@ -561,8 +579,3 @@ int right_arrow_pressed(){
     }
     return 0;
 }
-/* funciones a hacer=
-    .printf();
-    .bool stopKeyPressed()
-    
-*/

@@ -5,6 +5,6 @@
 #include <stdint.h>
 
 
-void printOnScreen(int x,int y,int lenght,int height,int fontColor);
+void printOnScreen(int *pos,int lenght,int height,int fontColor);
 
 #endif

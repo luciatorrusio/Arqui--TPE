@@ -35,22 +35,24 @@
 
 
 
-int lives;                                          //cantidad de vidas que tiene
+static int lives;                                          //cantidad de vidas que tiene
 
-int ball_pos[2];                                    //pelota en el medio de ls pantalla
-int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
-ballDirec ball_dir;
+static int ball_pos[2];                                    //pelota en el medio de ls pantalla
+static int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
+static ballDirec ball_dir;
 
-int bar_pos[2];
+static int bar_pos[2];
 
-int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
-int blocks_left; 
+static int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
+static int blocks_left; 
 
-int time_past;
+static int time_past;
 int relative_startTime[6];
 int relative_time;
 int start_time[6];
 
+
+//FUNCIONES
 void printObjects();
 
 //para inicializar el juego

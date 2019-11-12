@@ -15,8 +15,8 @@
 
 #define BLOCK_WIDTH                 ((2*SCREEN_WIDTH/3) / C_BLOCKS)
 #define BLOCK_XSEPARATION           ((SCREEN_WIDTH/3) / C_BLOCKS)
-#define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )//(4*SCREEN_HEIGHT/100)
-#define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))//(4*SCREEN_HEIGHT/100)
+#define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )
+#define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))
 #define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
 
 #define bar_vel                     (2*SCREEN_WIDTH/100)

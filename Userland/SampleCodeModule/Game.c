@@ -43,7 +43,8 @@
 
 #define NO_BLOCK                   -1
 
-
+#define LEFT_ARROW                 'a'
+#define RIGHT_ARROW                'd' 
 
 
 static int lives;                                          //cantidad de vidas que tiene
@@ -574,14 +575,14 @@ int stopKeyPressed(){
 }
 int left_arrow_pressed(){
     char key = readKey();
-    if(key == 'a'){
+    if(key == LEFT_ARROW){
         return 1;
     }
     return 0;
 }
 int right_arrow_pressed(){
     char key = readKey();
-    if(key == 'd'){
+    if(key == RIGHT_ARROW){
         return 1;
     }
     return 0;

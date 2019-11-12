@@ -41,8 +41,6 @@ int ball_pos[2];                                    //pelota en el medio de ls p
 int ball_vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
 ballDirec ball_dir;
 
-
-//int bar_vel;                                     //velocidad de la barra 
 int bar_pos[2];
 
 int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
@@ -519,7 +517,7 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 }
 
 
-int finishGame(int time_past, int result){
+int finishGame(int time_past){
     if(blocks_left == 0){
        // printf("congratulations you've won!! it took you %d seconds", time_past);
     }else{

@@ -85,7 +85,7 @@ int ballBetweenXSides(int * auxPos, int c, int r);
 
 int ballBetween(int auxPos, int y1, int y2);
 
-int finishGame(int time_past, int result);
+int finishGame(int time_past);
 
 void ballNextPos(int * auxPos);
 

@@ -158,7 +158,7 @@ int infoReg(){
 
 int time(){
 
-// Cuando este el printf lo terminamos
+/* Cuando este el printf lo terminamos
     char arr[200];
     char month[10];
     cleanArr(arr,200);
@@ -169,7 +169,8 @@ int time(){
     append(month,arr,200);
 
     writeLineToTerminal(arr);
-    
+ */
+ printf("%d/%d/%d %d:%d:%d",GetDayOfMonth(),GetMonth(),GetYear(),GetHours(),GetMinutes(),GetSeconds());   
     return 0;
 
 }

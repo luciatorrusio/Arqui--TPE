@@ -22,26 +22,25 @@
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
 //COLORES
-#define BLACK                       0x000000
-#define WHITE                       0xFFFFFF
-#define BLUE                        0x1
-#define GREEN                       0x2
-#define AQUA                        0x3
-#define RED                         0x4
-#define PURPLE                      0x5
-#define YELLOW                      0x6
-#define LightBlue                   0x9
-#define LightGreen                  0xA
-#define LightAqua                   0xB
-#define LightRed                    0xC
-#define LightPurple                 0xD
-#define LightYellow                 0xE   
+    #define BLACK                       0x000000
+    #define WHITE                       0xFFFFFF
+    #define BLUE                        0x1
+    #define GREEN                       0x2
+    #define AQUA                        0x3
+    #define RED                         0x4
+    #define PURPLE                      0x5
+    #define YELLOW                      0x6
+    #define LightBlue                   0x9
+    #define LightGreen                  0xA
+    #define LightAqua                   0xB
+    #define LightRed                    0xC
+    #define LightPurple                 0xD
+    #define LightYellow                 0xE   
+
 
 #define X                           0
 #define Y                           1
 
-#define WON                         1
-#define LOST                        0
 #define NO_BLOCK                   -1
 
 

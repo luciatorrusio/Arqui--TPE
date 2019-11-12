@@ -11,7 +11,6 @@
 
 // Variables
 
-#define MAXPBUFF 1000
 #define MAXBUFFER (600)
 
 static char TerminalDisplay [60][MAXBUFFER];
@@ -28,8 +27,8 @@ void handleTerminalMovement();
 void printTerminal();
 int interpretCommand();
 void printTypeLine();
-int getHash(char * string);
-
+void overwriteArrayUpTo(char * src, char * dest,char c);
+int strcmp(char * s1,char * s2);
 void initializeTerminal(){
     initializeCurses();
 
@@ -40,9 +39,9 @@ void initializeTerminal(){
 int runTerminal(){
 
     clearConsole();
-
-	do{
-		
+	time();
+    do{
+	
 		int key = readKey();
 		if(key >0){
             if(key == 8 ){
@@ -79,30 +78,35 @@ int runTerminal(){
 
 	}while(1);
 }
-int getHash(char * string){
-    int hash=0;
-    for(int i=0;*(string+i)!=0;i++){
-        hash=hash*255+*(string+i);
-    }
-    return hash;
-}
 
 int interpretCommand(){
     char command[MAXBUFFER];
-    overwriteArray(TerminalType,command);
-    int com=getHash(command);
-    if(com==getHash("time"))
-        printf("La hora es %d",time());
-    else if(com==getHash("man"))
+    char param1[MAXBUFFER];
+    char param2[MAXBUFFER];
+
+    overwriteArrayUpTo(TerminalType,command,' ');
+    overwriteArrayUpTo(TerminalType+strlen(command)+1,param1,' ');
+    overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+1,param2,' ');
+    
+    if(!strcmp(param2,"")){
+        printf("ERROR");
+        return 0;
+    }
+    if(strcmp(command,"time") && strcmp(param1,""))
+        time();
+    else if(strcmp(command,"man") && strcmp(param1,""))
         man();
-    else if(com==getHash("infoReg"))
+    else if(strcmp(command,"infoReg") && strcmp(param1,""))
         infoReg();
-    else if(com==getHash("printMem"))
-        printMem(interpretCommand);
-    //else if(com==getHash("game"))
-      //  game();
-    //else
-     //   ERROR;    
+    else if(strcmp(command,"printMem") && !strcmp(param1,"")){
+        printMem(param1);
+    }
+    else if(strcmp(command,"game") && strcmp(param1,""))
+        printf("aca iria el juego");
+    else if(strcmp(command,"clear") && strcmp(param1,""))
+        printf("aca iria el clear");
+    else
+       printf("ERROR");    
     
     return  0;
 }
@@ -162,11 +166,17 @@ void clearLine(int row){
 }
 
 void overwriteArray(char * src, char * dest){
+    overwriteArrayUpTo(src,dest,0);
+}
 
+void overwriteArrayUpTo(char * src, char * dest,char c){
     clearArray(dest,columns + 1);
-    for (int i = 0; src[i]!=0 && i < MAXBUFFER; i++)
+    int i;
+    for (i = 0; src[i]!=0 && src[i]!='\n' && i < MAXBUFFER && src[i]!=c; i++)
         dest[i] = src[i];
-    
+    if(i!=MAXBUFFER){
+        dest[i]=0;
+    }
 }
 
 
@@ -183,16 +193,24 @@ void writeLineToTerminal(char * str){
     }
 
 void printf(char * format,...){
-    char string[MAXPBUFF];
-    for(int i=0;i<MAXPBUFF;i++)
+    char string[MAXBUFFER];
+    for(int i=0;i<MAXBUFFER;i++)
         *(string+i)=0;
     va_list args;
 	va_start(args,format);
-    snprintf(string,MAXPBUFF,format,args);
+    snprintf(string,MAXBUFFER,format,args);
     va_end(args);
     writeLineToTerminal(string);
 }
 char getchar(){
 	char c=readKey();
     return c;
+}
+int strcmp(char * s1,char * s2){
+    int i;
+    for(i=0;*(s1+i)!=0 && *(s2+i)!=0 && *(s1+i)==*(s2+i);i++);
+
+    if(*(s1+i)==0 && *(s2+i)==0)
+     return 1;
+    return 0; 
 }

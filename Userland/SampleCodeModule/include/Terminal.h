@@ -15,4 +15,6 @@ void putchar(char c);
 
 void man();
 
+int strcmp(char * s1,char * s2);
+
 #endif

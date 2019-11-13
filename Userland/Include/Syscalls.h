@@ -5,7 +5,6 @@
 #define STDERR 2
 
 extern void write(int fd, char * buff );
-extern void writeAt(int fd, char * buff, unsigned int pos);
 
 extern void read(int fd,char * buff, unsigned int size);
 

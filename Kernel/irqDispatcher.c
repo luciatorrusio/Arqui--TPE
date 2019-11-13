@@ -56,16 +56,12 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	{
 		case 1:{ // write
 
-			if(fileDescriptor == 2){
-				
-				// Implementar
-
-			}
-
+		if(fileDescriptor == 2){
+			printfColor(buffer,0xFF0000,0x00FF00);
+		}
+		else{
 			printf(buffer);
-			
-			if(fileDescriptor == 2)
-				// Implementar
+		}
 
 			break;
 		}

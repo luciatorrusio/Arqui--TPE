@@ -8,6 +8,8 @@
 
 void printf(const char * format,...);
 
+void printfColor(const char * format,int fontColor, int backgroundColor,...);
+
 void putChar(char ch);
 
 

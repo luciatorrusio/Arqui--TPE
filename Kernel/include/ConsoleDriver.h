@@ -7,6 +7,8 @@ void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, 
 
 void printLine( char * string);
 
+void printLineColor(char * string, int fontColor, int backgroundColor);
+
 void printChar(char ch);
 
 void clearConsole();

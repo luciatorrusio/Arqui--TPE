@@ -56,6 +56,10 @@ void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, 
 
 void printLine(char * string){
 
+    printLineColor(string,fontColor,backgroundColor);
+}
+
+void printLineColor(char * string, int fontColor, int backgroundColor){
 // Cargo en memoria al string nuevo, ya separado en los arreglos que se van a imprimir.
 // Por la diferencia entre bottom y top puedo sacar cuantas lineas voy a tener que escribir
     int lenght = strlen(Buffer[topBufferIndex]);
@@ -84,9 +88,6 @@ void printLine(char * string){
 
     int printindex =1+ (endBufferIndex < topBufferIndex)?topBufferIndex -endBufferIndex :(realRows-endBufferIndex)+topBufferIndex  ;
     
-    
-
-
     while (tempIndex != (topBufferIndex+1)% realRows)
     {
         for(int t = 0 ; t < realCols ;t++)
@@ -98,6 +99,7 @@ void printLine(char * string){
         printindex--;
         tempIndex = (tempIndex+1) % realRows;
     }
+
 }
 
 void printChar(char ch){

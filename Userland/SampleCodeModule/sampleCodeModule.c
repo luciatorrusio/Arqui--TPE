@@ -13,10 +13,8 @@
 
 int main() {
 
-	println("HOLA");
-	 //initializeTerminal();
 
-	 //runTerminal();
+	 runTerminal();
 
 
 	return 0xDEA;

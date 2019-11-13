@@ -6,7 +6,8 @@
 #include <Curses.h>
 #include <VideoDriver.h>
 #include <font.h>
-
+#include <keyboard.h>
+#include <Debugger.h>
 
 #include <Curses.h>
 
@@ -86,28 +87,12 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-#include <keyboard.h>
-#include <Debugger.h>
-#include <ConsoleDriver.h>
+
 int main()
 {	
 	load_idt();
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
-
-
-	printLine("CHAAAAAUUUU");
-
-	while (1)
-	{
-		int a = returnKey();
-		if(a > 0){
-			printChar(a);
-		}
-	}
-	
-
-
 
 
 	((EntryPoint)sampleCodeModuleAddress)();

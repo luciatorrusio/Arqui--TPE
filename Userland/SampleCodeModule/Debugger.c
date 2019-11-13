@@ -1,5 +1,5 @@
-#include "../include/Debugger.h"
-#include "../include/String.h"
+#include "../Include/Debugger.h"
+#include "../Include/String.h"
 
 
 

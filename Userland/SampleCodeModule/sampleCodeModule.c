@@ -7,7 +7,7 @@
 #include "../Include/Curses.h"
 
 #include <stdlib.h>
-#include "../include/Debugger.h"
+#include "../Include/Debugger.h"
 
 
 

@@ -3,15 +3,9 @@
 
 #include <stdarg.h>
 
-void initializeTerminal();
 
-void writeLineToTerminal(char * str);
 
 int runTerminal();
-
-void printf(char * format,...);
-
-void putchar(char c);
 
 void man();
 

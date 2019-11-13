@@ -13,9 +13,6 @@
 
 int main() {
 
-	assertNotEqual(2,1);
-
-	 initializeTerminal();
 
 	 runTerminal();
 

@@ -12,14 +12,14 @@ int printMem(uint64_t memDirection){
     
     char printStr[(16 * 3) + 1];
 
-    writeLineToTerminal("Reading Memory: ");
+    printf("Reading Memory: \n");
 
     for(int j=0 ; j <2 ; j++){
         for(int i = 0 ; i < 16 ; i++){
             HexToString(printStr + i*3,3,rawMem[16 * j +i]);
             printStr[(i*3)-1] = ' ';
         }
-        writeLineToTerminal(printStr);
+        printf(printStr);
     }
 
     return 0;
@@ -45,7 +45,7 @@ int infoReg(){
     HexToString(temp,17,reg.rax);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 
 
 	
@@ -54,7 +54,7 @@ int infoReg(){
     HexToString(temp,17,reg.rbx);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 
 	
     cleanArr(arr,200);
@@ -62,7 +62,7 @@ int infoReg(){
     HexToString(temp,17,reg.rcx);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 
 	
     cleanArr(arr,200);
@@ -70,7 +70,7 @@ int infoReg(){
     HexToString(temp,17,reg.rdx);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -78,7 +78,7 @@ int infoReg(){
     HexToString(temp,17,reg.rsi);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -86,7 +86,7 @@ int infoReg(){
     HexToString(temp,17,reg.rdi);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -94,7 +94,7 @@ int infoReg(){
     HexToString(temp,17,reg.r8);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -102,7 +102,7 @@ int infoReg(){
     HexToString(temp,17,reg.r9);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -110,7 +110,7 @@ int infoReg(){
     HexToString(temp,17,reg.r10);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -118,7 +118,7 @@ int infoReg(){
     HexToString(temp,17,reg.r11);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -126,7 +126,7 @@ int infoReg(){
     HexToString(temp,17,reg.r12);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -134,7 +134,7 @@ int infoReg(){
     HexToString(temp,17,reg.r13);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -142,7 +142,7 @@ int infoReg(){
     HexToString(temp,17,reg.r14);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 	
 
     cleanArr(arr,200);
@@ -150,7 +150,7 @@ int infoReg(){
     HexToString(temp,17,reg.r15);
 	append(temp,arr,200);
     
-	writeLineToTerminal(arr);
+	printf(arr);
 
     return 0;
 
@@ -168,7 +168,7 @@ int time(){
 
     append(month,arr,200);
 
-    writeLineToTerminal(arr);
+    printf(arr);
  */
  printf("%d/%d/%d %d:%d:%d",GetDayOfMonth(),GetMonth(),GetYear(),GetHours(),GetMinutes(),GetSeconds());   
     return 0;

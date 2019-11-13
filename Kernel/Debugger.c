@@ -1,10 +1,11 @@
 #include "include/Debugger.h"
 #include <deviceInfo.h>
+#include <Curses.h>
 
 void ThrowCustomException(char * str){
     PrintExceptionDetails(str);
 
-    println("\n\n\nPress any key to continue");
+    printf("\n\n\nPress any key to continue");
 
 	do{
 		readKey();
@@ -23,68 +24,123 @@ void PrintExceptionDetails(char * name){
 	//clearConsole();
 	
 	//setColor(Red,Black);
-	println("EXCEPTION: ");
-	println(name);
-	println("  @ IP: 0X");
+	printf("EXCEPTION: ");
+	printf(name);
+	printf("  @ IP: 0X");
 
 	HexToString(temp,17,reg.rip);
-	println(temp);
+	printf(temp);
 
-	println("\nRAX: 0X");
+	printf("\nRAX: 0X");
 	HexToString(temp,17,reg.rax);
-	println(temp);
+	printf(temp);
 	
-	println("\nRBX: 0X");
+	printf("\nRBX: 0X");
 	HexToString(temp,17,reg.rbx);
-	println(temp);
+	printf(temp);
 
 	
-	println("\nRCX: 0X");
+	printf("\nRCX: 0X");
 	HexToString(temp,17,reg.rcx);
-	println(temp);
+	printf(temp);
 
 	
-	println("\nRDX: 0X");
+	printf("\nRDX: 0X");
 	HexToString(temp,17,reg.rdx);
-	println(temp);
+	printf(temp);
 	
-	println("\nRSI: 0X");
+	printf("\nRSI: 0X");
 	HexToString(temp,17,reg.rsi);
-	println(temp);
+	printf(temp);
 	
-	println("\nRDI: 0X");
+	printf("\nRDI: 0X");
 	HexToString(temp,17,reg.rdi);
-	println(temp);
+	printf(temp);
 	
-	println("\nR8:  0X");
+	printf("\nR8:  0X");
 	HexToString(temp,17,reg.r8);
-	println(temp);
+	printf(temp);
 
-	println("\nR9:  0X");
+	printf("\nR9:  0X");
 	HexToString(temp,17,reg.r9);
-	println(temp);
+	printf(temp);
 
-	println("\nR10: 0X");
+	printf("\nR10: 0X");
 	HexToString(temp,17,reg.r10);
-	println(temp);
+	printf(temp);
 
-	println("\nR11: 0X");
+	printf("\nR11: 0X");
 	HexToString(temp,17,reg.r11);
-	println(temp);
+	printf(temp);
 
-	println("\nR12: 0X");
+	printf("\nR12: 0X");
 	HexToString(temp,17,reg.r12);
-	println(temp);
+	printf(temp);
 
-	println("\nR13: 0X");
+	printf("\nR13: 0X");
 	HexToString(temp,17,reg.r13);
-	println(temp);
+	printf(temp);
 
-	println("\nR14: 0X");
+	printf("\nR14: 0X");
 	HexToString(temp,17,reg.r14);
-	println(temp);
+	printf(temp);
 
-	println("\nR15: 0X");
+	printf("\nR15: 0X");
 	HexToString(temp,17,reg.r15);
-	println(temp);
+	printf(temp);
+}
+
+bool assertEqual(void * val1, void * val2){
+
+    if(val1 == val2){
+        char temp[100];
+        char temp2 [20];
+
+        append("Values EQUAL:  ",temp,100);
+        IntToString(temp2,20,val1);
+        
+        append(temp2,temp,100);
+        
+        for(int i = 0 ; i < 20 ;i++)
+            temp2[i] = 0;
+        
+        IntToString(temp2,20,val2);
+
+        append(" == ",temp,100);
+
+        append(temp2,temp,100);
+
+       // formatString(temp,75,"Values %d == %d",val1,val2);
+        ThrowCustomException(temp);
+    }
+
+    return val1 == val2;
+}
+
+bool assertNotEqual(void * val1, void * val2){
+
+        if(val1 != val2){
+        char temp[100];
+        char temp2 [20];
+
+        append("Values NOT EQUAL:  ",temp,75);
+        IntToString(temp2,20,val1);
+        
+        append(temp2,temp,100);
+        
+        for(int i = 0 ; i < 20 ;i++)
+            temp2[i] = 0;
+        
+        IntToString(temp2,20,val2);
+
+        append(" != ",temp,100);
+
+        append(temp2,temp,100);
+
+       // formatString(temp,75,"Values %d == %d",val1,val2);
+        ThrowCustomException(temp);
+    }
+
+    return val1 != val2;
+
 }

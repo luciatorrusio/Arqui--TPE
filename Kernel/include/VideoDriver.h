@@ -4,11 +4,9 @@
 static unsigned int SCREEN_WIDTH = 1024;
 static unsigned int SCREEN_HEIGHT = 768;
 
-void drawLine();
 
 void startVideoDriver();
 
-void clearScreen();
 
 void drawChar(int x, int y, char character, int fontColor, int background);
 

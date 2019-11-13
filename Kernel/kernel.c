@@ -6,6 +6,10 @@
 #include <Curses.h>
 #include <VideoDriver.h>
 #include <font.h>
+#include <keyboard.h>
+#include <Debugger.h>
+
+#include <Curses.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -83,11 +87,13 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
+
 int main()
 {	
 	load_idt();
 	startVideoDriver();
-	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH);
+	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
+
 
 	((EntryPoint)sampleCodeModuleAddress)();
 

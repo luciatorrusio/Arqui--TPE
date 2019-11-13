@@ -14,7 +14,6 @@ static void int_21();
 void int_82(int timeID, int * value);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
-static void int_85(char * firstParam);
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
 
@@ -34,12 +33,6 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x82:
 			int_82(firstParam,secondParam);
 			break;
-		case 0x85:{		
-			
-			int_85(firstParam);
-
-			break;
-		}
 	}
 }
 
@@ -58,37 +51,21 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	int fileDescriptor = secondParam;
 	char * buffer = (char *) thirdParam;
 
-	Color currentTextColor,currentBackgroundColor;
 	
 	switch (id)
 	{
 		case 1:{ // write
 
 			if(fileDescriptor == 2){
-				getColor(&currentTextColor,&currentBackgroundColor);
-				setColor(White,Red);
+				
+				// Implementar
+
 			}
 
-			println(buffer);
+			printf(buffer);
 			
 			if(fileDescriptor == 2)
-				setColor(currentTextColor,currentBackgroundColor);
-
-			break;
-		}
-		case 2:{ // write at
-
-			uint64_t position = fourthParam;
-
-			if(fileDescriptor == 2){
-				getColor(&currentTextColor,&currentBackgroundColor);
-				setColor(White,Red);
-			}
-
-			printlnAt(buffer,position);
-
-			if(fileDescriptor == 2)
-				setColor(currentTextColor,currentBackgroundColor);
+				// Implementar
 
 			break;
 		}
@@ -131,6 +108,4 @@ void int_82(int timeID, int * value){
 	*value = handleTimeRequest(timeID);
 }
 
-void int_85(char * firstParam){
-	ThrowCustomException(firstParam);
-}
+

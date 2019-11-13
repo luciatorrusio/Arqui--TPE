@@ -13,11 +13,10 @@
 
 int main() {
 
-	assertNotEqual(2,1);
+	println("HOLA");
+	 //initializeTerminal();
 
-	 initializeTerminal();
-
-	 runTerminal();
+	 //runTerminal();
 
 
 	return 0xDEA;

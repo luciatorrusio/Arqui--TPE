@@ -7,6 +7,9 @@
 #include <VideoDriver.h>
 #include <font.h>
 
+
+#include <Curses.h>
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -83,11 +86,29 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
+#include <keyboard.h>
+#include <Debugger.h>
+#include <ConsoleDriver.h>
 int main()
 {	
 	load_idt();
 	startVideoDriver();
-	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH);
+	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
+
+
+	printLine("CHAAAAAUUUU");
+
+	while (1)
+	{
+		int a = returnKey();
+		if(a > 0){
+			printChar(a);
+		}
+	}
+	
+
+
+
 
 	((EntryPoint)sampleCodeModuleAddress)();
 

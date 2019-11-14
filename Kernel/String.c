@@ -121,7 +121,7 @@ void preppend(char * src, char * dest, unsigned size){
 }
 
 
-void formatString(char * string, int size,char format,...){
+void formatString(char * string, int size,char *format,...){
 	va_list args;
 	va_start(args,format);
 	snprintf(string,size,format,args);

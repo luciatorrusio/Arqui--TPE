@@ -23,7 +23,9 @@ void exceptionDispatcher(int exception, void * firstParam) {
 		switch(exception){
 			case ZERO_EXCEPTION_ID:
 			{
-				PrintExceptionDetails("DIVISION BY ZERO");
+					putChar('M');
+
+				//PrintExceptionDetails("DIVISION BY ZERO");
 				break;
 			}
 			case CUSTOM_EXCEPTION:

@@ -10,14 +10,14 @@ bool assertEqual(void * val1, void * val2){
         char temp2 [20];
 
         append("Values EQUAL:  ",temp,100);
-        IntToString(temp2,20,val1);
+        IntToString(temp2,20,(uint64_t)val1);
         
         append(temp2,temp,100);
         
         for(int i = 0 ; i < 20 ;i++)
             temp2[i] = 0;
         
-        IntToString(temp2,20,val2);
+        IntToString(temp2,20,(uint64_t)val2);
 
         append(" == ",temp,100);
 
@@ -37,14 +37,14 @@ bool assertNotEqual(void * val1, void * val2){
         char temp2 [20];
 
         append("Values NOT EQUAL:  ",temp,75);
-        IntToString(temp2,20,val1);
+        IntToString(temp2,20,(uint64_t)val1);
         
         append(temp2,temp,100);
         
         for(int i = 0 ; i < 20 ;i++)
             temp2[i] = 0;
         
-        IntToString(temp2,20,val2);
+        IntToString(temp2,20,(uint64_t)val2);
 
         append(" != ",temp,100);
 

@@ -16,7 +16,7 @@ void preppend(char * src, char * dest, unsigned size);
 
 void append(char * src, char * dest, unsigned size);
 
-void formatString(char * string, int size,char format,...);
+void formatString(char * string, int size,char * format,...);
 
 
 

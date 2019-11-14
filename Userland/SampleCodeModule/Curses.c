@@ -21,19 +21,19 @@ void printf(const char * format, ...){
         *(string+i)=0;
     va_list args;
 	va_start(args,format);
-    snprintf(string,MAXBUFFER,format,args);
+    snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
     write(STDOUT,string);
 }
 
 void printfError(const char * format,...){
-        char string[MAXBUFFER];
+    char string[MAXBUFFER];
     for(int i=0;i<MAXBUFFER;i++)
         *(string+i)=0;
     va_list args;
 	va_start(args,format);
-    snprintf(string,MAXBUFFER,format,args);
+    snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
     write(STDERR,string);

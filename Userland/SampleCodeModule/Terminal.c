@@ -15,7 +15,7 @@
 
 static char TerminalType [MAXBUFFER];
 static unsigned int TypeIndex = 0;
-static unsigned int FirstAvailableLine = 0;
+//static unsigned int FirstAvailableLine = 0;
 
 
 
@@ -37,7 +37,7 @@ int runTerminal(){
             if(key == 8 ){
                 if(TypeIndex>0)
                     TerminalType[--TypeIndex] = 0;
-                    printTerminal();
+                printTerminal();
 
             }else{ 
 
@@ -75,7 +75,9 @@ int interpretCommand(){
     else if(strcmp(command,"infoReg\n") && strcmp(param1,""))
         infoReg();
     else if(strcmp(command,"printMem\n") && !strcmp(param1,"")){
-        printMem(param1);
+        int a = 0;
+        // convertir param1 a int!!!!!
+        printMem(a);
     }
     else if(strcmp(command,"game\n") && strcmp(param1,""))
         printf("aca iria el juego\n");

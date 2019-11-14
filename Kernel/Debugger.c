@@ -5,7 +5,7 @@
 void ThrowCustomException(char * str){
     PrintExceptionDetails(str);
 
-    printf("\n\n\nPress any key to continue");
+    printfColor("\n\n\nPress any key to continue",0xFF0000,0xFFFFFF);
 
 	do{
 		readKey();

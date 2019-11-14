@@ -56,8 +56,11 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	{
 		case 1:{ // write
 
+		// assertEqual(fileDescriptor,2);
+
 		if(fileDescriptor == 2){
-			printfColor(buffer,0xFF0000,0x00FF00);
+			// ThrowCustomException(buffer);
+			printfColor(buffer,0xFF0000,0x0000);
 		}
 		else{
 			printf(buffer);

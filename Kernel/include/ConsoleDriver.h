@@ -3,13 +3,21 @@
 
 #include <stdarg.h>
 
+typedef struct{
+    char ch;
+    int fontColor;
+    int backgroundColor;
+}ColorChar;
+
 void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, int screenWidth_);
 
-void printLine( char * string);
+void printLine(char * string);
 
-void printLineColor(char * string, int fontColor, int backgroundColor);
+void printLineColor(ColorChar * string);
 
 void printChar(char ch);
+
+void printCharColor(ColorChar ch);
 
 void clearConsole();
 

@@ -52,7 +52,7 @@ void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, 
     screenWidth = screenWidth_;
 
     realCols = screenWidth / charWidth;
-    realRows = 10;// screenHeight / charHeight;
+    realRows =  screenHeight / charHeight;
 }
 
 
@@ -101,26 +101,26 @@ void printLineColor(ColorChar * string){
 
     }
     Buffer[topBufferIndex][lenght++].ch = 0;
-    
 
+
+ 
     int tempIndex = endBufferIndex;
 
-    int printindex =1+ (endBufferIndex < topBufferIndex)?topBufferIndex -endBufferIndex :(realRows-endBufferIndex)+topBufferIndex  ;
-    
-    while (tempIndex != (topBufferIndex+1)% realRows)
+    int printindex =  (endBufferIndex < topBufferIndex)?topBufferIndex -endBufferIndex :(MAX_ROWS-endBufferIndex)+topBufferIndex  ;
+
+    while (printindex >=0)
     {
         for(int t = 0 ; t < realCols ;t++)
             drawChar(t * charWidth,screenHeight -(printindex+1) * charHeight,
                 Buffer[tempIndex][t].ch,Buffer[tempIndex][t].fontColor,Buffer[tempIndex][t].backgroundColor);
         for (int j = 0; Buffer[tempIndex][j].ch != 0; j++)
         {
-            drawChar( j * charWidth,screenHeight -(printindex+1) * charHeight,
+            drawChar(  j * charWidth,screenHeight -(printindex+1) * charHeight,
                 Buffer[tempIndex][j].ch,Buffer[tempIndex][j].fontColor,Buffer[tempIndex][j].backgroundColor);
         }  
         printindex--;
-        tempIndex = (tempIndex+1) % realRows;
+        tempIndex = (tempIndex+1) % MAX_ROWS;
     }
-
 }
 
 void printChar(char ch){
@@ -153,11 +153,13 @@ void printCharColor(ColorChar ch){
 
     Buffer[topBufferIndex][lenght].ch = 0;
 
-    int tempIndex = endBufferIndex+1;
+  
+    // ODIO A LOS ARREGLOS CIRCULARES
+    int tempIndex = endBufferIndex;
 
-    int printindex =1+ (endBufferIndex < topBufferIndex)?topBufferIndex -endBufferIndex :(realRows-endBufferIndex)+topBufferIndex  ;
+    int printindex =  (endBufferIndex < topBufferIndex)?topBufferIndex -endBufferIndex :(MAX_ROWS-endBufferIndex)+topBufferIndex  ;
 
-    while (tempIndex != (topBufferIndex+1)% realRows)
+    while (printindex >=0)
     {
         for(int t = 0 ; t < realCols ;t++)
             drawChar(t * charWidth,screenHeight -(printindex+1) * charHeight,
@@ -168,7 +170,7 @@ void printCharColor(ColorChar ch){
                 Buffer[tempIndex][j].ch,Buffer[tempIndex][j].fontColor,Buffer[tempIndex][j].backgroundColor);
         }  
         printindex--;
-        tempIndex = (tempIndex+1) % realRows;
+        tempIndex = (tempIndex+1) % MAX_ROWS;
     }
 }
 
@@ -212,12 +214,18 @@ int countRepetitionsOfColorString(ColorChar * str, char ch){
 
 void __nextColumn(){
 
-    topBufferIndex = (topBufferIndex+1) % realRows;
+    topBufferIndex = (topBufferIndex+1) % MAX_ROWS;
 
-    if((topBufferIndex+1) % realRows == endBufferIndex){
+    int distance = (topBufferIndex >= endBufferIndex)? 
+                    topBufferIndex - endBufferIndex:
+                    topBufferIndex + (MAX_ROWS -endBufferIndex);
+
+    while(distance > realRows){
 
         for(int i = 0 ; i < realCols ; i++)
             Buffer[endBufferIndex][i].ch = 0;
-        endBufferIndex = (endBufferIndex+1) % realRows;
+        endBufferIndex = (endBufferIndex+1) % MAX_ROWS;
+        distance--;
+
     }
 }

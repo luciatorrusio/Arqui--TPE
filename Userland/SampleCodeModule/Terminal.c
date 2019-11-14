@@ -64,10 +64,10 @@ int interpretCommand(){
     overwriteArrayUpTo(TerminalType+strlen(command)+1,param1,' ');
     overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+1,param2,' ');
     
-    if(!strcmp(param2,"")){
-        printfError("ERROR\n");
-        return 0;
-    }
+    // if(!strcmp(param2,"")){
+    //     printfError("ERROR\n");
+    //     return 0;
+    // }
     if(strcmp(command,"time\n") && strcmp(param1,""))
         time();
     else if(strcmp(command,"man\n") && strcmp(param1,""))
@@ -83,8 +83,8 @@ int interpretCommand(){
         printf("aca iria el juego\n");
     else if(strcmp(command,"clear\n") && strcmp(param1,""))
         printf("aca iria el clear\n");
-    else
-       printfError("ERROR\n");    
+    // else
+    //    printfError("ERROR\n");    
     
     return  0;
 }

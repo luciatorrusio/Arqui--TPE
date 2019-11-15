@@ -96,20 +96,16 @@ int main()
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
 
-	// ColorChar temp[10];
-	// int i;
-	// for(i = 0 ; i < 10; i++){
-	// 	temp[i].ch = '0'+i;
-	// 	temp[i].fontColor = 0xFF0000;
-	// 	temp[i].backgroundColor = 0xFF0000;
-	// }
 
-	// temp[9].ch=0;
-	// temp[9].ch='\n';
 
-	// printLineColor(temp);
-
-	// printfColor("123456789\n",0xFF0000,0x00FF00);
+	// printfColor("hola\n",0xFF0000,0x00FF00);
+	// printfColor("TodoBien\n",0xFF0000,0x00FF00);
+	// printfColor("bajamos\n",0xFF0000,0x00FF00);
+	// printfColor("unPocoPeroNoMucho\n",0xFF0000,0x00FF00);
+	// printChar('H');
+	// printChar('A');
+	// printChar('\n');
+	// printChar('P');
 
 	((EntryPoint)sampleCodeModuleAddress)();
 

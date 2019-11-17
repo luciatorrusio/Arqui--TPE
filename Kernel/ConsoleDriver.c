@@ -115,9 +115,13 @@ void printChar(char ch){
 
 void printCharColor(ColorChar ch){
 
-    previusCurrPosition = currPosition++;
+    if(ch.ch == '\n'){
+        previusCurrPosition = currPosition;
+    }
+    
+    currPosition += 1;
 
-    Buffer[previusCurrPosition] = ch;
+    Buffer[currPosition-1] = ch;
     Buffer[currPosition].ch = 0;
     
 
@@ -138,6 +142,22 @@ void clearConsole(){
     endBufferIndex = 1;
     topBufferIndex = 1;
     
+}
+
+static int counter = 0;
+
+void removeLastChar(){
+    if(currPosition > 0){
+        Buffer[currPosition-1].ch = ' ';
+        Buffer[currPosition-1].fontColor = DEFAULT_FONT_COLOR;
+        Buffer[currPosition-1].backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        counter++;
+        currPosition=1;
+
+        if(counter == 4){
+            ThrowCustomException("MAS DE 4");
+        }
+    }
 }
 
 
@@ -176,7 +196,12 @@ void reflectBufferChangesToDisplay(){
         int x = -1;
         for(int i = currPosition-1; i >= 0 && Buffer[i].ch != '\n'; i--)
             x++;
-        drawChar(x * charWidth,screenHeight - charHeight,Buffer[currPosition-1].ch,Buffer[currPosition-1].fontColor,Buffer[currPosition-1].backgroundColor);
+        for(int i = 0 ; Buffer[currPosition - x-1 + i ].ch!=0 ; i++){
+
+            drawChar(x * charWidth,screenHeight - charHeight,Buffer[currPosition - x-1 + i].ch,Buffer[currPosition - x-1 + i].fontColor,Buffer[currPosition - x-1 + i].backgroundColor);
+
+        }
+        // drawChar(x * charWidth,screenHeight - charHeight,Buffer[currPosition-1].ch,Buffer[currPosition-1].fontColor,Buffer[currPosition-1].backgroundColor);
 
 
     }

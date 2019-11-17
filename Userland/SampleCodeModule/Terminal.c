@@ -35,9 +35,10 @@ int runTerminal(){
 
 		if(key >0){           
             if(key == 8 ){
-                if(TypeIndex>0)
+                if(TypeIndex>0){
                     TerminalType[--TypeIndex] = 0;
-                printTerminal();
+                    RemoveLastCharFromDisplay();
+                }
 
             }else{ 
 

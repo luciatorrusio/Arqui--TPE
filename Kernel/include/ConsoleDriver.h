@@ -21,6 +21,8 @@ void printCharColor(ColorChar ch);
 
 void clearConsole();
 
+void removeLastChar();
+
 
 
 

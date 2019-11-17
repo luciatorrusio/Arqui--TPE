@@ -100,7 +100,7 @@ void man(){
 void printTerminal(){
     
     if(TerminalType[0])
-        printf(TerminalType + strlen(TerminalType)-1);
+        putChar(TerminalType[TypeIndex-1]);
 }
 
 

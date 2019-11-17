@@ -88,7 +88,7 @@ static int currentRows = 0;
 
 void printLineColor(ColorChar * string){
 
-    currPosition = strlenColorString(Buffer);
+    //currPosition = strlenColorString(Buffer);
 
     for( previusCurrPosition = currPosition ; 
             currPosition < MAX_BUFFER_SIZE && string[currPosition - previusCurrPosition].ch != 0;
@@ -119,9 +119,10 @@ void printCharColor(ColorChar ch){
         previusCurrPosition = currPosition;
     }
     
-    currPosition += 1;
+    
 
-    Buffer[currPosition-1] = ch;
+    Buffer[currPosition] = ch;
+    currPosition += 1;
     Buffer[currPosition].ch = 0;
     
 
@@ -144,19 +145,15 @@ void clearConsole(){
     
 }
 
-static int counter = 0;
 
 void removeLastChar(){
     if(currPosition > 0){
-        Buffer[currPosition-1].ch = ' ';
-        Buffer[currPosition-1].fontColor = DEFAULT_FONT_COLOR;
-        Buffer[currPosition-1].backgroundColor = DEFAULT_BACKGROUND_COLOR;
-        counter++;
-        currPosition=1;
+        currPosition--;
+        Buffer[currPosition].ch = ' ';
+        Buffer[currPosition].fontColor = DEFAULT_FONT_COLOR;
+        Buffer[currPosition].backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
-        if(counter == 4){
-            ThrowCustomException("MAS DE 4");
-        }
+        reflectBufferChangesToDisplay();
     }
 }
 
@@ -196,12 +193,10 @@ void reflectBufferChangesToDisplay(){
         int x = -1;
         for(int i = currPosition-1; i >= 0 && Buffer[i].ch != '\n'; i--)
             x++;
-        for(int i = 0 ; Buffer[currPosition - x-1 + i ].ch!=0 ; i++){
 
-            drawChar(x * charWidth,screenHeight - charHeight,Buffer[currPosition - x-1 + i].ch,Buffer[currPosition - x-1 + i].fontColor,Buffer[currPosition - x-1 + i].backgroundColor);
-
+        for(int i = 0 ; Buffer[(currPosition-1) - x + i ].ch!=0 ; i++){
+            drawChar(i * charWidth,screenHeight - charHeight,Buffer[currPosition - x-1 + i].ch,Buffer[currPosition - x-1 + i].fontColor,Buffer[currPosition - x-1 + i].backgroundColor);
         }
-        // drawChar(x * charWidth,screenHeight - charHeight,Buffer[currPosition-1].ch,Buffer[currPosition-1].fontColor,Buffer[currPosition-1].backgroundColor);
 
 
     }

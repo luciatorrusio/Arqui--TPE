@@ -13,6 +13,8 @@ static void int_80(void * firstParam,void * secondParam,void * thirdParam,void *
 static void int_21();
 void int_82(int timeID, int * value);
 
+void dispatchDelete(void * fd);
+
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
@@ -55,18 +57,14 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	switch (id)
 	{
 		case 1:{ // write
-
-		// assertEqual(fileDescriptor,2);
-
-		if(fileDescriptor == 2){
-			// ThrowCustomException(buffer);
-			printfColor(buffer,0xFF0000,0x0000);
-		}
-		else{
-			printf(buffer);
-		}
-
+			if(fileDescriptor == 2)
+				printfColor(buffer,0xFF0000,0x0000);
+			else
+				printf(buffer);
 			break;
+		}
+		case 2:{ // Delete
+			dispatchDelete(secondParam);
 		}
 		case 3: // read
 		{
@@ -107,4 +105,21 @@ void int_82(int timeID, int * value){
 	*value = handleTimeRequest(timeID);
 }
 
+#define CURRENT_CHAR 1
+#define ALL_DISPLAY 2
+#include <ConsoleDriver.h>
+
+void dispatchDelete(void * fd){
+	switch ((int)fd)
+	{
+		case CURRENT_CHAR:{
+			removeLastChar();
+			break;
+		}
+		case ALL_DISPLAY:{
+			clearConsole();
+			break;
+		}
+	}
+}
 

@@ -5,13 +5,15 @@
 #include <stdbool.h>
 
 
-#define MAXBUFFER 200
+#define MAXBUFFER 1000
+#define FD_LAST_CHAR 1
+#define FD_ALL_DISPLAY 2
 
 
 
 void clearConsole()
 {
- 
+    delete(FD_ALL_DISPLAY);
 }
 
 
@@ -42,6 +44,9 @@ void printfError(const char * format,...){
 
 
 
+void RemoveLastCharFromDisplay(){
+    delete(FD_LAST_CHAR);
+}
 
 
 void putChar( char ch)

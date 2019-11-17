@@ -97,17 +97,13 @@ void preppend(char * src, char * dest, unsigned size){
 
 }
 
-void removeFirstOccurrence(char * str, char ch){
-	
+int strcmp(char * s1,char * s2){
+    int i;
+    for(i=0;*(s1+i)!=0 && *(s2+i)!=0 && *(s1+i)==*(s2+i);i++);
 
-}
-
-void removeLastOccurrence(char * str, char ch){
-
-}
-
-void removeAllOcurrences(char * str, char ch){
-
+    if(*(s1+i)==0 && *(s2+i)==0)
+     return 1;
+    return 0; 
 }
 
 void formatString(char * string, int size,char format,...){

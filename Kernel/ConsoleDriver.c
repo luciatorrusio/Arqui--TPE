@@ -6,8 +6,6 @@
 /***************************************************************/
 /*                         CONSTANTES                          */
 /***************************************************************/
-#define MAX_ROWS 80  // old
-#define MAX_COLS 500 //old
 
 #define MAX_BUFFER_SIZE (10000)
 
@@ -23,23 +21,16 @@ static int charWidth;
 static int screenHeight;
 static int screenWidth;
 
-static int realRows;    //OLD
-static int realCols;    //OLD
-
-static ColorChar MatrixBuffer[MAX_ROWS][MAX_COLS];//OLD
-static int topBufferIndex = 1;//OLD
-static int endBufferIndex = 1;//OLD
-
 static ColorChar Buffer[MAX_BUFFER_SIZE];
 static int currPosition = 0;
 static int previusCurrPosition = 0;
+static int currentRows = 0;
 
 
 /***************************************************************/
 /*                         Declaraciones                       */
 /***************************************************************/
 
-void __nextColumn();
 void reflectBufferChangesToDisplay();
 
 int countRepetitionsOfColorString(ColorChar * str, char ch);
@@ -59,8 +50,6 @@ void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, 
     screenHeight = screenHeight_;
     screenWidth = screenWidth_;
 
-    realCols = screenWidth / charWidth;
-    realRows =  screenHeight / charHeight;
 }
 
 
@@ -84,11 +73,9 @@ void printLine(char * string){
     printLineColor(temp);
 }
 
-static int currentRows = 0;
+
 
 void printLineColor(ColorChar * string){
-
-    //currPosition = strlenColorString(Buffer);
 
     for( previusCurrPosition = currPosition ; 
             currPosition < MAX_BUFFER_SIZE && string[currPosition - previusCurrPosition].ch != 0;
@@ -118,31 +105,26 @@ void printCharColor(ColorChar ch){
     if(ch.ch == '\n'){
         previusCurrPosition = currPosition;
     }
-    
-    
 
     Buffer[currPosition] = ch;
     currPosition += 1;
     Buffer[currPosition].ch = 0;
     
-
     reflectBufferChangesToDisplay();
-
-   
 }
 
 void clearConsole(){
- 
-     for(int i = 0 ; i < realRows ; i++){
-        for(int j = 0 ; j < realCols ; j++){
-            MatrixBuffer[i][j].ch = 0;
-            drawChar(charWidth * j, charHeight * i,' ',DEFAULT_FONT_COLOR,DEFAULT_BACKGROUND_COLOR);
-        }
-    }
+    currentRows = 0;
+    currPosition = 0;
+    previusCurrPosition = 0;
 
-    endBufferIndex = 1;
-    topBufferIndex = 1;
-    
+    Buffer[currPosition].ch = 0;
+    Buffer[currPosition].fontColor = DEFAULT_FONT_COLOR;
+    Buffer[currPosition].backgroundColor = DEFAULT_BACKGROUND_COLOR;
+
+    for(int x = 0 ; x <= screenWidth; x+= charWidth)
+        for(int y = 0 ; y <= screenHeight; y+= charHeight)
+            drawChar(x,y,' ',DEFAULT_FONT_COLOR,DEFAULT_BACKGROUND_COLOR);    
 }
 
 
@@ -228,8 +210,6 @@ void removeColorString(ColorChar * str, int pos){
 }
 
 
-
-
 void appendColorString(ColorChar * src, ColorChar * dest, int bufferSize){
     int base = strlenColorString(dest);
     int i;
@@ -247,22 +227,4 @@ int countRepetitionsOfColorString(ColorChar * str, char ch){
 			count++;
 
 	return count;
-}
-
-void __nextColumn(){
-
-    topBufferIndex = (topBufferIndex+1) % MAX_ROWS;
-
-    int distance = (topBufferIndex >= endBufferIndex)? 
-                    topBufferIndex - endBufferIndex:
-                    topBufferIndex + (MAX_ROWS -endBufferIndex);
-
-    while(distance > realRows){
-
-        for(int i = 0 ; i < realCols ; i++)
-            MatrixBuffer[endBufferIndex][i].ch = 0;
-        endBufferIndex = (endBufferIndex+1) % MAX_ROWS;
-        distance--;
-
-    }
 }

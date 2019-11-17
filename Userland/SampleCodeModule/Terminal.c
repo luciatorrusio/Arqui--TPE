@@ -1,4 +1,3 @@
-
 #include <stdarg.h>
 #include "include/Terminal.h"
 #include "../Include/Curses.h"
@@ -6,27 +5,32 @@
 #include "../Include/String.h"
 #include <stdlib.h>
 
-
-
-
-// Variables
+/***************************************************************/
+/*                        Constantes                           */
+/***************************************************************/
 
 #define MAXBUFFER (600)
 
+/***************************************************************/
+/*                         Variables                           */
+/***************************************************************/
+
 static char TerminalType [MAXBUFFER];
 static unsigned int TypeIndex = 0;
-//static unsigned int FirstAvailableLine = 0;
 
-
+/***************************************************************/
+/*                         Declaraciones                       */
+/***************************************************************/
 
 void clearArray(char * arr, int size);
 void overwriteArray(char * src, char * dest);
 void printTerminal();
 int interpretCommand();
 void overwriteArrayUpTo(char * src, char * dest,char c);
-int strcmp(char * s1,char * s2);
 
-
+/***************************************************************/
+/*                      Funciones Publicas                     */
+/***************************************************************/
 
 int runTerminal(){
     do{
@@ -55,6 +59,10 @@ int runTerminal(){
         }
 	}while(1);
 }
+
+/***************************************************************/
+/*                      Funciones Privadas                     */
+/***************************************************************/
 
 int interpretCommand(){
     char command[MAXBUFFER];
@@ -94,9 +102,6 @@ void man(){
 }
 
 
-
-
-
 void printTerminal(){
     
     if(TerminalType[0])
@@ -127,11 +132,3 @@ void overwriteArrayUpTo(char * src, char * dest,char c){
 }
 
 
-int strcmp(char * s1,char * s2){
-    int i;
-    for(i=0;*(s1+i)!=0 && *(s2+i)!=0 && *(s1+i)==*(s2+i);i++);
-
-    if(*(s1+i)==0 && *(s2+i)==0)
-     return 1;
-    return 0; 
-}

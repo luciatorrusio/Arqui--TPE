@@ -97,16 +97,6 @@ int main()
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
 
 
-
-	// printfColor("hola\n",0xFF0000,0x00FF00);
-	// printfColor("TodoBien\n",0xFF0000,0x00FF00);
-	// printfColor("bajamos\n",0xFF0000,0x00FF00);
-	// printfColor("unPocoPeroNoMucho\n",0xFF0000,0x00FF00);
-	// printChar('H');
-	// printChar('A');
-	// printChar('\n');
-	// printChar('P');
-
 	((EntryPoint)sampleCodeModuleAddress)();
 
 

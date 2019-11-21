@@ -57,6 +57,7 @@ static int bar_pos[2];
 
 static int blocks[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
 static int blocks_left; 
+int block[3];
 
 static int time_past;
 int relative_startTime[6];
@@ -64,10 +65,10 @@ int relative_time;
 int start_time[6];
 
 
-//FUNCIONES
-void printObjects();
+//DECLARACION DE FUNCIONES
+void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
 
-//para inicializar el juego
+//para inicializar el juego de cero
 int runGame(void){
     time_past=0;
     lives = LIVESi;
@@ -140,16 +141,17 @@ int startGameRec(void){
     handleBallMov();
     //modificar velocidad de 
 
-    printObjects(curr_BallPos, curr_BarPos);
+    printObjects(curr_BallPos, curr_BarPos, block);
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
-void printObjects(int * curr_BallPos, int * curr_BarPos){
+void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     //print_ball(curr_BallPos,BLACK );
     //print_bar(curr_BarPos, BLACK); 
     print_ball(ball_pos, WHITE );
-    print_blocks(blocks);
+    if(block[X]!= NO_BLOCK)
+        print_block(block[X], block[Y], BLACK);
     print_bar(bar_pos, WHITE);
 }
 
@@ -171,7 +173,6 @@ void handleBallMov(void){
     //si pega contra una pared
     walls wall;
     barSides bar_side;
-    int block[3];
     ballHitBlock(block);
     if( (wall = ballHitWall()) ){   //NONE = 0 entonces devuelve FALSE
         switch(wall){

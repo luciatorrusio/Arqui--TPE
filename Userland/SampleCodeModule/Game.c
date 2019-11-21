@@ -103,7 +103,7 @@ int startGame(){
     start_time[4]=relative_startTime[4];
     start_time[5]=relative_startTime[5];
     */
-    print_blocks(blocks);
+    //print_blocks(blocks);
     startGameRec();
     return 0;
 }

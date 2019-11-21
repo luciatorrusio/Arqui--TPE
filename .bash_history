@@ -60,3 +60,11 @@ exit
 make all
 make clean
 make all
+make clean
+dc Toolchain/
+cd Toolchain/
+make clean
+make all
+cd ..
+make all
+exit

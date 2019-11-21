@@ -94,13 +94,15 @@ int runGame(void){
 
 //cuando quiero retomar el juego
 int startGame(){
-    setRelativeStartTime();
+    /*setRelativeStartTime();
     start_time[0]=relative_startTime[0];
     start_time[1]=relative_startTime[1];
     start_time[2]=relative_startTime[2];
     start_time[3]=relative_startTime[3];
     start_time[4]=relative_startTime[4];
     start_time[5]=relative_startTime[5];
+    */
+    print_blocks(blocks);
     startGameRec();
     return 0;
 }
@@ -111,7 +113,7 @@ int startGame(){
 
 int startGameRec(void){ 
      
-    relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
+    /*relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
     if(stopKeyPressed()){ 
         time_past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO
@@ -128,7 +130,7 @@ int startGameRec(void){
         ball_vel++;
         setRelativeStartTime();
     }
-    
+    */
 
     int curr_BallPos[]={ball_pos[X], ball_pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
@@ -144,12 +146,11 @@ int startGameRec(void){
 }
 
 void printObjects(int * curr_BallPos, int * curr_BarPos){
-    print_ball(curr_BallPos,BLACK );
-    print_bar(curr_BarPos, BLACK); 
+    //print_ball(curr_BallPos,BLACK );
+    //print_bar(curr_BarPos, BLACK); 
     print_ball(ball_pos, WHITE );
     print_blocks(blocks);
     print_bar(bar_pos, WHITE);
-
 }
 
 void handleBarMov(){
@@ -300,7 +301,7 @@ void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
                 print_block( x ,y,WHITE);
             }
             else
-                print_block( x , y,BLACK);
+               // print_block( x , y,BLACK);
         }
     }
 }

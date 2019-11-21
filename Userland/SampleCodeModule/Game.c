@@ -302,7 +302,7 @@ void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
                 print_block( x ,y,WHITE);
             }
             else
-               // print_block( x , y,BLACK);
+               print_block( x , y,BLACK);
         }
     }
 }

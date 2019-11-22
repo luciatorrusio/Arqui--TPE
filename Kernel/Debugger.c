@@ -3,7 +3,7 @@
 #include <Curses.h>
 
 void ThrowCustomException(char * str){
-    PrintExceptionDetails(str);
+    PrintExceptionDetails(str,0,0);
 
     printfColor("\n\n\nPress any key to continue",0xFF0000,0xFFFFFF);
 
@@ -17,11 +17,12 @@ void ThrowCustomException(char * str){
 #define WHITE 0xFFFFFF
 #define RED 0xFF0000
 
-void PrintExceptionDetails(char * name){
+void PrintExceptionDetails(char * name, uint64_t * stackPointer, uint64_t * instructionPointer){
 
 
 	char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
-	Registers reg = getRegisters();
+    
+	Registers reg = getRegisters(stackPointer,instructionPointer);
 
 	printfColor("EXCEPTION: %s | IP: 0X%X\n",WHITE,RED,name,reg.rip);
 

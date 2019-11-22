@@ -19,6 +19,7 @@ static void int_81(int id, void * firstParam,void * secondParam,void * thirdPara
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
 
+
 	switch (irq) {
 		case 0:
 			int_20();
@@ -76,6 +77,7 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 
 
 void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
+	printf("En Kernel.ID que mande: %d\n",id);
 
 	switch (id)
 	{
@@ -91,12 +93,17 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 		}
 		case 0x02: // GETREGISTERS
 		{
-			Registers reg = getRegisters();
+			printf("holis\nTodo ok, SP: %d. IP: %d\n",secondParam,thirdParam);
+			Registers reg = getRegisters(secondParam,thirdParam);
+			printf("Volvio TOOD OK\n");
 			Registers * returnAdress = firstParam;
 		
 			*returnAdress = reg;
-
+			return;
 			break;
+		}
+		default:{
+			printf("ID que mande: %d",id);
 		}
 	}
 }

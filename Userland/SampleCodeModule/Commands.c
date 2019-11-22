@@ -34,7 +34,11 @@ void cleanArr(char * arr, int size){
 
 
 int infoReg(){
-    Registers reg = getRegisters();
+    printf("Agarramdo a los registros\n");  //DEBUG
+    Registers reg;
+    reg.rax = 123123;//DEBUG
+    reg = getRegisters();
+    printf("Tengo a los registros. RAX: %d\n",reg.rax);//DEBUG
 
     char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
 

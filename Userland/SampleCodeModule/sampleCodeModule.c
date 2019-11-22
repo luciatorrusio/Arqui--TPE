@@ -12,8 +12,6 @@
 
 
 int main() {
-
-
 	beep();
 
 	runGame();

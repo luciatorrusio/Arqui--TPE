@@ -75,12 +75,12 @@ int runGame(void){
     blocks_left= R_BLOCKS*C_BLOCKS;                            
     ball_pos[X]=SCREEN_WIDTH/2;
     ball_pos[Y]=SCREEN_HEIGHT/2;      
-    ball_vel=5;
-
+    ball_vel=1;
+    ball_dir = D; 
+    
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
-    ball_dir = D; //la variable se llama igual al tipo, entonces le cambio el nombre al tipo por dir y declaro aca
-
+    
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
@@ -103,7 +103,7 @@ int startGame(){
     start_time[4]=relative_startTime[4];
     start_time[5]=relative_startTime[5];
     */
-    //print_blocks(blocks);
+    print_blocks(blocks);
     startGameRec();
     return 0;
 }
@@ -132,26 +132,34 @@ int startGameRec(void){
         setRelativeStartTime();
     }
     */
-
+    
     int curr_BallPos[]={ball_pos[X], ball_pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
+    
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
     //modificar velocidad de 
 
     printObjects(curr_BallPos, curr_BarPos, block);
+    
     startGameRec();
     return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
 }
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
-    //print_ball(curr_BallPos,BLACK );
+    print_ball(curr_BallPos,BLACK );
     //print_bar(curr_BarPos, BLACK); 
+    //int a;
     print_ball(ball_pos, WHITE );
-    if(block[X]!= NO_BLOCK)
+    
+    if(block[X]!= NO_BLOCK){
         print_block(block[X], block[Y], BLACK);
+            
+    }else{
+        //a = 1/0;
+    }
     print_bar(bar_pos, WHITE);
 }
 
@@ -294,11 +302,11 @@ int insideSquare(int * auxPos, int * LLSquare, int * URSquare){
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]){
     int x;
     int y;
-    for(int i = 0; i < R_BLOCKS ; i++){
-        for(int j = 0; j <C_BLOCKS ; j++){
-                x = (j * BLOCK_WIDTH) + BLOCK_XSEPARATION*(j+1) ;
-                y =  (i * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(i+1) ;
-            if( blocks[i][j] == 1){
+    for(int i = 0; i < C_BLOCKS ; i++){
+        for(int j = 0; j <R_BLOCKS ; j++){
+                x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION*(i+1) ;
+                y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(j+1) ;
+            if( blocks[j][i] == 1){
                 print_block( x ,y,WHITE);
             }
             else
@@ -452,18 +460,24 @@ walls barHitWall(){
 
 void ballHitBlock(int * block){
     walls auxWall;
+    int a;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
-            auxWall = ballTouchingWall(i, j);
-            if(auxWall){
-                block[0]=i;
-                block[1]=j;
-                block[2]=auxWall;
-                return;
+            if(blocks[j][i]==1){
+                auxWall = ballTouchingWall(i, j);
+                if(auxWall){
+                    a=1/0;
+                    block[0]=i;
+                    block[1]=j;
+                    block[2]=auxWall;
+                    return;
+                }
             }       
         }
     }
     block[0]= NO_BLOCK;
+    block[1]=NO_BLOCK;
+    block[2]=NO_BLOCK;
     return;
 }
 
@@ -473,8 +487,9 @@ walls ballTouchingWall(int c, int r){
     int nextPos[2];
     ballNextPos(nextPos);
     
-
+    
     if(ballBetweenXSides(nextPos, c, r) && ballBetweenYSides(nextPos, c, r)){
+        
         blocks_left -=1;
         
         if( ballBetweenXSides(ball_pos, c, r) ){
@@ -515,6 +530,7 @@ walls ballTouchingWall(int c, int r){
             }
         }
     }
+    
     return NONE;
 }
 

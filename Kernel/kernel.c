@@ -83,50 +83,7 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-extern void WritePITConfiguration(uint8_t val);
-extern void WritePIT2Data(uint8_t val);
-extern uint8_t ReadSpeakerData();
-extern void WriteSpeakerData(uint8_t val);
-
-
- static void play_sound(uint32_t nFrequence) {
- 	uint32_t Div;
- 	uint8_t tmp;
- 
-        //Set the PIT to the desired frequency
- 	Div = 1193180 / nFrequence;
- 	WritePITConfiguration(0xb6);
- 	WritePIT2Data((uint8_t) (Div) );
- 	WritePIT2Data((uint8_t) (Div >> 8));
- 
-        //And play the sound using the PC speaker
- 	tmp = ReadSpeakerData();
-  	if (tmp != (tmp | 3)) {
- 		WriteSpeakerData( tmp | 3);
- 	}
- }
- 
- //make it shutup
- static void nosound() {
- 	uint8_t tmp = ReadSpeakerData() & 0xFC;
- 
- 	WriteSpeakerData(tmp);
- }
- 
- //Make a beep
- void beep() {
- 	 play_sound(1000);
- 	 
-	for (int i = 99999999; i >0; i--)
-	{
-		/* code */
-	}
-	
-	  
-
- 	 nosound();
-          //set_PIT_2(old_frequency);
- }
+ #include <SpeakerDriver.h>
 
 int main()
 {	
@@ -134,12 +91,8 @@ int main()
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH);
 
-	// play_sound(1000);
-	// play_sound(2000);
-	// play_sound(3000);
-	// play_sound(4000);
-	
-	//((EntryPoint)sampleCodeModuleAddress)();
+			
+	((EntryPoint)sampleCodeModuleAddress)();
 
 
 	return 0;

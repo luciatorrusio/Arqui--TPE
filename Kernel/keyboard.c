@@ -85,7 +85,7 @@ void readKey()
    
     if(temp != -1){
         keyboardBuffer[bufferIndex++ % BUFFER_SIZE] = temp;
-        putChar(temp);
+   //     putChar(temp);
     }
 }
 

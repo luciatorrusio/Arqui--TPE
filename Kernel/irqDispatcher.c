@@ -7,11 +7,6 @@
 #include <Time.h>
 #include <ReadDispatcher.h>
 #include <VideoDriver.h>
-#include <SpeakerDriver.h>
-
-#define FD_STDOUT (1)
-#define FD_STDERR (2)
-#define FD_SPEAKER (3)
 
 
 static void int_20();
@@ -69,21 +64,18 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	
 	switch (id)
 	{
-		case 1:{ // WRITE
-			switch(fileDescriptor){
-				case FD_STDOUT:{
-					// IMPLEMENTAR CON LO UTLIMO DE MASTER
-					break;
-				}
-				case FD_STDERR:{
-					// IMPLEMENTAR CON LO ULTIMO DE MASTER
-					break;
-				}			
-				case FD_SPEAKER:{
-					beep();
-					break;
-				}
+		case 1:{ // write
+
+			if(fileDescriptor == 2){
+				getColor(&currentTextColor,&currentBackgroundColor);
+				setColor(White,Red);
 			}
+
+			println(buffer);
+			
+			if(fileDescriptor == 2)
+				setColor(currentTextColor,currentBackgroundColor);
+
 			break;
 		}
 		case 2:{ // write at

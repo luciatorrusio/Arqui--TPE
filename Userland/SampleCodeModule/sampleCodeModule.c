@@ -8,14 +8,11 @@
 #include "include/Game.h"
 #include "include/gamePrinter.h"
 #include <stdlib.h>
-#include "include/Speaker.h"
+
 
 
 int main() {
-
-
-	beep();
-
+	
 	runGame();
 
 	return 0xDEA;

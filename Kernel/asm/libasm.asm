@@ -16,10 +16,7 @@ GLOBAL r14Register
 GLOBAL r15Register
 GLOBAL ipRegister
 
-
-
 section .text
-
 	
 cpuVendor:
 	push rbp

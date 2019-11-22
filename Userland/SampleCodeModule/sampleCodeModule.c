@@ -10,9 +10,8 @@
 #include <stdlib.h>
 
 
-
 int main() {
-	
+	beep();
 	runGame();
 
 	return 0xDEA;

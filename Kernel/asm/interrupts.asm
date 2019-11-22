@@ -45,6 +45,7 @@ SECTION .text
 	push r13
 	push r14
 	push r15
+
 %endmacro
 
 %macro popState 0
@@ -91,9 +92,16 @@ SECTION .text
 
 	mov rsi, rax ; pasaje del segundo parametro (string en el caso de excp custom)
 	mov rdi, %1 ; pasaje de parametro
-	call exceptionDispatcher
 
+	call exceptionDispatcher
 	popState
+	
+	; Vuelvo a ejecutar lo del userspace
+	mov rdi,[IPBackup]
+	mov qword [rsp], rdi 
+	mov rdi, [SPBackup]
+	mov qword [rsp + 3 * 8], rdi
+	
 	iretq
 %endmacro
 
@@ -190,3 +198,5 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+	SPBackup resq 1
+	IPBackup resq 1

@@ -6,7 +6,7 @@
 #include <KernelHelper.h>
 
 #define ZERO_EXCEPTION_ID 0
-#define CUSTOM_EXCEPTION 0x20
+#define INVALID_OPCODE_EXCEPTION_ID 0x20
 
 
 
@@ -14,11 +14,8 @@
 static void zero_division();
 
 
-static bool isShown = false;
-
 void exceptionDispatcher(int exception, void * firstParam) {
 
-	if(!isShown){
 	
 		switch(exception){
 			case ZERO_EXCEPTION_ID:
@@ -27,7 +24,7 @@ void exceptionDispatcher(int exception, void * firstParam) {
 				
 				break;
 			}
-			case CUSTOM_EXCEPTION:
+			case INVALID_OPCODE_EXCEPTION_ID:
 			{
 				break;
 			}
@@ -35,14 +32,6 @@ void exceptionDispatcher(int exception, void * firstParam) {
 				PrintExceptionDetails("UNKNOWN EXCEPTION");
 			}
 		}
-		isShown = false;
-			((EntryPoint)sampleCodeModuleAddress)();
-
-	}
-	
-
-	
-
 }
 
 

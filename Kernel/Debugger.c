@@ -14,6 +14,8 @@ void ThrowCustomException(char * str){
 
 	clearConsole();
 }
+#define WHITE 0xFFFFFF
+#define RED 0xFF0000
 
 void PrintExceptionDetails(char * name){
 
@@ -21,73 +23,16 @@ void PrintExceptionDetails(char * name){
 	char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
 	Registers reg = getRegisters();
 
-	//clearConsole();
-	
-	//setColor(Red,Black);
-	printf("EXCEPTION: ");
-	printf(name);
-	printf("  @ IP: 0X");
+	printfColor("EXCEPTION: %s | IP: 0X%X\n",WHITE,RED,name,reg.rip);
 
-	HexToString(temp,17,reg.rip);
-	printf(temp);
+	printf("RAX: 0X%X | RBX: 0X%X | RCX: 0X%X | RDX: 0X%X\n",reg.rax,reg.rbx,reg.rcx,reg.rdx);
 
-	printf("\nRAX: 0X");
-	HexToString(temp,17,reg.rax);
-	printf(temp);
-	
-	printf("\nRBX: 0X");
-	HexToString(temp,17,reg.rbx);
-	printf(temp);
+	printf("RDI: 0X%X | RSI: 0X%X | R08: 0X%X | R09: 0X%X\n",reg.rdi,reg.rsi,reg.r8,reg.r9);
 
-	
-	printf("\nRCX: 0X");
-	HexToString(temp,17,reg.rcx);
-	printf(temp);
+	printf("R10: 0X%X | R11: 0X%X | R12: 0X%X | R13: 0X%X\n",reg.r10,reg.r11,reg.r12,reg.r13);
 
-	
-	printf("\nRDX: 0X");
-	HexToString(temp,17,reg.rdx);
-	printf(temp);
-	
-	printf("\nRSI: 0X");
-	HexToString(temp,17,reg.rsi);
-	printf(temp);
-	
-	printf("\nRDI: 0X");
-	HexToString(temp,17,reg.rdi);
-	printf(temp);
-	
-	printf("\nR8:  0X");
-	HexToString(temp,17,reg.r8);
-	printf(temp);
+	printf("R14: 0X%X | R15: 0X%X \n",reg.r14,reg.r15);
 
-	printf("\nR9:  0X");
-	HexToString(temp,17,reg.r9);
-	printf(temp);
-
-	printf("\nR10: 0X");
-	HexToString(temp,17,reg.r10);
-	printf(temp);
-
-	printf("\nR11: 0X");
-	HexToString(temp,17,reg.r11);
-	printf(temp);
-
-	printf("\nR12: 0X");
-	HexToString(temp,17,reg.r12);
-	printf(temp);
-
-	printf("\nR13: 0X");
-	HexToString(temp,17,reg.r13);
-	printf(temp);
-
-	printf("\nR14: 0X");
-	HexToString(temp,17,reg.r14);
-	printf(temp);
-
-	printf("\nR15: 0X");
-	HexToString(temp,17,reg.r15);
-	printf(temp);
 }
 
 bool assertEqual(void * val1, void * val2){

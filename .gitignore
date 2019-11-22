@@ -62,3 +62,5 @@ dkms.conf
 *.sys
 .bash_history
 .bash_history
+
+run.sh.save

@@ -10,6 +10,7 @@ typedef struct
     uint64_t rbx;
     uint64_t rcx;
     uint64_t rdx;
+    uint64_t rbp;
     uint64_t rsi;
     uint64_t rdi;
     uint64_t r8;
@@ -26,7 +27,7 @@ typedef struct
 }Registers;
 
 
-Registers getRegisters();
+Registers getRegisters(uint64_t * stackPointer,uint64_t * instructionPointer);
 void readMem(uint64_t position, char * buff, unsigned size);
 
 

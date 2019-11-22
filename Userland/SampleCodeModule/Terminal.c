@@ -33,11 +33,14 @@ void overwriteArrayUpTo(char * src, char * dest,char c);
 /***************************************************************/
 
 int runTerminal(){
+
+    clearArray(TerminalType,MAXBUFFER);
+    TypeIndex = 0;
     do{
-	
+        
 		int key = readKey();
 
-		if(key >0){           
+		if(key >0){     
             if(key == 8 ){
                 if(TypeIndex>0){
                     TerminalType[--TypeIndex] = 0;
@@ -52,7 +55,7 @@ int runTerminal(){
                 if(key == '\n'){
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    TypeIndex = 0;
+                    TypeIndex = 0;          
                 }
                 
             }

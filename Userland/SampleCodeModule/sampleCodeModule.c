@@ -14,8 +14,11 @@
 int main() {
 
 
+	printf("STARTING MAIN\n");
+
 	 runTerminal();
 
+	printf("LEAVING MAIN\n");
 
 	return 0xDEA;
 }

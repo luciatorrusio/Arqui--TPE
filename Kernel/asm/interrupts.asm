@@ -21,7 +21,7 @@ GLOBAL _irq85Handler
 
 
 GLOBAL _exception0Handler
-GLOBAL _exception1Handler
+GLOBAL _exception6Handler
 
 
 EXTERN irqDispatcher
@@ -45,6 +45,7 @@ SECTION .text
 	push r13
 	push r14
 	push r15
+
 %endmacro
 
 %macro popState 0
@@ -87,13 +88,17 @@ SECTION .text
 
 
 %macro exceptionHandler 1
+	mov rdx,[rsp]	; Guardo la direccion del IP
 	pushState
 
-	mov rsi, rax ; pasaje del segundo parametro (string en el caso de excp custom)
+	mov rsi, rsp	; Guardo la direccion del SP
 	mov rdi, %1 ; pasaje de parametro
-	call exceptionDispatcher
 
+	call exceptionDispatcher
 	popState
+
+	mov qword [rsp],SampleCodeAdress ;Cambio la direccion de retorno por el main
+	
 	iretq
 %endmacro
 
@@ -177,6 +182,11 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
+	
+;Invalid Opcode Exception
+_exception6Handler:
+	exceptionHandler 6
+
 
 ; Excepciones custom
 
@@ -190,3 +200,7 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+	SPBackup resq 1
+	IPBackup resq 1
+
+	SampleCodeAdress equ 0x400000

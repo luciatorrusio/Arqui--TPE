@@ -27,6 +27,7 @@ void _irq85Handler(void * ptr, void * timeid);
 
 
 void _exception0Handler(void);
+void _exception6Handler(void);
 
 
 void _cli(void);

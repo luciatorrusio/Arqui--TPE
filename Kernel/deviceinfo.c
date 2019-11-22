@@ -1,45 +1,63 @@
 #include <deviceInfo.h>
-
-extern uint64_t raxRegister();
-extern uint64_t rbxRegister();
-extern uint64_t rcxRegister();
-extern uint64_t rdxRegister();
-extern uint64_t rdiRegister();
-extern uint64_t rsiRegister();
-extern uint64_t r8Register();
-extern uint64_t r9Register();
-extern uint64_t r10Register();
-extern uint64_t r11Register();
-extern uint64_t r12Register();
-extern uint64_t r13Register();
-extern uint64_t r14Register();
-extern uint64_t r15Register();
-extern uint64_t ipRegister();
+#include <Curses.h>
 
 
-
-Registers getRegisters(){
+Registers getRegisters(uint64_t * stackPointer,uint64_t * instructionPointer){
+    printf("AGArrando a los registros\n");
     Registers reg;
 
-    reg.rax = raxRegister();
-    reg.rbx = rbxRegister();
-    reg.rcx = rcxRegister();
-    reg.rdx = rdxRegister();
-    reg.rip = ipRegister();
-    reg.rdi = rdiRegister();
-    reg.rsi = rsiRegister();
-    reg.r8 = r8Register();
-    reg.r9 = r9Register();
-    reg.r10 = r10Register();
-    reg.r11 = r11Register();
-    reg.r12 = r12Register();
-    reg.r13 = r13Register();
-    reg.r14 = r14Register();
-    reg.r15 = r15Register();
+    reg.rax = *(stackPointer+14);
+    printf("RAX: %d\n",reg.rax);
+    reg.rbx = *(stackPointer+13);
+    printf("RBX: %d\n",reg.rbx);
+    reg.rcx = *(stackPointer+12);
+        printf("RCX: %d\n",reg.rcx);
+
+    reg.rdx = *(stackPointer+11);
+        printf("RdX: %d\n",reg.rdx);
+
+    reg.rbp = *(stackPointer+10);
+        printf("Rbp: %d\n",reg.rbp);
+
+    reg.rdi = *(stackPointer+9);
+        printf("Rdi: %d\n",reg.rdi);
+
+    reg.rsi = *(stackPointer+8);
+        printf("Rsi: %d\n",reg.rsi);
+
+    reg.r8 = *(stackPointer+7);
+        printf("R8: %d\n",reg.r8);
+
+    reg.r9 = *(stackPointer+6);
+        printf("R9: %d\n",reg.r9);
+
+    reg.r10 = *(stackPointer+5);
+        printf("R10: %d\n",reg.r10);
+
+    reg.r11 = *(stackPointer+4);
+        printf("R11: %d\n",reg.r11);
+
+    reg.r12 = *(stackPointer+3);
+        printf("R12: %d\n",reg.r12);
+
+    reg.r13 = *(stackPointer+2);
+        printf("R13: %d\n",reg.r13);
+
+    reg.r14 = *(stackPointer+1);
+        printf("R14: %d\n",reg.r14);
+
+    reg.r15 = *(stackPointer);
+        printf("R15: %d\n",reg.r15);
 
 
+    reg.rip = instructionPointer;
+        printf("RIP: %d\n",reg.rip);
+
+
+    printf("Regresando\n");
+        printf("Regresando\n");
+        
     return reg;
-
 }
 
 void readMem(uint64_t position, char * buff, unsigned size){

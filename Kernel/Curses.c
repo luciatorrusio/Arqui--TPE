@@ -29,13 +29,15 @@ void printfColor(const char * format,int fontColor, int backgroundColor,...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    ColorChar colorString[strlen(string)+1];
+    ColorChar colorString[strlen(string)];
     int i;
     for(i = 0; string[i]!=0;i++){
         colorString[i].ch = string[i];
         colorString[i].fontColor = fontColor;
         colorString[i].backgroundColor = backgroundColor;
     }
+        colorString[i].ch = 0;
+        
 
     printLineColor(colorString);
 }

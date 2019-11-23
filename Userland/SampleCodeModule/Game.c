@@ -36,7 +36,7 @@
     #define LightRed                    0xC
     #define LightPurple                 0xD
     #define LightYellow                 0xE   
-
+//
 
 #define X                           0
 #define Y                           1
@@ -113,15 +113,16 @@ int startGame(){
 
  //juega recursivamente
 
-int startGameRec(void){ 
+void startGameRec(void){ 
      
-    /*
-        relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
+    
+       // relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
         if(stopKeyPressed()){ 
-            time_past += past_time();
+            //time_past += past_time();
             //COMPLETAR!!! TIENE QUE PASAR ALGO
             return 0;
         }
+    /*    
         if(lives == 0  || blocks_left == 0 ){
             time_past=past_time();
             finishGame(time_past);
@@ -147,37 +148,38 @@ int startGameRec(void){
     printObjects(curr_BallPos, curr_BarPos, block);
     
     startGameRec();
-    return 1; //no tendria que llegar aca, es para evitar el warning, esta mal asi?
+    
 }
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     print_ball(curr_BallPos,BLACK );
-    //print_bar(curr_BarPos, BLACK); 
-    int a;
+    print_bar(curr_BarPos, BLACK); 
     print_ball(ball_pos, WHITE );
-    if(curr_BallPos[Y] == ball_pos[Y]){
-        a = 1/0;
-    }
+    int x, y;
     if(block[X]!= NO_BLOCK){
-        print_block(block[X], block[Y], BLACK);
-            
-    }else{
-        //a = 1/0;
+        x = (block[1] * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[1]+1) ;
+        y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[0] +1) ;
+        print_block(x, y, BLACK);    
+        x=1/0;
     }
-    print_bar(bar_pos, WHITE);
+    print_bar(bar_pos, 300);
+    
 }
 
 void handleBarMov(){
+    int a;
+    
         //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
     if(left_arrow_pressed()){
-       if(!(barHitWall() == LEFT)){      
+       // a = 1/0;
+       //if(!(barHitWall() == LEFT)){      
              bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
-       }
+       //}
     }
     if(right_arrow_pressed()){
-        if(!(barHitWall()== RIGHT)){
+        //if(!(barHitWall()== RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
-        }
+    //    }
     }
 
 }

@@ -31,7 +31,7 @@ int runGame(void);
 
 //para volver si fue pausado
 int startGame(void);
-int startGameRec(void);
+void startGameRec(void);
 
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]);

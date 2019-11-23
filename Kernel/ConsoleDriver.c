@@ -87,6 +87,8 @@ void printLineColor(ColorChar * string){
 
     Buffer[currPosition].ch = 0;
 
+    currentRows += findLastReferenceOfColorString(Buffer,currPosition-2,'\n') * charWidth / screenWidth;
+
     reflectBufferChangesToDisplay();
 }
 
@@ -103,6 +105,7 @@ void printChar(char ch){
 void printCharColor(ColorChar ch){
 
     if(ch.ch == '\n'){
+        currentRows += 1 + findLastReferenceOfColorString(Buffer,currPosition-2,'\n') * charWidth / screenWidth;
         previusCurrPosition = currPosition;
     }
 
@@ -130,7 +133,12 @@ void clearConsole(){
 
 void removeLastChar(){
     if(currPosition > 0){
+        Buffer[currPosition].ch = 0;
         currPosition--;
+
+        if(Buffer[currPosition].ch == '\n')
+            currentRows--;
+
         Buffer[currPosition].ch = ' ';
         Buffer[currPosition].fontColor = DEFAULT_FONT_COLOR;
         Buffer[currPosition].backgroundColor = DEFAULT_BACKGROUND_COLOR;
@@ -147,41 +155,37 @@ void removeLastChar(){
 
 void reflectBufferChangesToDisplay(){
 
-    if(Buffer[currPosition-1].ch == '\n'){
-        int rows = 1+ currentRows;
+    int rows = 1+ currentRows;
+    int a = findLastReferenceOfColorString(Buffer,currPosition-2,'\n') * charWidth;
+    int extrarows = a/ screenWidth;
+        
 
-        int x = 0, y = screenHeight - rows * charHeight;
+        int x = 0, y = rows + extrarows;
+
+        if(Buffer[currPosition-1].ch == '\n' || !(a % screenWidth) ){
+            for(int tempx = 0; tempx < a ; tempx += charWidth)
+                drawChar(tempx,screenHeight - charHeight * (1),' ',DEFAULT_FONT_COLOR,DEFAULT_BACKGROUND_COLOR);
+        }
 
         for(int i = 0 ; Buffer[i].ch != 0 ; i++){
             if(Buffer[i].ch == '\n' || x >= screenWidth){
-                if (y >= 0 ){
-                    for(int tempx = x; tempx < screenWidth ; tempx += charWidth)
-                        drawChar(tempx,y,' ',DEFAULT_FONT_COLOR,DEFAULT_BACKGROUND_COLOR);
-                }
-                if(Buffer[i].ch == '\n'){
 
-                    int spacesToDelete = findLastReferenceOfColorString(Buffer,currPosition-2,'\n');
-                    for(int xtemp = 0 ; xtemp < spacesToDelete ; xtemp++)
-                        drawChar(xtemp * charWidth,screenHeight - charHeight,' ',DEFAULT_FONT_COLOR,DEFAULT_BACKGROUND_COLOR);                    
+                if(screenHeight - charHeight * y >=0){
+                    for(int tempx = x; tempx < screenWidth ; tempx += charWidth)
+                            drawChar(tempx,screenHeight - charHeight * y,' ',DEFAULT_FONT_COLOR,DEFAULT_BACKGROUND_COLOR);
+
                 }
-                y += charHeight;
+
+                if(x >= screenWidth)
+                    i--;
+
+                y--;
                 x = 0;
-            }else if (y >= 0 ){
-                drawChar(x,y,Buffer[i].ch,Buffer[i].fontColor,Buffer[i].backgroundColor);
+            }else if (screenHeight - charHeight * y >=0 ){
+                drawChar(x,screenHeight - charHeight * y ,Buffer[i].ch,Buffer[i].fontColor,Buffer[i].backgroundColor);
                 x+= charWidth;
             }
         }
-    }else{
-        int x = -1;
-        for(int i = currPosition-1; i >= 0 && Buffer[i].ch != '\n'; i--)
-            x++;
-
-        for(int i = 0 ; Buffer[(currPosition-1) - x + i ].ch!=0 ; i++){
-            drawChar(i * charWidth,screenHeight - charHeight,Buffer[currPosition - x-1 + i].ch,Buffer[currPosition - x-1 + i].fontColor,Buffer[currPosition - x-1 + i].backgroundColor);
-        }
-
-
-    }
 
 }
 

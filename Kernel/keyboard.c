@@ -85,7 +85,6 @@ void readKey()
    
     if(temp != -1){
         keyboardBuffer[bufferIndex++ % BUFFER_SIZE] = temp;
-   //     putChar(temp);
     }
 }
 
@@ -137,7 +136,6 @@ void handleBreaks(int input)
         case LShift:
         case Rshift:
             Shift = false;
-            // printfAt( "SHIFT OFF", 0, 11);
             break;
         }
     }

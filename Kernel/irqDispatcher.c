@@ -58,10 +58,20 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	switch (id)
 	{
 		case 1:{ // write
-			if(fileDescriptor == 2)
-				printfColor(buffer,0xFF0000,0x0000);
-			else
-				printf(buffer);
+			if(fileDescriptor == 2){
+				if(buffer[1] == 0)
+					putCharColor(*buffer,0xFF0000,0x0000);
+				else
+					printfColor(buffer,0xFF0000,0x0000);
+			}
+			else{
+				if(buffer[1] == 0)
+					putChar(*buffer);
+				else
+					printf(buffer);
+			}
+
+				
 			break;
 		}
 		case 2:{ // Delete

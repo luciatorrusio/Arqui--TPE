@@ -93,12 +93,7 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 		}
 		case 0x02: // GETREGISTERS
 		{
-			printf("holis\nTodo ok, SP: %d. IP: %d\n",secondParam,thirdParam);
-			Registers reg = getRegisters(secondParam,thirdParam);
-			printf("Volvio TOOD OK\n");
-			Registers * returnAdress = firstParam;
-		
-			*returnAdress = reg;
+			getRegisters(firstParam,secondParam,thirdParam);
 			return;
 			break;
 		}

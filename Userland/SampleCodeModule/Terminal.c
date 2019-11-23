@@ -80,28 +80,28 @@ int interpretCommand(){
         printfError("ERROR\n");
         return 0;
     }
-    if(strcmp(command,"time\n") && strcmp(param1,""))
+    if(strcmp(command,"time") && strcmp(param1,""))
         time();
-    else if(strcmp(command,"man\n") && strcmp(param1,""))
+    else if(strcmp(command,"man") && strcmp(param1,""))
         man();
-    else if(strcmp(command,"infoReg\n") && strcmp(param1,""))
+    else if(strcmp(command,"infoReg") && strcmp(param1,""))
         infoReg();
-    else if(strcmp(command,"printMem\n") && !strcmp(param1,"")){
-        int a = 0;
-        // convertir param1 a int!!!!!
+    else if(strcmp(command,"printMem") && !strcmp(param1,"")){
+        int a = stringToInt(param1);
         printMem(a);
     }
-    else if(strcmp(command,"game\n") && strcmp(param1,""))
+    else if(strcmp(command,"game") && strcmp(param1,""))
         printf("aca iria el juego\n");
-    else if(strcmp(command,"clear\n") && strcmp(param1,""))
-        printf("aca iria el clear\n");
+    else if(strcmp(command,"clear") && strcmp(param1,"")){ 
+               clearConsole();
+               }
     else
-       printfError("ERROR\n");    
+        printfError("%s%s%s: command not found \n",command,param1,param2);    
     
     return  0;
 }
 void man(){
-    printf("time man game infoReg printMem\n");
+    printf("time\nman\ngame\ninfoReg\nprintMem\ngame\nclear\n");
 }
 
 

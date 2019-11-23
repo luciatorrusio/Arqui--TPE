@@ -101,7 +101,7 @@ int interpretCommand(){
     return  0;
 }
 void man(){
-    printf("time\nman\ngame\ninfoReg\nprintMem\ngame\nclear\n");
+    printf("\ntime\nman\ngame\ninfoReg\nprintMem\ngame\nclear\n");
 }
 
 

@@ -22,7 +22,8 @@ void PrintExceptionDetails(char * name, uint64_t * stackPointer, uint64_t * inst
 
 	char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};
     
-	Registers reg = getRegisters(stackPointer,instructionPointer);
+	Registers reg;
+    getRegisters(&reg,stackPointer,instructionPointer);
 
 	printfColor("EXCEPTION: %s | IP: 0X%X\n",WHITE,RED,name,reg.rip);
 

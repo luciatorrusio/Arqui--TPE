@@ -14,7 +14,7 @@
 int main() {
 
 
-	printf("STARTING MAIN\n");
+	printf("HI! Ask \"man\" for a command menu\n");
 
 	 runTerminal();
 

@@ -27,7 +27,7 @@ typedef struct
 }Registers;
 
 
-Registers getRegisters(uint64_t * stackPointer,uint64_t * instructionPointer);
+void getRegisters(Registers * reg,uint64_t * stackPointer,uint64_t * instructionPointer);
 void readMem(uint64_t position, char * buff, unsigned size);
 
 

@@ -23,6 +23,7 @@ void formatString(char * string, int size,char format,...);
 
 int strcmp(char * s1,char * s2);
 
+int stringToInt(char * buff);
 
 
 

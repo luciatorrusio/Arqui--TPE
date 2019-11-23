@@ -41,7 +41,13 @@ void IntToString(char * buffer, int buffSize, uint64_t num){
 	}
 }
 
-
+int stringToInt(char * buff){
+	int aux=0;
+	for(int i=0;*(buff+i)!=0;i++){
+		aux=aux*10+(*(buff+i)-'0');
+	}
+	return aux;
+}
 void HexToString(char * buffer, int buffSize, uint64_t num){
 
     for(int i = 0 ; i < buffSize ; i++)

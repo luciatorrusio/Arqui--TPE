@@ -1,5 +1,5 @@
 #include "include/Speaker.h"
-#include "../include/Syscalls.h"
+#include "../Include/Syscalls.h"
 
 #define FD_SPEAKER (3)
 

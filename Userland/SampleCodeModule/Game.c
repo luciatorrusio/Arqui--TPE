@@ -44,11 +44,11 @@
 
 #define NO_BLOCK                   -1
 
-#define LEFT_ARROW                 'a'
-#define RIGHT_ARROW                'd' 
+#define LEFT_ARROW                 'j'
+#define RIGHT_ARROW                'l' 
 
 
-static int lives;                                          //cantidad de vidas que tiene
+static int lives;                    //cantidad de vidas que tiene
 
 static struct Ball ball;
 
@@ -62,13 +62,12 @@ int block[3];
 
 
 
-
 //DECLARACION DE FUNCIONES
-void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
-
+    void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
+    void wait();
 //para inicializar el juego de cero
 int runGame(void){
-    time.past=0;
+    //time.past=0;
     lives = LIVESi;
     blocks.left= R_BLOCKS*C_BLOCKS;                            
     
@@ -101,7 +100,6 @@ int startGame(){
     time.start[3]=time.relative_start[3];
     time.start[4]=time.relative_start[4];
     time.start[5]=time.relative_start[5];
-    
     print_blocks();
     startGameRec();
     return 0;
@@ -144,9 +142,14 @@ void startGameRec(void){
     //modificar velocidad de 
 
     printObjects(curr_BallPos, curr_BarPos, block);
-    
+    //wait();
     startGameRec();
-    
+}
+void wait(){
+    int x= GetSeconds();
+    while(GetSeconds()-x < 1){
+
+    }
 }
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
@@ -156,8 +159,8 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     int x, y;
     if(block[X]!= NO_BLOCK){
         x = (block[1] * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[1]+1) ;
-        y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[0] +1) ;
-        print_block(x, y, BLACK);    
+        y =  (block[0] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[0] +1) ;
+        print_block(x, y, BLACK);   
     }
     print_bar(bar_pos, WHITE);
     
@@ -183,7 +186,6 @@ void handleBallMov(void){
     walls wall;
     barSides bar_side;
     ballHitBlock(block);
-    int a;
     if( (wall = ballHitWall()) ){   //NONE = 0 entonces devuelve FALSE
         
         switch(wall){
@@ -205,10 +207,6 @@ void handleBallMov(void){
             break;
             case ULCORNER:
                 ball.dir = RD;
-            break;
-            case NONE:
-            case LRCORNER:
-            case LLCORNER:
             break;
         }
     }
@@ -308,13 +306,13 @@ void print_blocks(){
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j <R_BLOCKS ; j++){
-                x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION*(i+1) ;
-                y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(j+1) ;
+            x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION*(i+1) ;
+            y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(j+1) ;
             if( blocks.matrix[j][i] == 1){
                 print_block( x ,y,WHITE);
             }
-            else
-               print_block( x , y,BLACK);
+            //else
+               //print_block( x , y,BLACK);
         }
     }
 }
@@ -345,7 +343,7 @@ void ballMove(){
 }
 
 void ballNextPos(int * auxPos){
-    auxPos[X] =ball.pos[X];
+    auxPos[X] = ball.pos[X];
     auxPos[Y] = ball.pos[Y];
     switch(ball.dir){
         case LU:
@@ -364,7 +362,7 @@ void ballNextPos(int * auxPos){
             auxPos[Y] += ( ball.vel * 0.7071);
             break;
         case D: 
-            auxPos[Y] += ball.vel * 0.7071;
+            auxPos[Y] += ball.vel;
             break;
         case LD:
             auxPos[X] -= ( ball.vel * 0.7071); 

@@ -12,7 +12,7 @@ typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                        
 
 
 
-
+//devuelve 0 si no fue precionada la tecla especial
 int stopKeyPressed();
 
 void print_ball(int* ball_pos,int color);
@@ -31,7 +31,7 @@ int runGame(void);
 
 //para volver si fue pausado
 int startGame(void);
-int startGameRec(void);
+void startGameRec(void);
 
 
 void print_blocks(int blocks[R_BLOCKS][C_BLOCKS]);
@@ -66,7 +66,7 @@ walls ballHitWall();
 //devuelve la pared que esta tocando y false(osea 0) si no esta tocando
 walls barHitWall();
 
-//Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK
+//Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK en la primer pos
 void ballHitBlock(int* block);
 
 //para ver si la la pelota(auxPos), esta dentro del rectangulo marcado

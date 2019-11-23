@@ -96,14 +96,14 @@ int runGame(void){
 
 //cuando quiero retomar el juego
 int startGame(){
-    /*setRelativeStartTime();
+    setRelativeStartTime();
     start_time[0]=relative_startTime[0];
     start_time[1]=relative_startTime[1];
     start_time[2]=relative_startTime[2];
     start_time[3]=relative_startTime[3];
     start_time[4]=relative_startTime[4];
     start_time[5]=relative_startTime[5];
-    */
+    
     print_blocks(blocks);
     startGameRec();
     return 0;
@@ -116,25 +116,25 @@ int startGame(){
 void startGameRec(void){ 
      
     
-       // relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
-        if(stopKeyPressed()){ 
-            //time_past += past_time();
-            //COMPLETAR!!! TIENE QUE PASAR ALGO
-            return 0;
-        }
-    /*    
-        if(lives == 0  || blocks_left == 0 ){
-            time_past=past_time();
-            finishGame(time_past);
-            return 0;        
-        }
+    relative_time=(GetSeconds()- relative_startTime[4]) + (GetMinutes()-relative_startTime[3]) *60 + (GetHours() - relative_startTime[2]) * 60 *60 + (GetDayOfMonth()- relative_startTime[1]) *60*60*24 + (GetYear() - relative_startTime[0])*60*60*24*365; 
+    if(stopKeyPressed()){ 
+        time_past += past_time();
+        //COMPLETAR!!! TIENE QUE PASAR ALGO
+        return 0;
+    }
+        
+    if(lives == 0  || blocks_left == 0 ){
+        time_past=past_time();
+        finishGame(time_past);
+        return 0;        
+    }
    
     
-        if(relative_time >= 15){
-            ball_vel++;
-            setRelativeStartTime();
-        }
-    */
+    if(relative_time >= 15){
+        ball_vel++;
+        setRelativeStartTime();
+    }
+    
     
     int curr_BallPos[]={ball_pos[X], ball_pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
@@ -160,26 +160,23 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
         x = (block[1] * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[1]+1) ;
         y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[0] +1) ;
         print_block(x, y, BLACK);    
-        x=1/0;
     }
-    print_bar(bar_pos, 300);
+    print_bar(bar_pos, WHITE);
     
 }
 
 void handleBarMov(){
-    int a;
     
         //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
     if(left_arrow_pressed()){
-       // a = 1/0;
-       //if(!(barHitWall() == LEFT)){      
+        if(!(barHitWall() == LEFT)){      
              bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
-       //}
+        }
     }
     if(right_arrow_pressed()){
-        //if(!(barHitWall()== RIGHT)){
+        if(!(barHitWall()== RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
-    //    }
+        }
     }
 
 }
@@ -190,7 +187,7 @@ void handleBallMov(void){
     ballHitBlock(block);
     int a;
     if( (wall = ballHitWall()) ){   //NONE = 0 entonces devuelve FALSE
-        //a = 1/0;
+        
         switch(wall){
             case FLOOR:
                 lives -=1; 
@@ -219,7 +216,7 @@ void handleBallMov(void){
     }
     //si pega contra un bloque
     else if(block[0] != NO_BLOCK){
-        //a = 1/0;   //no me lo tira, bien 
+         
         blocks[block[0]][block[1]]=0;
         invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
     }
@@ -227,9 +224,6 @@ void handleBallMov(void){
     else if( (bar_side = ballHitBar()) ){
         ballHitBarChangeDireccion(bar_side);
     }
-    //if(block[0]== NO_BLOCK){
-        //a = 1/0; //me lo tira, bien
-    //}
     ballMove();
 }
 
@@ -355,7 +349,6 @@ void ballMove(){
 void ballNextPos(int * auxPos){
     auxPos[X] =ball_pos[X];
     auxPos[Y] = ball_pos[Y];
-    int a; 
     switch(ball_dir){
         case LU:
             auxPos[X] -= ( ball_vel * 0.7071); 
@@ -373,7 +366,6 @@ void ballNextPos(int * auxPos){
             auxPos[Y] += ( ball_vel * 0.7071);
             break;
         case D: 
-            //a = 1/0;
             auxPos[Y] += ball_vel * 0.7071;
             break;
         case LD:
@@ -474,13 +466,11 @@ walls barHitWall(){
 
 void ballHitBlock(int * block){
     walls auxWall;
-    int a;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
             if(blocks[j][i]==1){
                 auxWall = ballTouchingWall(i, j);
                 if(auxWall){
-                    //a=1/0;
                     block[0]=i;
                     block[1]=j;
                     block[2]=auxWall;

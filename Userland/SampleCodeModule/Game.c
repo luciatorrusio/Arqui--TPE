@@ -142,10 +142,6 @@ int startGame(){
 
     }while(!stopWhile);
 
-
-    // while( !(aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
-    //     startGameRec();
-    // }
     if(aux){ 
         time.past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO
@@ -162,8 +158,7 @@ int startGame(){
 
 
 
- //juega recursivamente
-
+//juega recursivamente
 void startGameRec(void){ 
     time.relative=(GetSeconds()- time.relative_start[4]) + (GetMinutes()-time.relative_start[3]) *60 + (GetHours() - time.relative_start[2]) * 60 *60 + (GetDayOfMonth()- time.relative_start[1]) *60*60*24 + (GetYear() - time.relative_start[0])*60*60*24*365; 
     /*
@@ -224,7 +219,6 @@ void handleBarMov(){
     //barHitWall devuelve un int que representa que pared esta chocando
     int w = barHitWall();
     int key = key_pressed();
-    //if(right_arrow_pressed()){
     if(key == RIGHT_ARROW){
         if(!(w == RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
@@ -364,8 +358,8 @@ void print_blocks(){
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j <R_BLOCKS ; j++){
-            x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION*(i+1) ;
-            y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(j+1) ;
+            x = (i * BLOCK_WIDTH) + (BLOCK_WIDTH/2) + BLOCK_XSEPARATION*(i+1) ;
+            y =  (j * BLOCK_HEIGHT) + ( BLOCK_HEIGHT/2)+ BLOCK_YSEPARATION*(j+1) ;
             if( blocks.matrix[j][i] == 1){
                 print_block( x ,y,WHITE);
             }else{
@@ -541,54 +535,50 @@ void ballHitBlock(int * block){
 
 
 walls ballTouchingWall(int c, int r){
-    
+    int a ;
     int nextPos[2];
     ballNextPos(nextPos);
-    
-    
-    if(ballBetweenXSides(nextPos, c, r) && ballBetweenYSides(nextPos, c, r)){
-        
-        blocks.left -=1;
-        
-        if( ballBetweenXSides(ball.pos, c, r) ){
-            
-            if(ball.dir == U || ball.dir == LU || ball.dir == RU){
+    if(ballBetweenYSides(nextPos, c, r)){
+        if(ballBetweenXSides(nextPos, c, r)){
+            blocks.left -=1;
+            if( ballBetweenXSides(ball.pos, c, r) ){
+                if(ball.dir == U || ball.dir == LU || ball.dir == RU){
                 
-                return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+                    return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+                }
+                if(ball.dir == D || ball.dir == LD || ball.dir == RD){
+                    return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
+                }
             }
-            if(ball.dir == D || ball.dir == LD || ball.dir == RD){
-                return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
-            }
-        }
-        if(ballBetweenYSides(ball.pos, c, r)){
+            if(ballBetweenYSides(ball.pos, c, r)){
             
-            if(ball.dir == LU || ball.dir == LD){
-                return LEFT;
+                if(ball.dir == LU || ball.dir == LD){
+                    return LEFT;
+                }
+                if(ball.dir == RU || ball.dir == RD){
+                    return RIGHT; 
+                }
             }
-            if(ball.dir == RU || ball.dir == RD){
-                return RIGHT; 
-            }
-        }
-        if( !ballBetweenYSides(ball.pos, c, r) && !ballBetweenXSides(ball.pos, c, r)){
+            if( !ballBetweenYSides(ball.pos, c, r) && !ballBetweenXSides(ball.pos, c, r)){
             
-            switch(ball.dir){
-                case LU:
-                    return ULCORNER;    
-                break;
-                case RU:
-                    return URCORNER;
-                break;
-                case LD:
-                    return  LLCORNER;
-                break;
-                case RD:
-                    return LRCORNER;
-                break;
+                switch(ball.dir){
+                    case LU:
+                        return ULCORNER;    
+                    break;
+                    case RU:
+                        return URCORNER;
+                    break;
+                    case LD:
+                        return  LLCORNER;
+                    break;
+                    case RD:
+                        return LRCORNER;
+                    break;
             
+                }
             }
         }
     }
-    
     return NONE;
 }
 

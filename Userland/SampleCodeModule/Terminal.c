@@ -3,6 +3,7 @@
 #include "../Include/Curses.h"
 #include "include/Commands.h"
 #include "../Include/String.h"
+#include "include/Game.h"
 #include <stdlib.h>
 
 /***************************************************************/
@@ -91,8 +92,9 @@ int interpretCommand(){
         int a = stringToInt(param1);
         printMem(a);
     }
-    else if(strcmp(command,"game") && strcmp(param1,""))
-        printf("aca iria el juego\n");
+    else if(strcmp(command,"game") && strcmp(param1,"")){
+        clearConsole();
+        return runGame();}
     else if(strcmp(command,"exit") && strcmp(param1,""))
         return 1;
     

@@ -49,12 +49,11 @@ int main() {
 		exit=1;
 		}
 	else if(c=='1'){		
-		printf("Aca iria game");	
-		/*int x=runGame();
+		int x=runGame();
 		if(x==1)
 			runTerminal();
 		else
-			exit=1;*/	
+			exit=1;	
 		}	
 	else
 		exit=1;	

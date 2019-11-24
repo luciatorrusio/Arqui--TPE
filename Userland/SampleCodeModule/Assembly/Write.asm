@@ -5,10 +5,15 @@ section .text:
 
 write:
     enter 0,0
-    mov rax,1
-    mov rbx,rdi
-    mov rcx,rsi
-    int 80h
+
+    mov r15, rdx    ; guardo el valor
+
+    mov r9, r8      ;cuarto arg
+    mov rdx, rcx    ;tercer arg
+    mov rcx, rdx    ;segundo arg
+    mov rbx, rsi    ;primer arg
+    mov rax, rdi    ; fd
+    int 81h
 
     leave
     ret

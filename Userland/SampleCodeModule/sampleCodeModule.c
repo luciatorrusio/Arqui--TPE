@@ -39,6 +39,20 @@ static int selector = -1;
 
 int main() {
 
+	// int pos[2]={50,50};
+
+
+	// printOnScreen(pos,50,50,0xFFFFFF);
+
+	// while (1)
+	// {
+	// }
+	
+	// 		clearConsole();
+
+	// // // runGame();
+	// return 0;
+
 	int exit=0;
 	while(exit!=1)
 	{

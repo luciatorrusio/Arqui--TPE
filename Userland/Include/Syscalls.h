@@ -12,7 +12,7 @@ typedef struct{
     int y;
 }ColorChar;
 
-extern void write(int fd, char * buff );
+extern void write(int fd, void * first, void *second, void * third, void * forth );
 
 extern void read(int fd,char * buff, unsigned int size);
 

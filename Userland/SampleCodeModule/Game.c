@@ -636,7 +636,9 @@ void print_bar(int * bar_pos,int color){
 
 void print_block(int x,int y,int color){
     int pos[]= {x, y};
+
     printOnScreen(pos,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+
 }
 
 int stopKeyPressed(){

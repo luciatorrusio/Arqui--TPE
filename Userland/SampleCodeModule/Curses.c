@@ -27,7 +27,7 @@ void printf(const char * format, ...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    write(STDOUT,string);
+    write(STDOUT,string,0,0,0);
 }
 
 void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,int y,...){
@@ -69,7 +69,7 @@ void printfError(const char * format,...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    write(STDERR,string);
+    write(STDERR,string,0,0,0);
 
 }
 
@@ -84,7 +84,7 @@ void putChar( char ch)
 {
     char buff[2]={0,0};
     buff[0]=ch;
-    write(STDOUT,buff);
+    write(STDOUT,buff,0,0,0);
 
 }
 

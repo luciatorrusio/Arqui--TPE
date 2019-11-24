@@ -2,6 +2,7 @@
 #include <VideoDriver.h>
 #include <String.h>
 #include <Debugger.h>
+#include <font.h>
 
 /***************************************************************/
 /*                         CONSTANTES                          */
@@ -92,6 +93,11 @@ void printLineColor(ColorChar * string){
     reflectBufferChangesToDisplay();
 }
 
+void printLineColorAt(ColorChar * string){
+    for(int i=0;string[i].ch!=0;i++){
+        drawChar(string[i].x,string[i].y,string[i].ch,string[i].fontColor,string[i].backgroundColor);
+    }
+}
 void printChar(char ch){
 
     ColorChar temp;

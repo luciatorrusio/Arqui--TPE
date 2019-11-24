@@ -3,6 +3,7 @@
 #include "../Include/Curses.h"
 #include "include/Commands.h"
 #include "../Include/String.h"
+#include "include/Game.h"
 #include <stdlib.h>
 
 /***************************************************************/
@@ -37,6 +38,7 @@ int runTerminal(){
     clearArray(TerminalType,MAXBUFFER);
     TypeIndex = 0;
     printf(">>>>  "); 
+    int exit=0;
     do{
         
 		int key = readKey();
@@ -54,7 +56,7 @@ int runTerminal(){
                 printTerminal();
 
                 if(key == '\n'){
-                    interpretCommand();
+                    exit=interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
                     TypeIndex = 0;  
                     printf(">>>>  ");        
@@ -62,7 +64,7 @@ int runTerminal(){
                 
             }
         }
-	}while(1);
+	}while(!exit);
 }
 
 /***************************************************************/
@@ -98,8 +100,11 @@ int interpretCommand(){
         int a = stringToInt(param1);
         printMem(a);
     }
-    else if(strcmp(command,"game") && strcmp(param1,"") && strcmp(param2,""))
-        printf("aca iria el juego\n");
+    else if(strcmp(command,"game") && strcmp(param1,"")){
+        clearConsole();
+        return runGame();}
+    else if(strcmp(command,"exit") && strcmp(param1,""))
+        return 1;
     else if(strcmp(command,"invalidOpcode") && strcmp(param1,"") && strcmp(param2,""))
         invalidOpcode();
     else if(strcmp(command,"clear") && strcmp(param1,"") && strcmp(param2,""))
@@ -114,7 +119,7 @@ int interpretCommand(){
     return  0;
 }
 void man(){
-    printf("\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
+    printf("\ngame\nexit\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
 }
 
 

@@ -1,8 +1,10 @@
 GLOBAL __READMEM__
 GLOBAL __GETREGISTERS__
 GLOBAL __executeCodeFromAddress__
-
-
+GLOBAL __GETBPP__
+GLOBAL __SETBPP__
+GLOBAL __GETCHARH__
+GLOBAL __GETCHARW__
 
 section .text
 
@@ -84,3 +86,46 @@ __GETREGISTERS__:
         leave
         ret
 
+__GETBPP__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x3
+        int 0x81
+
+        leave
+        ret
+
+__SETBPP__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x4
+        int 0x81
+
+        leave
+        ret
+
+__GETCHARH__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x5
+        int 0x81
+
+        leave
+        ret
+
+__GETCHARW__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x6
+        int 0x81
+
+        leave
+        ret

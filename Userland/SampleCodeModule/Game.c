@@ -3,6 +3,7 @@
 #include "../Include/Curses.h"
 #include "../Include/Time.h"
 #include <stdbool.h>
+#include "./include/Speaker.h"
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
@@ -172,6 +173,7 @@ void startGameRec(void){
 }
 void changeVel(){
     if(time.tick%(18*15) == 0){
+        beep();
         ball.vel+=2;
     }
 }
@@ -205,7 +207,7 @@ void printLeftover(int * curr_BarPos){
         printOnScreen(auxPos, BAR_LENGTH, BAR_HEIGHT, BLACK);
     }
     if(length < 0){//yendo para la izquierda
-        auxPos[X] = bar_pos[X] + BAR_LENGTH+ length/2;
+        auxPos[X] = bar_pos[X] + BAR_LENGTH - length/2;
         auxPos[Y] =  bar_pos[Y];
         printOnScreen(auxPos, BAR_LENGTH, BAR_HEIGHT, BLACK);
     }
@@ -252,6 +254,7 @@ void handleBallMov(void){
                 ball.pos[Y]=SCREEN_HEIGHT/2;
                 ball.dir= D;
                 bar_pos[X] = SCREEN_WIDTH/2;
+                print_bar(bar_pos, BLACK);
                 return;
             break;
             case LEFT:    

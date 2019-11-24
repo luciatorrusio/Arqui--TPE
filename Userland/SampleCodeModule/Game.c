@@ -21,6 +21,9 @@
 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
+#define REAL_TO_GAME_TICKS              (1)
+
+
 
 //COLORES
     #define BLACK                       0x000000
@@ -46,6 +49,7 @@
 
 #define LEFT_ARROW                 'j'
 #define RIGHT_ARROW                'l' 
+#define LEAVE_KEY                  'q'
 
 
 static int lives;                    //cantidad de vidas que tiene
@@ -60,12 +64,18 @@ static struct Time time;
 
 int block[3];
 
+static char KeyBuffer[200];
+static int keyBufferFront = 0;
+static int keyBufferBack = 0;
+
+static bool goToTerminal = false;
+
 
 
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
     void printLeftover(int * curr_BarPos);
-    int arrow_pressed();
+    int key_pressed();
 //
 
 //para inicializar el juego de cero
@@ -108,20 +118,21 @@ int startGame(){
     print_blocks();
 
     // GameTick = 2 real tick
-    #define REAL_TO_GAME_TICKS (1)
-    bool leave = false;
+    bool stopWhile = false;
+    goToTerminal = false;
 	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;
 
     baseTicks = getTicks();
     do{
         realTicks = getTicks() - baseTicks;
+        parseKeyboard();
 
         if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
             gameTicks++;
             previusTick = realTicks;
             if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
                 // Condicion de retorno
-                leave = true;
+                stopWhile = true;
             }else
             {
                 startGameRec();
@@ -129,7 +140,7 @@ int startGame(){
         }
 
 
-    }while(!leave);
+    }while(!stopWhile);
 
 
     // while( !(aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
@@ -212,19 +223,23 @@ void printLeftover(int * curr_BarPos){
 void handleBarMov(){
     //barHitWall devuelve un int que representa que pared esta chocando
     int w = barHitWall();
-    int arrow = arrow_pressed();
+    int key = key_pressed();
     //if(right_arrow_pressed()){
-    if(arrow == RIGHT_ARROW){
+    if(key == RIGHT_ARROW){
         if(!(w == RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
         }
     }
     //if(left_arrow_pressed()){
-    if(arrow== LEFT_ARROW){
+    if(key== LEFT_ARROW){
         if(!(w == LEFT)){      
              bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
         }
     } 
+
+    if(key == LEAVE_KEY){
+        goToTerminal = true;
+    }
 }
 
 void handleBallMov(void){
@@ -629,26 +644,36 @@ void print_block(int x,int y,int color){
 }
 
 int stopKeyPressed(){
-    char key = readKey();
-    if(key == 'q'){
-        return 1;
-    }
-    return 0;
-}
-int arrow_pressed(){
-    char key = readKey();
 
-    if(key == RIGHT_ARROW || key == LEFT_ARROW)
-    {
-        return key;
-    }else
-        return 0;
-
-    // if(key == LEFT_ARROW){
-    //     return LEFT_ARROW;
-    // }
-    // if(key == RIGHT_ARROW){
-    //     return RIGHT_ARROW;
+    return goToTerminal;
+    // char key = readKey();
+    // if(key == LEAVE_KEY){
+    //     return 1;
     // }
     // return 0;
+}
+
+
+
+
+void parseKeyboard(){
+    if(keyBufferFront + 1 == keyBufferBack )
+        keyBufferBack++;
+        
+    int temp = readKey();
+
+    if(temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY)
+        KeyBuffer[keyBufferFront++ % 200] = temp;
+
+}
+
+int key_pressed(){
+
+
+    if(keyBufferFront == keyBufferBack)
+        return -1;
+        
+    return KeyBuffer[keyBufferBack++ % 200];
+
+
 }

@@ -10,4 +10,10 @@ void startVideoDriver();
 
 void drawChar(int x, int y, char character, int fontColor, int background);
 
+void setSize(unsigned int s);
+
+void getBpp(int * size);
+
+void setSize(unsigned int size);
+
 #endif

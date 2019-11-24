@@ -66,8 +66,6 @@ int main()
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
 
 
-	//printfColor("Hola %s\n",0xFFAA00,0x00EE11,"Lucas");
-
 	
 	
 	((EntryPoint)sampleCodeModuleAddress)();

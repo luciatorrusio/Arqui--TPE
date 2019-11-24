@@ -1,5 +1,6 @@
 #include "include/Curses.h"
 #include "include/String.h"
+#include "include/font.h"
 #include <ConsoleDriver.h>
 
 #define MAXBUFFER 500

@@ -94,3 +94,11 @@ void drawChar(int x, int y, char character, int fontColor, int background){
 
 
 }
+
+void setSize(unsigned int s){
+	SCREEN_bPP=s;
+}
+
+void getBpp(int * size){
+	*size=SCREEN_bPP;
+}

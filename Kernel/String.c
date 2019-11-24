@@ -164,7 +164,7 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			break;}	
 		case 'x':
 		case 'X':
-		{	IntToString(string+(*k),size-1-(*k),va_arg(args,int));
+		{	HexToString(string+(*k),size-1-(*k),va_arg(args,int));
 			break;}
 		default: 
 			{	*(string+(*k))='%';

@@ -36,6 +36,7 @@ int runTerminal(){
 
     clearArray(TerminalType,MAXBUFFER);
     TypeIndex = 0;
+    int exit=0;
     do{
         
 		int key = readKey();
@@ -53,14 +54,14 @@ int runTerminal(){
                 printTerminal();
 
                 if(key == '\n'){
-                    interpretCommand();
+                    exit=interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
                     TypeIndex = 0;          
                 }
                 
             }
         }
-	}while(1);
+	}while(!exit);
 }
 
 /***************************************************************/
@@ -92,6 +93,9 @@ int interpretCommand(){
     }
     else if(strcmp(command,"game") && strcmp(param1,""))
         printf("aca iria el juego\n");
+    else if(strcmp(command,"exit") && strcmp(param1,""))
+        return 1;
+    
     else if(strcmp(command,"clear") && strcmp(param1,"")){ 
                clearConsole();
                }
@@ -101,7 +105,7 @@ int interpretCommand(){
     return  0;
 }
 void man(){
-    printf("\ntime\nman\ngame\ninfoReg\nprintMem\ngame\nclear\n");
+    printf("\ntime\nman\ngame\ninfoReg\nprintMem\ngame\nclear\nexit\n");
 }
 
 

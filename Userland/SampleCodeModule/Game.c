@@ -161,7 +161,6 @@ void startGameRec(void){
     
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
-    //modificar velocidad de 
 
     printObjects(curr_BallPos, curr_BarPos, block);
 }
@@ -174,8 +173,8 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     print_ball(ball.pos, WHITE );
     int x, y;
     if(block[X]!= NO_BLOCK){
-        x = ((block[0]+1) * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[0]+ 1 +1) ;
-        y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[1] +1) ;
+        x = ((block[0]) * BLOCK_WIDTH) + (BLOCK_WIDTH/2)+ BLOCK_XSEPARATION*(block[0]+1) ;
+        y =  (block[1] * BLOCK_HEIGHT) + (BLOCK_HEIGHT/2) + BLOCK_YSEPARATION*(block[1] +1) ;
         print_block(x, y, BLACK);   
     }
     print_bar(bar_pos, WHITE);

@@ -2,22 +2,22 @@
 #include "../Include/Time.h"
 #include "../Include/Curses.h"
 #include "../Include/Time.h"
+#include "../Include/deviceInfo.h"
 #include <stdbool.h>
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define SCREEN_HEIGHT               600//completar
-#define SCREEN_WIDTH                600//completar
 
 #define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
-#define BAR_HEIGHT                  (4*SCREEN_HEIGHT/100)                
+#define BAR_HEIGHT                  (4*SCREEN_HEIGHT/200)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
 
 #define BLOCK_WIDTH                 ((2*SCREEN_WIDTH/3) / C_BLOCKS)
 #define BLOCK_XSEPARATION           ((SCREEN_WIDTH/3) / C_BLOCKS)
 #define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )
 #define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))
-#define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
+
+#define BALL_RADIO                  (SCREEN_HEIGHT/100) 
 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
@@ -28,18 +28,17 @@
 //COLORES
     #define BLACK                       0x000000
     #define WHITE                       0xFFFFFF
-    #define BLUE                        0x1
-    #define GREEN                       0x2
-    #define AQUA                        0x3
-    #define RED                         0x4
-    #define PURPLE                      0x5
-    #define YELLOW                      0x6
-    #define LightBlue                   0x9
-    #define LightGreen                  0xA
-    #define LightAqua                   0xB
-    #define LightRed                    0xC
-    #define LightPurple                 0xD
-    #define LightYellow                 0xE   
+    #define BLUE                        0x0000FF
+    #define GREEN                       0x00FF00
+    #define AQUA                        0x00FFFF
+    #define RED                         0xFF0000
+    #define PURPLE                      0XBB00FF
+    #define YELLOW                      0xFFFF00
+    #define LightBlue                   0x6677FF
+    #define LightGreen                  0x33FF44
+    #define LightRed                    0xFF00FF
+    #define LightPurple                 0x7700FF
+  
 //
 
 #define X                           0
@@ -70,7 +69,8 @@ static int keyBufferBack = 0;
 
 static bool goToTerminal = false;
 
-
+unsigned int SCREEN_HEIGHT;
+unsigned int SCREEN_WIDTH;
 
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
@@ -82,6 +82,12 @@ static bool goToTerminal = false;
 
 //para inicializar el juego de cero
 int runGame(void){
+    int aux;
+    getScreenWidth(&aux);
+    SCREEN_WIDTH=aux;
+    printf("%d",SCREEN_WIDTH);
+    getScreenHeight(&aux);
+    SCREEN_HEIGHT=aux;    
     time.past=0;
     time.tick = 0;
     lives = LIVESi;
@@ -172,7 +178,7 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);
     print_ball(curr_BallPos,BLACK );
     //print_bar(curr_BarPos, BLACK); 
-    print_ball(ball.pos, WHITE );
+    print_ball(ball.pos, PURPLE );
     int x, y;
     if(block[X]!= NO_BLOCK){
         x = block[0];
@@ -180,7 +186,7 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
         matrixToXY(&x, &y);
         print_block(x, y, BLACK);   
     }
-    print_bar(bar_pos, WHITE);
+    print_bar(bar_pos, BLUE);
     
 }
 
@@ -354,7 +360,7 @@ void print_blocks(){
             y=j;
             matrixToXY(&x, &y);
             if( blocks.matrix[j][i] == 1){
-                print_block( x ,y,WHITE);
+                print_block( x ,y,AQUA);
             }else{
                print_block( x , y,BLACK);
             }
@@ -591,11 +597,21 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 
 int finishGame(int time_past){
+        clearConsole();
+        int init;
+        getBpp(&init);
+        setSize(init*3);
     if(blocks.left == 0){
-       // printf("congratulations you've won!! it took you %d seconds", time_past);
+        printfColorAt("Congratulations you've won!!",RED,BLACK,90,100);
+        printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
+    
     }else{
-        //printf("better luck next time! time: %d seconds", time_past);
+
+        printfColorAt("Better luck next time!",RED,BLACK,90,100);
+        printfColorAt("Time: %d seconds",RED,BLACK,115,120,time_past);
     }
+        setSize(init);
+
     return 0;
 }
 

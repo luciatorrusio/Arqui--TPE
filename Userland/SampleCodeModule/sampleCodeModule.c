@@ -5,10 +5,10 @@
 
 #include "include/Terminal.h"
 #include "../Include/Curses.h"
-
+#include "include/Game.h"
+#include "include/gamePrinter.h"
 #include <stdlib.h>
 #include "../Include/Debugger.h"
-
 
 
 int main() {

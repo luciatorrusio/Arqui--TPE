@@ -10,4 +10,6 @@ void startVideoDriver();
 
 void drawChar(int x, int y, char character, int fontColor, int background);
 
+void print(int *pos,int lenght,int height,int fontColor);
+
 #endif

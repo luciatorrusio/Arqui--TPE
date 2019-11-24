@@ -1,9 +1,11 @@
 #include "../Include/Time.h"
-
+#include <stdint.h>
+#include "../Include/Syscalls.h"
 enum{
 SECONDS, MINUTES, HOURS, DAYOFWEEK, DAYOFMONTH, MONTH, YEAR
 };
 extern void __time__(int id, int * time);
+
 
 int getTime(int id);
 
@@ -41,4 +43,13 @@ int getTime(int id){
     __time__(id,&time);
 
     return time;
+}
+
+
+uint64_t getTicks(){
+    uint64_t ticks = 0;
+
+    read(4,&ticks,0);
+    return ticks;
+
 }

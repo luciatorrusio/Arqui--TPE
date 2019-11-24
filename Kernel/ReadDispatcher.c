@@ -1,5 +1,6 @@
 #include <ReadDispatcher.h>
 #include <Curses.h>
+#include <timer.h>
 
 typedef struct 
 {
@@ -38,6 +39,13 @@ void dispatchRead(void * firstParam,void * secondParam,void * thirdParam){
             VideoConfiguration * config = secondParam;
 
             getScreenDimensions(&(config->columns), &(config->rows));
+            break;
+        }
+        case 4: // Timer
+        {
+            uint64_t * ticks = secondParam;
+
+            *ticks = ticks_elapsed();
             break;
         }
     }

@@ -1,5 +1,6 @@
 #ifndef TIMEH
 #define TIMEH
+#include <stdint.h>
 
 int GetSeconds();
 
@@ -14,6 +15,8 @@ int GetDayOfMonth();
 int GetMonth();
 
 int GetYear();
+
+uint64_t getTicks();
 
 
 #endif

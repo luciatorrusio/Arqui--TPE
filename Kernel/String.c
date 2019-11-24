@@ -42,39 +42,37 @@ void IntToString(char * buffer, int buffSize, uint64_t num){
 	}
 }
 
-
+// Taken from the base project
 void HexToString(char * buffer, int buffSize, uint64_t num){
-	    for(int i = 0 ; i < buffSize ; i++)
-		buffer[i] = '0';
 
-	buffer[buffSize-1]= 0;
+	char *p = buffer;
+	char *p1, *p2;
+	uint32_t digits = 0;
 
-    uint64_t temp = num;
-	int i = 0;
-
-	while(temp!= 0 && i < buffSize){
-
-		uint64_t stVal = temp;
-		uint64_t numToSave = temp - 16*(stVal/16);
-
-		if(numToSave <10 ){
-			buffer[i++] = '0' + numToSave;
-		}
-		else{
-			buffer[i++] = 'A' + numToSave-10;
-		}
-		
-		temp = temp/16;
+	//Calculate characters for each digit
+	do
+	{
+		uint32_t remainder = num % 16;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
 	}
-    i = buffSize-2;
+	while (num /= 16);
 
-	for(int a = 0 ; a <= (buffSize-2)/2 ; a++){
-		char temp = buffer[a];
-		buffer[a] = buffer[i-a];
-		buffer[i-a] = temp;
+	// Terminate string in buffer.
+	*p = 0;
+
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
 	}
 
-
+	return digits;
 	
 }
 
@@ -164,12 +162,17 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			break;}	
 		case 'x':
 		case 'X':
-		{	HexToString(string+(*k),size-1-(*k),va_arg(args,int));
-			break;}
+		{	
+			HexToString(string+(*k),size-1-(*k),va_arg(args,int));
+			break;
+		}
 		default: 
-			{	*(string+(*k))='%';
-				*(string+(*k+1))=type;}
+		{	
+			*(string+(*k))='%';
+			*(string+(*k+1))=type;
+		}
 	}
-			*k=strlen(string);	
+	
+	*k=strlen(string);	
 
 }

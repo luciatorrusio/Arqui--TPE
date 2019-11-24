@@ -1,5 +1,6 @@
 GLOBAL __READMEM__
 GLOBAL __GETREGISTERS__
+GLOBAL __executeCodeFromAddress__
 GLOBAL __GETBPP__
 GLOBAL __SETBPP__
 GLOBAL __GETCHARH__
@@ -58,6 +59,14 @@ __READMEM__:
         ret
 
 
+__executeCodeFromAddress__:
+
+		enter 0,0
+
+		jmp rdi
+
+		leave
+		ret
 
 
 

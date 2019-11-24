@@ -5,6 +5,76 @@
 #include "../Include/Curses.h"
 #include "../Include/Time.h"
 
+extern void __executeCodeFromAddress__(void * address);
+
+int quotient(int a, int b){
+
+    printf("I'm going to calculate the quotient of %d divided by %d\n",a,b);
+
+    int result =  (a)/ (b);
+    
+    printf("The result is %d\n",result);
+    return 0;
+}
+
+int man(){
+    printf("\ngame\nexit\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
+    return 0;
+}
+
+int explainCommand(char * command){
+
+    if(strcmp(command,"time")){
+        printf("Command:\n        time\n");
+        printf("It shows the current date and time.\n");
+    }
+    else if(strcmp(command,"man")){
+        printf("Command:\n        man ?[Argument_1]\n");
+        printf("It enumerates all the commands available on this shell\n");
+        printf("If there's an argument, it will tell you the funcition of that command\n");
+    }
+    else if(strcmp(command,"infoReg")){
+        printf("Command:\n        infoReg\n");
+        printf("It prints on screen the actual value of the registers\n");
+    }
+    else if(strcmp(command,"printMem")){
+        printf("Command:\n        printMem [Argument_1]\n");
+        printf("It prints on screen the first 32 bytes of memory from any given memory position.\n");
+    }
+    else if(strcmp(command,"game")){
+        printf("Command:\n        game\n");
+        printf("It unpauses/starts the game arachnoid.\n");
+    }
+    else if(strcmp(command,"exit")){
+        printf("Command:\n        exit\n");
+        printf("It exits the program.\n");
+    }
+    else if(strcmp(command,"invalidOpcode")){
+        printf("Command:\n        invalidOpcode\n");
+        printf("It is a test to validate the INVALID OPCODE exception.\n");
+    }
+    else if(strcmp(command,"clear")){
+        printf("Command:\n        clear\n");
+        printf("It clears the screen.\n");
+    }
+    else if(strcmp(command,"quotient")){
+        printf("Command:\n        quotient [Argument_1] [Argument_2]\n");
+        printf("It calculates the quotient of the division of [Argument_1] by [Argument_2]. This can be used to test the DIVISION BY ZERO exception.\n");
+    }else{
+        printf("That command does not exist!\n");
+    }
+
+}
+
+int invalidOpcode(){
+
+    char * temp = "CRASH";
+
+    __executeCodeFromAddress__(temp);
+
+    return 0;
+}
+
 int printMem(uint64_t memDirection){
 
     char rawMem[32];
@@ -94,18 +164,6 @@ int infoReg(){
 
 int time(){
 
-/* Cuando este el printf lo terminamos
-    char arr[200];
-    char month[10];
-    cleanArr(arr,200);
-
-    IntToString(month,10,GetMonth());
-    append("Month: ",arr,200);
-
-    append(month,arr,200);
-
-    printf(arr);
- */
  printf("%d/%d/%d %d:%d:%d \n",GetDayOfMonth(),GetMonth(),GetYear(),GetHours(),GetMinutes(),GetSeconds());   
     return 0;
 

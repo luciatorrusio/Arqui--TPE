@@ -150,7 +150,7 @@ int startGame(){
     }
         
     if(lives == 0  || blocks.left == 0 ){
-        finishGame(time.past / 18);
+        finishGame(time.tick / 18);
         return 0;        
     } 
     return 0;

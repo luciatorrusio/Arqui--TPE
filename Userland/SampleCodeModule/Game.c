@@ -173,12 +173,18 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     print_ball(ball.pos, WHITE );
     int x, y;
     if(block[X]!= NO_BLOCK){
-        x = ((block[0]) * BLOCK_WIDTH) + (BLOCK_WIDTH/2)+ BLOCK_XSEPARATION*(block[0]+1) ;
-        y =  (block[1] * BLOCK_HEIGHT) + (BLOCK_HEIGHT/2) + BLOCK_YSEPARATION*(block[1] +1) ;
+        x = block[0];
+        y = block[1];
+        matrixToXY(&x, &y);
         print_block(x, y, BLACK);   
     }
     print_bar(bar_pos, WHITE);
     
+}
+
+void matrixToXY(int * c, int * r){
+    *c = (*c * BLOCK_WIDTH) + (BLOCK_WIDTH/2)+ BLOCK_XSEPARATION*(*c+1) ;
+    *r = (*r * BLOCK_HEIGHT) + (BLOCK_HEIGHT/2) + BLOCK_YSEPARATION*(*r+1) ;        
 }
 void printLeftover(int * curr_BarPos){
     int auxPos[]= {0,0};
@@ -342,8 +348,9 @@ void print_blocks(){
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j <R_BLOCKS ; j++){
-            x = (i * BLOCK_WIDTH) + (BLOCK_WIDTH/2) + BLOCK_XSEPARATION*(i+1) ;
-            y =  (j * BLOCK_HEIGHT) + ( BLOCK_HEIGHT/2)+ BLOCK_YSEPARATION*(j+1) ;
+            x=i;
+            y=j;
+            matrixToXY(&x, &y);
             if( blocks.matrix[j][i] == 1){
                 print_block( x ,y,WHITE);
             }else{
@@ -574,7 +581,7 @@ int ballBetweenXSides(int * auxPos, int c, int r){
 }
 
 int ballBetweenYSides(int * auxPos, int c, int r){
-    int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ;
+    int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
     int upperSideOfBlock =  r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
 
     return ballBetween(auxPos[Y], upperSideOfBlock, lowerSideOfBlock); 

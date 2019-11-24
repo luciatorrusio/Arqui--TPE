@@ -76,6 +76,8 @@ static bool goToTerminal = false;
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
     void printLeftover(int * curr_BarPos);
     int key_pressed();
+    void parseKeyboard();
+    bool limitInput(char ch);
 //
 
 //para inicializar el juego de cero
@@ -646,15 +648,23 @@ void print_block(int x,int y,int color){
 int stopKeyPressed(){
 
     return goToTerminal;
-    // char key = readKey();
-    // if(key == LEAVE_KEY){
-    //     return 1;
-    // }
-    // return 0;
 }
 
 
+bool limitInput(char ch){
 
+    if(keyBufferFront-3 > keyBufferBack){
+            return ch == KeyBuffer[keyBufferFront-1] && ch == KeyBuffer[keyBufferFront-2] && ch == KeyBuffer[keyBufferFront-3];
+    }
+    else if(keyBufferBack > keyBufferFront){
+        
+        if(keyBufferFront -3> 0 ){
+            return ch == KeyBuffer[keyBufferFront-1] && ch == KeyBuffer[keyBufferFront-2] && ch == KeyBuffer[keyBufferFront-3];
+        }
+    }
+
+    return false;
+}
 
 void parseKeyboard(){
     if(keyBufferFront + 1 == keyBufferBack )
@@ -662,7 +672,7 @@ void parseKeyboard(){
         
     int temp = readKey();
 
-    if(temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY)
+    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY) && !limitInput(temp))
         KeyBuffer[keyBufferFront++ % 200] = temp;
 
 }

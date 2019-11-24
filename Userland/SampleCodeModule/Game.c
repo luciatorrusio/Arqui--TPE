@@ -64,16 +64,19 @@ int block[3];
 
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
-    void wait();
+    void printLeftover(int * curr_BarPos);
+    int arrow_pressed();
+//
+
 //para inicializar el juego de cero
 int runGame(void){
-    //time.past=0;
+    time.past=0;
     lives = LIVESi;
     blocks.left= R_BLOCKS*C_BLOCKS;                            
     
     ball.pos[X]=SCREEN_WIDTH/2;
     ball.pos[Y]=SCREEN_HEIGHT/2;      
-    ball.vel=2;
+    ball.vel=1;
     ball.dir = D; 
     
     bar_pos[X]=SCREEN_WIDTH/2;
@@ -88,11 +91,13 @@ int runGame(void){
 
     /*comienza el juego  */
     startGame();      
+    
     return 0;
 }
 
 //cuando quiero retomar el juego
 int startGame(){
+    int aux;
     setRelativeStartTime();
     time.start[0]=time.relative_start[0];
     time.start[1]=time.relative_start[1];
@@ -101,19 +106,10 @@ int startGame(){
     time.start[4]=time.relative_start[4];
     time.start[5]=time.relative_start[5];
     print_blocks();
-    startGameRec();
-    return 0;
-}
-
-
-
- //juega recursivamente
-
-void startGameRec(void){ 
-     
-    
-    time.relative=(GetSeconds()- time.relative_start[4]) + (GetMinutes()-time.relative_start[3]) *60 + (GetHours() - time.relative_start[2]) * 60 *60 + (GetDayOfMonth()- time.relative_start[1]) *60*60*24 + (GetYear() - time.relative_start[0])*60*60*24*365; 
-    if(stopKeyPressed()){ 
+    while( !(aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
+        startGameRec();
+    }
+    if(aux){ 
         time.past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO
         return 0;
@@ -123,17 +119,26 @@ void startGameRec(void){
         time.past=past_time();
         finishGame(time.past);
         return 0;        
-    }
-   
-    
+    } 
+    return 0;
+}
+
+
+
+ //juega recursivamente
+
+void startGameRec(void){ 
+    time.relative=(GetSeconds()- time.relative_start[4]) + (GetMinutes()-time.relative_start[3]) *60 + (GetHours() - time.relative_start[2]) * 60 *60 + (GetDayOfMonth()- time.relative_start[1]) *60*60*24 + (GetYear() - time.relative_start[0])*60*60*24*365; 
+    /*
     if(time.relative >= 15){
         ball.vel++;
         setRelativeStartTime();
     }
-    
+    */
     
     int curr_BallPos[]={ball.pos[X], ball.pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
+    
     /*MOVIMIENTO DE LA BARRA*/
     handleBarMov();
     
@@ -142,45 +147,59 @@ void startGameRec(void){
     //modificar velocidad de 
 
     printObjects(curr_BallPos, curr_BarPos, block);
-    //wait();
-    startGameRec();
 }
-void wait(){
-    int x= GetSeconds();
-    while(GetSeconds()-x < 1){
 
-    }
-}
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
+    printLeftover(curr_BarPos);
     print_ball(curr_BallPos,BLACK );
-    print_bar(curr_BarPos, BLACK); 
+    //print_bar(curr_BarPos, BLACK); 
     print_ball(ball.pos, WHITE );
     int x, y;
     if(block[X]!= NO_BLOCK){
-        x = (block[1] * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[1]+1) ;
-        y =  (block[0] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[0] +1) ;
+        x = (block[0] * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[0]+1) ;
+        y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[1] +1) ;
         print_block(x, y, BLACK);   
     }
     print_bar(bar_pos, WHITE);
     
 }
+void printLeftover(int * curr_BarPos){
+    int auxPos[]= {0,0};
+    int length = bar_pos[X] - curr_BarPos[X];
+    if(length > 0){// yendo para la derecha
+        auxPos[X] = bar_pos[X] - BAR_LENGTH/2 - length/2;
+        auxPos[Y] =  bar_pos[Y];
+        printOnScreen(auxPos, BAR_LENGTH, BAR_HEIGHT, BLACK);
+    }
+    if(length < 0){//yendo para la izquierda
+        auxPos[X] = bar_pos[X] + BAR_LENGTH/2 + length/2;
+        auxPos[Y] =  bar_pos[Y];
+        printOnScreen(auxPos, BAR_LENGTH, BAR_HEIGHT, BLACK);
+    }
+    
+    
+}
+
+
 
 void handleBarMov(){
-    
-        //barHitWall devuelve un int que representa que pared esta chocando (enum walls)
-    if(left_arrow_pressed()){
-        if(!(barHitWall() == LEFT)){      
-             bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
-        }
-    }
-    if(right_arrow_pressed()){
-        if(!(barHitWall()== RIGHT)){
+    //barHitWall devuelve un int que representa que pared esta chocando
+    int w = barHitWall();
+    //if(right_arrow_pressed()){
+    if(arrow_pressed() == RIGHT_ARROW){
+        if(!(w == RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
         }
     }
-
+    //if(left_arrow_pressed()){
+    if(arrow_pressed() == LEFT_ARROW){
+        if(!(w == LEFT)){      
+             bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
+        }
+    } 
 }
+
 void handleBallMov(void){
     //si pega contra una pared
     walls wall;
@@ -310,9 +329,9 @@ void print_blocks(){
             y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(j+1) ;
             if( blocks.matrix[j][i] == 1){
                 print_block( x ,y,WHITE);
+            }else{
+               print_block( x , y,BLACK);
             }
-            //else
-               //print_block( x , y,BLACK);
         }
     }
 }
@@ -571,14 +590,15 @@ void setRelativeStartTime(){
     time.relative_start[4]= GetMinutes();
     time.relative_start[5]= GetSeconds();
 }
-void print_ball(int * ball_pos,int color){
 
+void print_ball(int * ball_pos,int color){
     printOnScreen(ball_pos,BALL_RADIO*2,BALL_RADIO*2,color);
 }
 
 void print_bar(int * bar_pos,int color){
     printOnScreen(bar_pos,BAR_LENGTH,BAR_HEIGHT,color);
 }
+
 void print_block(int x,int y,int color){
     int pos[]= {x, y};
     printOnScreen(pos,BLOCK_WIDTH,BLOCK_HEIGHT,color);
@@ -591,17 +611,13 @@ int stopKeyPressed(){
     }
     return 0;
 }
-int left_arrow_pressed(){
+int arrow_pressed(){
     char key = readKey();
     if(key == LEFT_ARROW){
-        return 1;
+        return LEFT_ARROW;
     }
-    return 0;
-}
-int right_arrow_pressed(){
-    char key = readKey();
     if(key == RIGHT_ARROW){
-        return 1;
+        return RIGHT_ARROW;
     }
     return 0;
 }

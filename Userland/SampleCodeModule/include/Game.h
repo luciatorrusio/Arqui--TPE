@@ -55,7 +55,7 @@ int past_time();
 
 void handleBallMov();
 
-void handleBarMov();
+//void handleBarMov();
 /*Le cambia la direccion a la pelota dependiendo exactamente donde cae en la barra
     Si cae en la parte de arriba la barra se divide en tres:
         A la izquierda: va a salir 135 grados(LU)

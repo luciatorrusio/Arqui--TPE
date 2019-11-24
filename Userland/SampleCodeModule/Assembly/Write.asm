@@ -1,4 +1,5 @@
 GLOBAL write
+GLOBAL writeColor
 
 section .text:
 
@@ -12,4 +13,12 @@ write:
     leave
     ret
 
+writeColor:
+    enter 0,0
+    mov rax,4
+    mov rbx,rdi
+    int 80h
+
+    leave
+    ret
 

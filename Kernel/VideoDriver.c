@@ -107,3 +107,11 @@ void print(int *pos,int lenght,int height,int fontColor){
 		}
 	}
 }
+
+void setSize(unsigned int s){
+	SCREEN_bPP=s;
+}
+
+void getBpp(int * size){
+	*size=SCREEN_bPP;
+}

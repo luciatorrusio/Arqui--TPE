@@ -1,8 +1,8 @@
 #include "./include/Game.h"
 #include "../Include/Time.h"
 #include "../Include/Curses.h"
-
-
+#include "../Include/Time.h"
+#include <stdbool.h>
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
@@ -106,9 +106,35 @@ int startGame(){
     time.start[4]=time.relative_start[4];
     time.start[5]=time.relative_start[5];
     print_blocks();
-    while( !(aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
-        startGameRec();
-    }
+
+    // GameTick = 2 real tick
+    #define REAL_TO_GAME_TICKS (1)
+    bool leave = false;
+	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;
+
+    baseTicks = getTicks();
+    do{
+        realTicks = getTicks() - baseTicks;
+
+        if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
+            gameTicks++;
+            previusTick = realTicks;
+            if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
+                // Condicion de retorno
+                leave = true;
+            }else
+            {
+                startGameRec();
+            }
+        }
+
+
+    }while(!leave);
+
+
+    // while( !(aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
+    //     startGameRec();
+    // }
     if(aux){ 
         time.past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO
@@ -611,11 +637,18 @@ int stopKeyPressed(){
 }
 int arrow_pressed(){
     char key = readKey();
-    if(key == LEFT_ARROW){
-        return LEFT_ARROW;
-    }
-    if(key == RIGHT_ARROW){
-        return RIGHT_ARROW;
-    }
-    return 0;
+
+    if(key == RIGHT_ARROW || key == LEFT_ARROW)
+    {
+        return key;
+    }else
+        return 0;
+
+    // if(key == LEFT_ARROW){
+    //     return LEFT_ARROW;
+    // }
+    // if(key == RIGHT_ARROW){
+    //     return RIGHT_ARROW;
+    // }
+    // return 0;
 }

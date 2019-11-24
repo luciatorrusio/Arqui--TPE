@@ -219,6 +219,8 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 			int length = secondParam;
 			int height=thirdParam;
 			int fontColor=fourthParam;
+
+			// printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",pos[0],pos[1],length,height,fontColor);
 			
 			print(pos,length,height,fontColor);
 			break;

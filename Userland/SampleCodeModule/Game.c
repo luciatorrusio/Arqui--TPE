@@ -631,6 +631,7 @@ void print_ball(int * ball_pos,int color){
 }
 
 void print_bar(int * bar_pos,int color){
+    printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",bar_pos[0],bar_pos[1],17*600/100,4*600/100,0xFFFFFF);
     printOnScreen(bar_pos,BAR_LENGTH,BAR_HEIGHT,color);
 }
 

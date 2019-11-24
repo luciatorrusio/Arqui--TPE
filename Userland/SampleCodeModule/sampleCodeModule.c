@@ -39,19 +39,25 @@ static int selector = -1;
 
 int main() {
 
-	// int pos[2]={50,50};
+// 	 int pos[2]={300,(78*600/100)};
 
 
-	// printOnScreen(pos,50,50,0xFFFFFF);
+// 	// printOnScreen(pos,50,50,0xFFFFFF);
 
-	// while (1)
-	// {
-	// }
+// 	// while (1)
+// 	// {
+// 	// }
 	
-	// 		clearConsole();
+// 	// 		clearConsole();
 
-	// // // runGame();
-	// return 0;
+// 	// // // runGame();
+// printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",pos[0],pos[1],17*600/100,4*600/100,0xFFFFFF);
+
+//     printOnScreen(pos,17*600/100,4*600/100,0xFFFFFF);
+
+// 	//print_bar(pos,0xFF0000);
+
+// 	return 0;
 
 	int exit=0;
 	while(exit!=1)

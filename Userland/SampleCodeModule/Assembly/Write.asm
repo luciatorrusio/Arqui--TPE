@@ -10,7 +10,7 @@ write:
 
     mov r9, r8      ;cuarto arg
     mov rdx, rcx    ;tercer arg
-    mov rcx, rdx    ;segundo arg
+    mov rcx, r15    ;segundo arg
     mov rbx, rsi    ;primer arg
     mov rax, rdi    ; fd
     int 81h

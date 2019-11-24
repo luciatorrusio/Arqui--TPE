@@ -157,7 +157,7 @@ void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     print_ball(ball.pos, WHITE );
     int x, y;
     if(block[X]!= NO_BLOCK){
-        x = (block[0] * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[0]+1) ;
+        x = ((block[0]+1) * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[0]+ 1 +1) ;
         y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[1] +1) ;
         print_block(x, y, BLACK);   
     }
@@ -304,7 +304,7 @@ void makeSquare(int * square, int x, int y){
 }
 
 int ballBetween(int auxPos, int y1, int y2){
-    if(auxPos < y2 && auxPos > y1){
+    if(auxPos <= y2 && auxPos >= y1){
         return 1;
     }
     return 0;
@@ -555,14 +555,14 @@ int ballBetweenXSides(int * auxPos, int c, int r){
     int x1=(c* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION);
     int x2=( (c+1)* BLOCK_WIDTH + (c+1)* BLOCK_XSEPARATION );
 
-    return (ballBetween(auxPos[X], x1, x2 ))? 1:0;
+    return ballBetween(auxPos[X], x1, x2 );
 }
 
 int ballBetweenYSides(int * auxPos, int c, int r){
     int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ;
     int upperSideOfBlock =  r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
 
-    return   (ballBetween(auxPos[Y], upperSideOfBlock, lowerSideOfBlock))? 1:0; 
+    return ballBetween(auxPos[Y], upperSideOfBlock, lowerSideOfBlock); 
 }
 
 

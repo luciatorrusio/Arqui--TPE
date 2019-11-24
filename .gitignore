@@ -63,3 +63,5 @@ dkms.conf
 .bash_history
 .bash_history
 /Toolchain/ModulePacker/*.bin
+
+run.sh.save

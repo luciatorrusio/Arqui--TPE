@@ -20,6 +20,7 @@ GLOBAL ipRegister
 
 section .text
 
+
 	
 cpuVendor:
 	push rbp
@@ -49,108 +50,4 @@ cpuVendor:
 
 
 
-raxRegister: 
-	enter 0,0
 
-	mov rax, rax ; pasaje de parametro
-	leave
-	ret
-
-rbxRegister: 
-	enter 0,0
-
-	mov rax, rbx ; pasaje de parametro
-	leave
-	ret
-
-rcxRegister: 
-	enter 0,0
-
-	mov rax, rcx ; pasaje de parametro
-	leave
-	ret
-
-rdxRegister: 
-	enter 0,0
-
-	mov rax, rdx ; pasaje de parametro
-	leave
-	ret
-
-rdiRegister: 
-	enter 0,0
-
-	mov rax, rdi ; pasaje de parametro
-	leave
-	ret
-
-rsiRegister: 
-	enter 0,0
-
-	mov rax, rsi ; pasaje de parametro
-	leave
-	ret
-
-r8Register: 
-	enter 0,0
-
-	mov rax, r8 ; pasaje de parametro
-	leave
-	ret
-
-r9Register: 
-	enter 0,0
-
-	mov rax, r9 ; pasaje de parametro
-	leave
-	ret
-
-r10Register: 
-	enter 0,0
-
-	mov rax, r10 ; pasaje de parametro
-	leave
-	ret
-
-r11Register: 
-	enter 0,0
-
-	mov rax, r11 ; pasaje de parametro
-	leave
-	ret
-
-r12Register: 
-	enter 0,0
-
-	mov rax, r12 ; pasaje de parametro
-	leave
-	ret
-
-r13Register: 
-	enter 0,0
-
-	mov rax, r13 ; pasaje de parametro
-	leave
-	ret
-
-r14Register: 
-	enter 0,0
-
-	mov rax, r14 ; pasaje de parametro
-	leave
-	ret
-
-r15Register: 
-	enter 0,0
-
-	mov rax, r15 ; pasaje de parametro
-	leave
-	ret
-
-ipRegister: 
-	enter 0,0
-	call address
-address:
-	pop rax
-	leave
-	ret

@@ -66,12 +66,6 @@ void startVideoDriver(){
     init_VM_Driver();
 }
 
-void drawLine(){
-
-    for(int i = 0 ; i < SCREEN_WIDTH; i++){
-        drawPixel(i,SCREEN_WIDTH/2,0xFFFFFF);
-    }
-}
 
 
 

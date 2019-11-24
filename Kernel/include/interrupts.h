@@ -22,8 +22,14 @@ void _irq82Handler(void * ptr, void * timeid, void * saveTime);
 void _irq83Handler(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam);
 
 
+void _irq85Handler(void * ptr, void * timeid);
+
+
+
 
 void _exception0Handler(void);
+void _exception6Handler(void);
+
 
 void _cli(void);
 

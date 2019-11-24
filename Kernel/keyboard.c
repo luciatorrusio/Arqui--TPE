@@ -83,9 +83,9 @@ void readKey()
         
     int temp = processKeyboardInput(__ReadKey__());
    
-
-    if(temp != -1)
+    if(temp != -1){
         keyboardBuffer[bufferIndex++ % BUFFER_SIZE] = temp;
+    }
 }
 
 
@@ -136,7 +136,6 @@ void handleBreaks(int input)
         case LShift:
         case Rshift:
             Shift = false;
-            // printlnAt( "SHIFT OFF", 0, 11);
             break;
         }
     }
@@ -174,17 +173,17 @@ void handleCommands(int PressedKey)
         if (Mayusc)
         {
             Mayusc = false;
-            // printlnAt( "CAPS OFF", 0, 10);
+            // printfAt( "CAPS OFF", 0, 10);
         }
         else
         {
             Mayusc = true;
-            // printlnAt( "CAPS ON ", 0, 10);
+            // printfAt( "CAPS ON ", 0, 10);
         }
     }
     else if (PressedKey == LShift || PressedKey == Rshift)
     {
         Shift = true;
-        // printlnAt( "SHIFT ON ", 0, 11);
+        // printfAt( "SHIFT ON ", 0, 11);
     }
 }

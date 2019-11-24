@@ -6,6 +6,7 @@
 #include <deviceInfo.h>
 #include <Time.h>
 #include <ReadDispatcher.h>
+#include <Debugger.h>
 #include <VideoDriver.h>
 #include <SpeakerDriver.h>
 
@@ -22,15 +23,17 @@ static void int_83(void * firstParam,void * secondParam,void * thirdParam,void *
 static void int_21();
 void int_82(int timeID, int * value);
 
+void dispatchDelete(void * fd);
+
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam) {
+
 
 	switch (irq) {
 		case 0:
 			int_20();
 			break;
-		case 0x21:
 		case 1:
 			int_21();
 			break;
@@ -65,42 +68,38 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	int fileDescriptor = secondParam;
 	char * buffer = (char *) thirdParam;
 
-	Color currentTextColor,currentBackgroundColor;
 	
 	switch (id)
 	{
 		case 1:{ // WRITE
 			switch(fileDescriptor){
 				case FD_STDOUT:{
-					// IMPLEMENTAR CON LO UTLIMO DE MASTER
+                    if(buffer[1] == 0)
+                        putChar(*buffer);
+				    else
+                        printf(buffer);
+	
 					break;
 				}
 				case FD_STDERR:{
-					// IMPLEMENTAR CON LO ULTIMO DE MASTER
-					break;
-				}			
-				case FD_SPEAKER:{
-					beep();
-					break;
-				}
+                
+				    if(buffer[1] == 0)
+					    putCharColor(*buffer,0xFF0000,0x0000);
+				    else
+					    printfColor(buffer,0xFF0000,0x0000);
+                
+                    break;
+                }
+                case FD_SPEAKER:{
+                    beep();
+                    break;
+                }
 			}
 			break;
 		}
-		case 2:{ // write at
-
-			uint64_t position = fourthParam;
-
-			if(fileDescriptor == 2){
-				getColor(&currentTextColor,&currentBackgroundColor);
-				setColor(White,Red);
-			}
-
-			printlnAt(buffer,position);
-
-			if(fileDescriptor == 2)
-				setColor(currentTextColor,currentBackgroundColor);
-
-			break;
+		case 2:{ // Delete
+			dispatchDelete(secondParam);
+            break;
 		}
 		case 3: // read
 		{
@@ -112,6 +111,7 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 
 
 void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
+	printf("En Kernel.ID que mande: %d\n",id);
 
 	switch (id)
 	{
@@ -127,12 +127,12 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 		}
 		case 0x02: // GETREGISTERS
 		{
-			Registers reg = getRegisters();
-			Registers * returnAdress = firstParam;
-		
-			*returnAdress = reg;
-
+			getRegisters(firstParam,secondParam,thirdParam);
+			return;
 			break;
+		}
+		default:{
+			printf("ID que mande: %d",id);
 		}
 	}
 }
@@ -141,6 +141,23 @@ void int_82(int timeID, int * value){
 	*value = handleTimeRequest(timeID);
 }
 
+#define CURRENT_CHAR 1
+#define ALL_DISPLAY 2
+#include <ConsoleDriver.h>
+
+void dispatchDelete(void * fd){
+	switch ((int)fd)
+	{
+		case CURRENT_CHAR:{
+			removeLastChar();
+			break;
+		}
+		case ALL_DISPLAY:{
+			clearConsole();
+			break;
+		}
+	}
+}
 void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam){
 	int id = firstParam;
 	int * pos = secondParam;

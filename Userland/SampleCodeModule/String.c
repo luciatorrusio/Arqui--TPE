@@ -39,42 +39,16 @@ void IntToString(char * buffer, int buffSize, uint64_t num){
 		p1++;
 		p2--;
 	}
-
-	//return digits;
-
-    // for(int i = 0 ; i < buffSize ; i++)
-	// 	buffer[i] = 0;
-
-    // int temp = num>0 ?num:-num;
-	// int i = 0;
-
-	// while(temp!= 0 && i < buffSize-1){
-
-	// 	int stVal = temp;
-	// 	int numToSave = temp - 10*(stVal/10);
-	// 	buffer[i++] = '0' + numToSave;
-	// 	temp = temp/10;
-	// }
-    // i--;
-
-	// for(int a = 0 ; a <= i/2 ; a++){
-	// 	char temp = buffer[a];
-	// 	buffer[a] = buffer[i-a];
-	// 	buffer[i-a] = temp;
-	// }
-
-	// if(num <0){
-	// 	for(int j = strlen(buffer)-2; j >=0; j--){
-	// 		buffer[j+1] = buffer[j];
-	// 	}
-	// 	buffer[0]='-';
-	// }
 }
 
-
+int stringToInt(char * buff){
+	int aux=0;
+	for(int i=0;*(buff+i)!=0;i++){
+		aux=aux*10+(*(buff+i)-'0');
+	}
+	return aux;
+}
 void HexToString(char * buffer, int buffSize, uint64_t num){
-
-
 
     for(int i = 0 ; i < buffSize ; i++)
 		buffer[i] = '0';
@@ -105,9 +79,6 @@ void HexToString(char * buffer, int buffSize, uint64_t num){
 		buffer[a] = buffer[i-a];
 		buffer[i-a] = temp;
 	}
-
-
-	
 }
 
 void append(char * src, char * dest, unsigned size){
@@ -132,22 +103,20 @@ void preppend(char * src, char * dest, unsigned size){
 
 }
 
-void removeFirstOccurrence(char * str, char ch){
+int strcmp(char * s1,char * s2){
+    int i;
+    for(i=0;*(s1+i)!=0 && *(s2+i)!=0 && *(s1+i)==*(s2+i);i++);
 
-	bool found = false;
-
-	for(int i = 0 ; i < strlen(str); i++){
-		
-	}
-
+    if(*(s1+i)==0 && *(s2+i)==0)
+     return 1;
+    return 0; 
 }
 
-void removeLastOccurrence(char * str, char ch){
-
-}
-
-void removeAllOcurrences(char * str, char ch){
-
+void formatString(char * string, int size,char format,...){
+	va_list args;
+	va_start(args,format);
+	snprintf(string,size,format,args);
+	va_end(args);
 }
 
 void snprintf(char * string, int size, char * format, va_list args){

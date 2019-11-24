@@ -8,35 +8,18 @@
 #include "include/Game.h"
 #include "include/gamePrinter.h"
 #include <stdlib.h>
-#include "include/Speaker.h"
+#include "../Include/Debugger.h"
 
 
 int main() {
-	beep();
 
-// 	initializeTerminal();
 
-// 	//printf("tick %d\n",getTicks());
-
-// 	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;
+	// printf("HI! Ask \"man\" for a command menu\n");
 	
-
-//     baseTicks = getTicks();
-//     do{
-//         realTicks = getTicks() - baseTicks ;
-
-//         if(realTicks % 15 == 0 && realTicks !=previusTick){
-//             gameTicks++;
-// 			previusTick = realTicks;
-// // printf("tick %d\n",getTicks());
-//             printf("GameTick: %d\n",gameTicks);
-//         }
-
-
-//     }while(1);
-
+	//  runTerminal();
 
 	runGame();
+
 
 	return 0xDEA;
 }

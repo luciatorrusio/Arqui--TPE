@@ -3,15 +3,12 @@
 
 #include <stdarg.h>
 
-void initializeTerminal();
 
-void writeLineToTerminal(char * str);
 
 int runTerminal();
 
-void printf(char * format,...);
+void man();
 
-void putchar(char c);
-
+int strcmp(char * s1,char * s2);
 
 #endif

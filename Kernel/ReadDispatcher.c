@@ -1,13 +1,8 @@
 #include <ReadDispatcher.h>
 #include <Curses.h>
 #include <timer.h>
+#include <stdint.h>
 
-typedef struct 
-{
-    int columns;
-    int rows;
-
-}VideoConfiguration;
 
 
 void dispatchRead(void * firstParam,void * secondParam,void * thirdParam){
@@ -36,9 +31,7 @@ void dispatchRead(void * firstParam,void * secondParam,void * thirdParam){
         }
         case 2: // TERMINAL CONFIGURATION
         {
-            VideoConfiguration * config = secondParam;
 
-            getScreenDimensions(&(config->columns), &(config->rows));
             break;
         }
         case 4: // Timer

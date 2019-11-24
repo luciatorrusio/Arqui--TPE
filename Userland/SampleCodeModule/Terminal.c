@@ -1,4 +1,3 @@
-
 #include <stdarg.h>
 #include "include/Terminal.h"
 #include "../Include/Curses.h"
@@ -6,126 +5,113 @@
 #include "../Include/String.h"
 #include <stdlib.h>
 
+/***************************************************************/
+/*                        Constantes                           */
+/***************************************************************/
 
+#define MAXBUFFER (600)
 
+/***************************************************************/
+/*                         Variables                           */
+/***************************************************************/
 
-// Variables
-#define MAXBUFFER (200)
-
-static char TerminalDisplay [60][MAXBUFFER];
 static char TerminalType [MAXBUFFER];
 static unsigned int TypeIndex = 0;
-static unsigned int FirstAvailableLine = 0;
 
-static int columns;
-static int rows;
+/***************************************************************/
+/*                         Declaraciones                       */
+/***************************************************************/
 
 void clearArray(char * arr, int size);
 void overwriteArray(char * src, char * dest);
-void handleTerminalMovement();
 void printTerminal();
 int interpretCommand();
-void printTypeLine();
+void overwriteArrayUpTo(char * src, char * dest,char c);
 
-void initializeTerminal(){
-    initializeCurses();
-
-
-    getConsoleDimensions(&columns,&rows);
-}
+/***************************************************************/
+/*                      Funciones Publicas                     */
+/***************************************************************/
 
 int runTerminal(){
 
-    clearConsole();
-
-	do{
-		
+    clearArray(TerminalType,MAXBUFFER);
+    TypeIndex = 0;
+    do{
+        
 		int key = readKey();
-		if(key >0){
+
+		if(key >0){     
             if(key == 8 ){
-                if(TypeIndex>0)
+                if(TypeIndex>0){
                     TerminalType[--TypeIndex] = 0;
-                 printTypeLine();
+                    RemoveLastCharFromDisplay();
+                }
 
             }else{ 
 
                 TerminalType[TypeIndex++] = key;
+                printTerminal();
 
                 if(key == '\n'){
-
-                    handleTerminalMovement();
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    printTerminal();
-
-                    
-
-                    
-
-    
-                }else{
-                     printTypeLine();
+                    TypeIndex = 0;          
                 }
+                
             }
-           
-
-            
-            
-
         }
-
 	}while(1);
 }
 
+/***************************************************************/
+/*                      Funciones Privadas                     */
+/***************************************************************/
 
 int interpretCommand(){
     char command[MAXBUFFER];
-    overwriteArray(TerminalType,command);
+    char param1[MAXBUFFER];
+    char param2[MAXBUFFER];
 
+    overwriteArrayUpTo(TerminalType,command,' ');
+    overwriteArrayUpTo(TerminalType+strlen(command)+1,param1,' ');
+    overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+1,param2,' ');
+    
+    if(!strcmp(param2,"")){
+        printfError("ERROR\n");
+        return 0;
+    }
+    if(strcmp(command,"time") && strcmp(param1,""))
+        time();
+    else if(strcmp(command,"man") && strcmp(param1,""))
+        man();
+    else if(strcmp(command,"infoReg") && strcmp(param1,""))
+        infoReg();
+    else if(strcmp(command,"printMem") && !strcmp(param1,"")){
+        int a = stringToInt(param1);
+        printMem(a);
+    }
+    else if(strcmp(command,"game") && strcmp(param1,""))
+        printf("aca iria el juego\n");
+    else if(strcmp(command,"clear") && strcmp(param1,"")){ 
+               clearConsole();
+               }
+    else
+        printfError("%s%s%s: command not found \n",command,param1,param2);    
     
     return  0;
-    
-
 }
-
-void handleTerminalMovement(){
-    TypeIndex = 0;
-    if(FirstAvailableLine == rows-3)
-    {
-        for( int i = 0 ; i < rows-3; i++)
-           overwriteArray(TerminalDisplay[i+1],TerminalDisplay[i]);    
-        FirstAvailableLine--;
-    }
-
-    overwriteArray(TerminalType,TerminalDisplay[FirstAvailableLine++]);
+void man(){
+    printf("\ntime\nman\ngame\ninfoReg\nprintMem\ngame\nclear\n");
 }
 
 
 void printTerminal(){
     
-
-    for(int i = 0 ; i < FirstAvailableLine; i ++){
-        clearLine(i);
-        printlnAt(TerminalDisplay[i],0,i);
-    }
-
-    clearLine(rows-2);
-  // printTypeLine();
+    if(TerminalType[0])
+        putChar(TerminalType[TypeIndex-1]);
 }
 
-void printTypeLine(){
-    int offset = 0;
 
-    clearLine(rows-2);
-
-    if (TypeIndex > columns)
-    {
-        offset = TypeIndex - columns;
-    }
-
-    printlnAt(TerminalType + offset,0,rows-2);
-
-}
 
 void clearArray(char * arr, int size){
 
@@ -133,43 +119,19 @@ void clearArray(char * arr, int size){
         arr[i] = 0;
 }
 
-void clearLine(int row){
-    for(int i = 0 ; i < columns ; i++)
-        printCharAt(' ',i,row);
-}
 
 void overwriteArray(char * src, char * dest){
+    overwriteArrayUpTo(src,dest,0);
+}
 
-    clearArray(dest,columns + 1);
-    for (int i = 0; src[i]!=0 && i < MAXBUFFER; i++)
+void overwriteArrayUpTo(char * src, char * dest,char c){
+    clearArray(dest,MAXBUFFER);
+    int i;
+    for (i = 0; src[i]!=0 && src[i]!='\n' && i < MAXBUFFER && src[i]!=c; i++)
         dest[i] = src[i];
-    
-}
-
-
-void writeLineToTerminal(char * str){
-    char temp[MAXBUFFER];
-    overwriteArray(TerminalType,temp);
-
-    overwriteArray(str,TerminalType);
-
-
-
-    handleTerminalMovement();
-    printTerminal();
-
-    overwriteArray(temp,TerminalType);
+    if(i!=MAXBUFFER){
+        dest[i]=0;
     }
-void printf(char * format,...){
-    char string[MAXBUFFER];
-    for(int i=0;i<MAXBUFFER;i++)
-        *(string+i)=0;
-    va_list args;
-	va_start(args,format);
-    snprintf(string,MAXBUFFER,format,args);
-    va_end(args);
-    writeLineToTerminal(string);
 }
-void putchar(char c){
-	//ncPrintChar(c);
-}
+
+

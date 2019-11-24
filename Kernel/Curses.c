@@ -1,160 +1,63 @@
 #include "include/Curses.h"
 #include "include/String.h"
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <VideoDriver.h>
+#include <ConsoleDriver.h>
+
+#define MAXBUFFER 500
 
 
-static uint64_t pos_x = 0;
-static uint64_t pos_y = 0;
+void printf(const char * format,...){
+    
+    char string[MAXBUFFER];
+    for(int i=0;i<MAXBUFFER;i++)
+        *(string+i)=0;
+    va_list args;
+	va_start(args,format);
+    snprintf(string,MAXBUFFER,(char*)format,args);
+    va_end(args);
 
-
-
-static Color FntColor = White;
-static Color BgColor = Black;
-
-static int charHeight;
-static int charWidth;
-static int screenHeight;
-static int screenWidth;
-
-void nextColumn();
-void nextRow();
-
-
-void initializeConsoleDriver(int charHeight_,int charWidth_, int screenHeight_, int screenWidth_){
-    charHeight = charHeight_;
-    charWidth = charWidth_;
-    screenHeight = screenHeight_;
-    screenWidth = screenWidth_;
-}
-
-void getScreenDimensions(int * cols, int * rows){
-    *cols = screenWidth / charWidth;
-    *rows = screenHeight / charHeight;
-}
-
-
-void nextColumn(){
-
-    pos_x+= charWidth;
+    printLine(string);
 
 }
-void nextRow(){
-    pos_x = 0;
-    pos_y += charHeight;
-}
 
+void printfColor(const char * format,int fontColor, int backgroundColor,...){
+    
+    char string[MAXBUFFER];
+    for(int i=0;i<MAXBUFFER;i++)
+        *(string+i)=0;
+    va_list args;
+	va_start(args,format);
+    snprintf(string,MAXBUFFER,(char*)format,args);
+    va_end(args);
 
-void clearConsole()
-{
-    pos_x = 0;
-    pos_y = 0; 
-
-    while(pos_y < screenHeight){
-        while(pos_x < screenWidth){
-            
-            printCharAt(' ',pos_x,pos_y);
-            nextColumn();
-        }
-        nextRow();
+    ColorChar colorString[strlen(string)];
+    int i;
+    for(i = 0; string[i]!=0;i++){
+        colorString[i].ch = string[i];
+        colorString[i].fontColor = fontColor;
+        colorString[i].backgroundColor = backgroundColor;
     }
+        colorString[i].ch = 0;
+        
 
-    pos_x = 0;
-    pos_y = 0;    
+    printLineColor(colorString);
+}
+
+void putChar(char ch){
+
+    printChar(ch);
 
 }
 
-int moveCursor(int row, int col)
-{
-
-
-    return OK;
+void putCharColor(char ch, int fontColor, int backgroundColor){
+    ColorChar temp;
+    temp.ch = ch;
+    temp.fontColor = fontColor;
+    temp.backgroundColor = backgroundColor;
+    printCharColor(temp);
 }
-
-
-int setColor( Color textColor, Color backgroundColor)
-{
-    if (textColor > 0xF || textColor < 0)
-        return ERROR;
-
-    if (backgroundColor > 0xF || backgroundColor < 0)
-        return ERROR;
-
-    FntColor = textColor;
-    BgColor = backgroundColor;
-
-    return OK;
-}
+   
 
 
 
-int printlnAt(char *str, unsigned int pos)
-{
-
-    if (str == NULL)
-        return ERROR;
-
-    int x = (pos % screenWidth) * charWidth;
-    int y = ((pos * charWidth) / screenWidth) * charHeight;
 
 
-    for (int i = 0 ; str[i]!=0; i++){
-
-        if(str[i]!= '\n' ){
-
-            if(x >= screenWidth * charWidth){
-                 x = 0;
-                y += charHeight;
-            }
-
-            printCharAt(str[i],x,y);
-            x += charWidth;
-        }else{
-            x = 0;
-            y += charHeight;
-        }
-    }
-    return OK;
-}
-
-int println(char *str)
-{
-    for (int i = 0; str[i] != 0; i++)
-    {
-        printChar(str[i]);
-    }
-
-    return OK;
-}
-
-
-
-void getColor(Color * textColor, Color * backgroundColor){
-    *textColor = FntColor;
-    *backgroundColor = BgColor;
-}
-
-int printCharAt(char ch, uint64_t x, uint64_t y){
-
-    drawChar(x,y,ch,FntColor,BgColor);
-
-
-    return OK;
-}
-
-int printChar( char ch)
-{
-
-    if(ch != '\n'){
-        if(pos_x >= screenWidth)
-            nextRow();
-
-        printCharAt(ch,pos_x,pos_y);    
-        nextColumn();    
-    }else{
-        nextRow();
-    }
-    return OK;
-}

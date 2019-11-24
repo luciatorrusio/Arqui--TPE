@@ -7,9 +7,19 @@
 #include <Time.h>
 #include <ReadDispatcher.h>
 #include <Debugger.h>
+#include <VideoDriver.h>
+#include <SpeakerDriver.h>
+
+#define FD_STDOUT (1)
+#define FD_STDERR (2)
+#define FD_SPEAKER (3)
+
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
+static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam);
+
+
 static void int_21();
 void int_82(int timeID, int * value);
 
@@ -17,7 +27,7 @@ void dispatchDelete(void * fd);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
-void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam ) {
+void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam) {
 
 
 	switch (irq) {
@@ -36,6 +46,10 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x82:
 			int_82(firstParam,secondParam);
 			break;
+		case 0x83:
+			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
+			break;
+	
 	}
 }
 
@@ -57,25 +71,35 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 	
 	switch (id)
 	{
-		case 1:{ // write
-			if(fileDescriptor == 2){
-				if(buffer[1] == 0)
-					putCharColor(*buffer,0xFF0000,0x0000);
-				else
-					printfColor(buffer,0xFF0000,0x0000);
+		case 1:{ // WRITE
+			switch(fileDescriptor){
+				case FD_STDOUT:{
+                    if(buffer[1] == 0)
+                        putChar(*buffer);
+				    else
+                        printf(buffer);
+	
+					break;
+				}
+				case FD_STDERR:{
+                
+				    if(buffer[1] == 0)
+					    putCharColor(*buffer,0xFF0000,0x0000);
+				    else
+					    printfColor(buffer,0xFF0000,0x0000);
+                
+                    break;
+                }
+                case FD_SPEAKER:{
+                    beep();
+                    break;
+                }
 			}
-			else{
-				if(buffer[1] == 0)
-					putChar(*buffer);
-				else
-					printf(buffer);
-			}
-
-				
 			break;
 		}
 		case 2:{ // Delete
 			dispatchDelete(secondParam);
+            break;
 		}
 		case 3: // read
 		{
@@ -134,4 +158,15 @@ void dispatchDelete(void * fd){
 		}
 	}
 }
+void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam){
+	int id = firstParam;
+	int * pos = secondParam;
+	int length = thirdParam;
+	int height=fourthParam;
+	int fontColor=fifthParam;
+	
+
+	print(pos,length,height,fontColor);
+}
+
 

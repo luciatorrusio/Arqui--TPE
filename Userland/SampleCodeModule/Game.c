@@ -71,6 +71,8 @@ static bool goToTerminal = false;
 
 unsigned int SCREEN_HEIGHT;
 unsigned int SCREEN_WIDTH;
+static int info[2];
+
 
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
@@ -78,6 +80,8 @@ unsigned int SCREEN_WIDTH;
     int key_pressed();
     void parseKeyboard();
     bool limitInput(char ch);
+    void table();
+    void tableData();
 //
 
 //para inicializar el juego de cero
@@ -85,7 +89,6 @@ int runGame(void){
     int aux;
     getScreenWidth(&aux);
     SCREEN_WIDTH=aux;
-    printf("%d",SCREEN_WIDTH);
     getScreenHeight(&aux);
     SCREEN_HEIGHT=aux;    
     time.past=0;
@@ -101,6 +104,8 @@ int runGame(void){
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
     
+    info[X]=SCREEN_WIDTH/2;
+    info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
@@ -118,7 +123,7 @@ int runGame(void){
 int startGame(){
     int aux;
     print_blocks();
-
+    table();
     // GameTick = 2 real tick
     bool stopWhile = false;
     goToTerminal = false;
@@ -159,7 +164,8 @@ int startGame(){
 
 
 //juega recursivamente
-void startGameRec(void){ 
+void startGameRec(void){
+    tableData(); 
     time.tick ++;
     int curr_BallPos[]={ball.pos[X], ball.pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
@@ -669,4 +675,20 @@ int key_pressed(){
     return KeyBuffer[keyBufferBack++ % 200];
 
 
+}
+void table(){
+    printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-info[1],YELLOW);
+    printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
+    printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
+    printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.past/18);
+    tableData();
+}
+
+void tableData(){
+    if(blocks.left==9)
+        printfColorAt(" ",YELLOW,YELLOW,268,info[1]);    
+
+    printfColorAt("%d",BLACK,YELLOW,260,info[1],blocks.left);
+    printfColorAt("%d",BLACK,YELLOW,520,info[1],lives);
+    printfColorAt("%d",BLACK,YELLOW,850,info[1],time.past/18);
 }

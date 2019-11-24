@@ -59,7 +59,6 @@ int main() {
 	else
 		exit=1;	
 	}
-	printf("LEAVING MAIN\n");
 	clearConsole();
 
 	unsigned int init;

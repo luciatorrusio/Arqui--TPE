@@ -7,6 +7,8 @@
 #include <Time.h>
 #include <ReadDispatcher.h>
 #include <Debugger.h>
+#include <VideoDriver.h>
+#include <font.h>
 
 static void int_20();
 static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
@@ -82,12 +84,17 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 			dispatchRead(secondParam,thirdParam,fourthParam);
 			break;
 		}
+		case 4:
+		{
+			printLineColorAt(secondParam);
+				break;
+		}
 	}
 }
 
 
 void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
-	printf("En Kernel.ID que mande: %d\n",id);
+	//printf("En Kernel.ID que mande: %d\n",id);
 
 	switch (id)
 	{
@@ -104,6 +111,28 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 		case 0x02: // GETREGISTERS
 		{
 			getRegisters(firstParam,secondParam,thirdParam);
+			return;
+			break;
+		}
+		case 0x03:{
+			getBpp(firstParam);
+			return;
+			break;
+		}
+		case 0x04:{
+			setSize(firstParam);
+			return;
+			break;
+		}
+		case 0x05:{
+			unsigned int * aux=firstParam;
+			*aux=CHAR_HEIGHT;
+			return;
+			break;
+		}
+		case 0x06:{
+			unsigned int * aux=firstParam;
+			*aux=CHAR_WIDTH;
 			return;
 			break;
 		}

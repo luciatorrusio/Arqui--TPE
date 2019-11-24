@@ -12,6 +12,14 @@ int time();
 
 int help();
 
+int quotient(int a, int b);
+
+int invalidOpcode();
+
+int man();
+
+int explainCommand(char * command);
+
 
 
 

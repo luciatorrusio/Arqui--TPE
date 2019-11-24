@@ -1,9 +1,12 @@
 GLOBAL __READMEM__
 GLOBAL __GETREGISTERS__
-
-
-
-
+GLOBAL __executeCodeFromAddress__
+GLOBAL __GETBPP__
+GLOBAL __SETBPP__
+GLOBAL __GETCHARH__
+GLOBAL __GETCHARW__
+GLOBAL __GETSCREENH__
+GLOBAL __GETSCREENW__
 section .text
 
 %macro pushState 0
@@ -57,6 +60,14 @@ __READMEM__:
         ret
 
 
+__executeCodeFromAddress__:
+
+		enter 0,0
+
+		jmp rdi
+
+		leave
+		ret
 
 
 
@@ -76,3 +87,67 @@ __GETREGISTERS__:
         leave
         ret
 
+__GETBPP__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x3
+        int 0x81
+
+        leave
+        ret
+
+__SETBPP__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x4
+        int 0x81
+
+        leave
+        ret
+
+__GETCHARH__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x5
+        int 0x81
+
+        leave
+        ret
+
+__GETCHARW__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x6
+        int 0x81
+
+        leave
+        ret
+
+__GETSCREENW__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x7
+        int 0x81
+
+        leave
+        ret
+__GETSCREENH__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x8
+        int 0x81
+
+        leave
+        ret

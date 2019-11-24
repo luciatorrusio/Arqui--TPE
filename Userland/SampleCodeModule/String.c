@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "../Include/String.h"
 #include <stdarg.h>
+
 int strlen(char * str){
     int i = 0;
     while(str[i]!=0)
@@ -48,37 +49,67 @@ int stringToInt(char * buff){
 	}
 	return aux;
 }
+
+int power(int x,int y){
+	if(y == 0)
+		return 1;
+	else
+		return x * power(x,y-1);
+}
+
+
+void DoubleToString(char * buff, int buffSize, float num){
+	IntToString(buff,buffSize, num);
+	int start =strlen(buffSize);
+
+	if(start + 1 < buffSize){
+		buff[start++] = '.';
+
+		int digits = (buffSize - (start+10) > 0) ? 10 : buffSize -start -1;
+
+
+		int newNumber = ((float)(num - (int) num)) * power(10,digits);
+
+		IntToString(start,buffSize - start, newNumber);
+	}
+}
+
+
+
+
+
+// Taken from the base project
 void HexToString(char * buffer, int buffSize, uint64_t num){
 
-    for(int i = 0 ; i < buffSize ; i++)
-		buffer[i] = '0';
+	char *p = buffer;
+	char *p1, *p2;
+	uint32_t digits = 0;
 
-	buffer[buffSize-1]= 0;
-
-    uint64_t temp = num;
-	int i = 0;
-
-	while(temp!= 0 && i < buffSize){
-
-		uint64_t stVal = temp;
-		uint64_t numToSave = temp - 16*(stVal/16);
-
-		if(numToSave <10 ){
-			buffer[i++] = '0' + numToSave;
-		}
-		else{
-			buffer[i++] = 'A' + numToSave-10;
-		}
-		
-		temp = temp/16;
+	//Calculate characters for each digit
+	do
+	{
+		uint32_t remainder = num % 16;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
 	}
-    i = buffSize-2;
+	while (num /= 16);
 
-	for(int a = 0 ; a <= (buffSize-2)/2 ; a++){
-		char temp = buffer[a];
-		buffer[a] = buffer[i-a];
-		buffer[i-a] = temp;
+	// Terminate string in buffer.
+	*p = 0;
+
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
 	}
+
+	return digits;
+	
 }
 
 void append(char * src, char * dest, unsigned size){
@@ -152,10 +183,17 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			{char * aux2 =va_arg(args,char *);
 			append(aux2,string+(*k),size-1-(*k));	
 			break;}	
+		case 'f':
+		case 'F':{
+			int aux3=va_arg(args,int);
+			DoubleToString(string+(*k),size-1-(*k),aux3);
+		}
 		case 'x':
 		case 'X':
-		{	IntToString(string+(*k),size-1-(*k),va_arg(args,int));
-			break;}
+		{	
+			HexToString(string+(*k),size-1-(*k),va_arg(args,int));
+			break;
+		}
 		default: 
 			{	*(string+(*k))='%';
 				*(string+(*k+1))=type;}

@@ -9,18 +9,9 @@
 #include "include/gamePrinter.h"
 #include <stdlib.h>
 #include "../Include/Debugger.h"
-
-
+#include "../Include/deviceInfo.h"
 int main() {
-
-
-	// printf("HI! Ask \"man\" for a command menu\n");
-	
-	//  runTerminal();
-
 	runGame();
-
-
 	return 0xDEA;
 }
 

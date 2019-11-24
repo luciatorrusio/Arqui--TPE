@@ -81,7 +81,7 @@ static bool goToTerminal = false;
 //para inicializar el juego de cero
 int runGame(void){
     time.past=0;
-    timr.tick = 0;
+    time.tick = 0;
     lives = LIVESi;
     blocks.left= R_BLOCKS*C_BLOCKS;                            
     

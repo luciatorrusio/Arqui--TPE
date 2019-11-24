@@ -19,12 +19,13 @@ typedef struct{
 
 void getRegisters(Registers * reg){
 
-    read(FD_REGISTERS,reg,0);
-    // __GETREGISTERS__(reg);
+    // NO PUEDO CAMBIER ESTO POR UN READ POR LA FORMA EN LA QUE AGARRO EL STACKPOINTER
+    __GETREGISTERS__(reg);
 }
-void readMem(uint64_t position, char * buff, unsigned size){
+void readMem(uint64_t position, char * buff, int size){
 
-    __READMEM__(position,buff,size);
+    read(FD_MEMORY,position,buff,size,0);
+    // __READMEM__(position,buff,size);
 
 }
 
@@ -32,7 +33,7 @@ void getBpp(unsigned int * bpp){
 
     DeviceInfo temp;
 
-    read(FD_DEVICE_INFO,&temp,0);
+    read(FD_DEVICE_INFO,&temp,0,0,0);
 
     *bpp = temp.bbp;
 
@@ -48,7 +49,7 @@ void setSize(unsigned int bpp){
 void getCharHeight(unsigned int * c){
      DeviceInfo temp;
 
-    read(FD_DEVICE_INFO,&temp,0);
+    read(FD_DEVICE_INFO,&temp,0,0,0);
 
     *c = temp.charHeight;
     // __GETCHARH__(c);
@@ -57,7 +58,7 @@ void getCharHeight(unsigned int * c){
 void getCharWidth(unsigned int * c){
      DeviceInfo temp;
 
-    read(FD_DEVICE_INFO,&temp,0);
+    read(FD_DEVICE_INFO,&temp,0,0,0);
 
     *c = temp.charWidht;
     // __GETCHARW__(c);

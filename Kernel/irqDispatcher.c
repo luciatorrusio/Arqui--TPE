@@ -21,7 +21,7 @@
 #define FD_SQUARES 				(0x05)
 #define FD_MEMORY 				(0x06)
 #define FD_REGISTERS			(0x07)
-#define FD_DEVICE_INFO 		(0x08)
+#define FD_DEVICE_INFO 			(0x08)
 #define FD_TIMER				(0x09)
 #define FD_TIME					(0x0A)
 #define FD_STDOUT_COLOR			(0x0B)
@@ -116,8 +116,24 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		}
 		case FD_SPEAKER: { break;}
 		case FD_SQUARES: { break;}
-		case FD_MEMORY: { break;}
-		case FD_REGISTERS: { break;}
+		case FD_MEMORY: { 
+			
+			printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
+			uint64_t position = firstParam;
+			char * buff = secondParam;
+			int size = thirdParam;
+
+			// printf("POSITION: 0x%x.  size: %d",position,size);
+
+			readMem(position,buff,size);
+
+
+			break;
+		}
+		case FD_REGISTERS: { 
+			getRegisters(firstParam,secondParam,thirdParam);
+			break;
+		}
 		case FD_DEVICE_INFO: { 
 			getDeviceInfo(firstParam);
 			break;
@@ -141,17 +157,17 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 	{
 		case 0x01: // READMEM
 		{
-			uint64_t position = firstParam;
-			char * buff = secondParam;
-			unsigned size = thirdParam;
+			// uint64_t position = firstParam;
+			// char * buff = secondParam;
+			// unsigned size = thirdParam;
 
-			readMem(position,buff,size);
+			// readMem(position,buff,size);
 
 			break;
 		}
 		case 0x02: // GETREGISTERS
 		{
-			getRegisters(firstParam,secondParam,thirdParam);
+			// getRegisters(firstParam,secondParam,thirdParam);
 			return;
 			break;
 		}

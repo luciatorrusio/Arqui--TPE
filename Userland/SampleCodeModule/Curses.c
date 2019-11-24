@@ -94,7 +94,7 @@ void putChar( char ch)
 int readKey()
 {
     static char buff[2];
-    read(FD_STDIN,buff,2);
+    read(FD_STDIN,buff,2,0,0);
     char retValue = buff[0];
     buff[0] = 0;
     return retValue;

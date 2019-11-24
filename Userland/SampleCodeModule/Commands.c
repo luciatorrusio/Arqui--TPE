@@ -78,6 +78,7 @@ int invalidOpcode(){
 int printMem(uint64_t memDirection){
 
     char rawMem[32];
+    printf("GOLL");
     readMem(memDirection,rawMem,32);
     
     char printStr[(16 * 3) + 1];

@@ -73,15 +73,15 @@ __executeCodeFromAddress__:
 __GETREGISTERS__:
 
         enter 0,0
-
+		mov r15,0x123321
 		pushState ; Es feo esto
         mov rcx,rsp
 
         mov rdx,0
         mov rcx,rcx
         mov rbx, rdi    ; Puntero a la struct
-        mov rax,0x2
-        int 0x81
+        mov rax,0x07
+        int 0x80
 
         leave
         ret

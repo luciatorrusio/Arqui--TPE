@@ -49,7 +49,7 @@ int getTime(int id){
 uint64_t getTicks(){
     uint64_t ticks = 0;
 
-    read(FD_TIMER,&ticks,0);
+    read(FD_TIMER,&ticks,0,0,0);
     return ticks;
 
 }

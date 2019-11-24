@@ -27,6 +27,8 @@ typedef struct
 }Registers;
 
 
+
+void getDeviceInfo(void* ptr);
 void getRegisters(Registers * reg,uint64_t * stackPointer,uint64_t * instructionPointer);
 void readMem(uint64_t position, char * buff, unsigned size);
 

@@ -2,7 +2,7 @@
 #define READ_DISPATCHER_API_H
 
 
-void dispatchRead(void * firstParam,void * secondParam,void * thirdParam);
+void dispatchReadd(void * firstParam,void * secondParam,void * thirdParam);
 
 
 

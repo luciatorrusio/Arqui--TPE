@@ -117,7 +117,6 @@ int startGame(){
     time.start[5]=time.relative_start[5];
     print_blocks();
 
-    // GameTick = 2 real tick
     bool stopWhile = false;
     goToTerminal = false;
 	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;

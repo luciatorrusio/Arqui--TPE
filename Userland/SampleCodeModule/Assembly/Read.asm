@@ -6,10 +6,10 @@ read:
     enter 0,0
 
     
-    mov rax, 3  ; ID Read
-    mov rbx,rdi ; file descriptor
-    mov rcx,rsi ; puntero Buffer
-    mov rdx,rdx ; Tama;o buffer
+    mov rax, rdi  ; FD
+    mov rbx,rsi ; 
+    mov rcx,rdx ; 
+
     int 80h
 
     leave

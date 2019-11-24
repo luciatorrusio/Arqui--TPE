@@ -52,12 +52,12 @@ int main() {
 	
 // // 	// 		clearConsole();
 
-// // 	// // // runGame();
-// // printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",pos[0],pos[1],17*600/100,4*600/100,0xFFFFFF);
+// 	runGame();
+// // // printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",pos[0],pos[1],17*600/100,4*600/100,0xFFFFFF);
 
-// //     printOnScreen(pos,17*600/100,4*600/100,0xFFFFFF);
+// // //     printOnScreen(pos,17*600/100,4*600/100,0xFFFFFF);
 
-// 	print_bar(pos,0xFF0000);
+// // 	print_bar(pos,0xFF0000);
 
 //  	return 0;
 
@@ -101,7 +101,7 @@ int main() {
 		
 	}
 
-	int a = 1/0;
+
 	clearConsole();
 
 	unsigned int init;

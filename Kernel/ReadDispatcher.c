@@ -5,7 +5,7 @@
 
 
 
-void dispatchRead(void * firstParam,void * secondParam,void * thirdParam){
+void dispatchReadd(void * firstParam,void * secondParam,void * thirdParam){
     int fd = firstParam;
 
     switch(fd){

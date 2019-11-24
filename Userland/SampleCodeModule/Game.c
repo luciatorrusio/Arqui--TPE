@@ -222,8 +222,6 @@ void handleBarMov(){
     //if(left_arrow_pressed()){
     if(arrow== LEFT_ARROW){
         if(!(w == LEFT)){      
-                    int a = 1/0;
-
              bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
         }
     } 

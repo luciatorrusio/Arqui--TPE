@@ -142,10 +142,6 @@ int startGame(){
 
     }while(!stopWhile);
 
-
-    // while( !(aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
-    //     startGameRec();
-    // }
     if(aux){ 
         time.past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO

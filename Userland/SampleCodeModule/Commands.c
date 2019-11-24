@@ -17,11 +17,60 @@ int quotient(int a, int b){
     return 0;
 }
 
+int man(){
+    printf("\ngame\nexit\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
+    return 0;
+}
+
+int explainCommand(char * command){
+
+    if(strcmp(command,"time")){
+        printf("Command:\n        time\n");
+        printf("It shows the current date and time.\n");
+    }
+    else if(strcmp(command,"man")){
+        printf("Command:\n        man ?[Argument_1]\n");
+        printf("It enumerates all the commands available on this shell\n");
+        printf("If there's an argument, it will tell you the funcition of that command\n");
+    }
+    else if(strcmp(command,"infoReg")){
+        printf("Command:\n        infoReg\n");
+        printf("It prints on screen the actual value of the registers\n");
+    }
+    else if(strcmp(command,"printMem")){
+        printf("Command:\n        printMem [Argument_1]\n");
+        printf("It prints on screen the first 32 bytes of memory from any given memory position.\n");
+    }
+    else if(strcmp(command,"game")){
+        printf("Command:\n        game\n");
+        printf("It unpauses/starts the game arachnoid.\n");
+    }
+    else if(strcmp(command,"exit")){
+        printf("Command:\n        exit\n");
+        printf("It exits the program.\n");
+    }
+    else if(strcmp(command,"invalidOpcode")){
+        printf("Command:\n        invalidOpcode\n");
+        printf("It is a test to validate the INVALID OPCODE exception.\n");
+    }
+    else if(strcmp(command,"clear")){
+        printf("Command:\n        clear\n");
+        printf("It clears the screen.\n");
+    }
+    else if(strcmp(command,"quotient")){
+        printf("Command:\n        quotient [Argument_1] [Argument_2]\n");
+        printf("It calculates the quotient of the division of [Argument_1] by [Argument_2]. This can be used to test the DIVISION BY ZERO exception.\n");
+    }else{
+        printf("That command does not exist!\n");
+    }
+
+}
+
 int invalidOpcode(){
 
-    uint64_t temp = 13123;
+    char * temp = "CRASH";
 
-    __executeCodeFromAddress__(&temp);
+    __executeCodeFromAddress__(temp);
 
     return 0;
 }

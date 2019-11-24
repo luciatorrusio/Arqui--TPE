@@ -5,6 +5,8 @@
 #include "../Include/String.h"
 #include "include/Game.h"
 #include <stdlib.h>
+#include <stdbool.h>
+
 
 /***************************************************************/
 /*                        Constantes                           */
@@ -65,6 +67,8 @@ int runTerminal(){
             }
         }
 	}while(!exit);
+
+    return exit;
 }
 
 /***************************************************************/
@@ -83,44 +87,46 @@ int interpretCommand(){
     overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+2,param2,' ');
     overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+strlen(param2)+3,param3,' ');
 
-    printf("Command: %s\n",command);
-
+    bool hasParam1 = !strcmp(param1,"");
+    bool hasParam2 = !strcmp(param2,"");
+    bool hasParam3 = !strcmp(param3,"");
     
-    if(!strcmp(param3,"")){
+    if(hasParam3){
         printfError("ERROR\n");
         return 0;
     }
-    if(strcmp(command,"time") && strcmp(param1,"") && strcmp(param2,""))
+    if(strcmp(command,"time") && !hasParam1 && !hasParam2)
         time();
-    else if(strcmp(command,"man") && strcmp(param1,"") && strcmp(param2,""))
+    else if(strcmp(command,"man") && !hasParam1 && !hasParam2)
         man();
-    else if(strcmp(command,"infoReg") && strcmp(param1,"") && strcmp(param2,""))
+    else if(strcmp(command,"man") && hasParam1 && !hasParam2)
+        explainCommand(param1);
+    else if(strcmp(command,"infoReg") && !hasParam1 && !hasParam2)
         infoReg();
-    else if(strcmp(command,"printMem") && !strcmp(param1,"") && strcmp(param2,"")){
+    else if(strcmp(command,"printMem") && hasParam1 && !hasParam2){
         int a = stringToInt(param1);
         printMem(a);
     }
-    else if(strcmp(command,"game") && strcmp(param1,"")){
+    else if(strcmp(command,"game") && !hasParam1 && !hasParam2){
         clearConsole();
-        return runGame();}
-    else if(strcmp(command,"exit") && strcmp(param1,""))
+        return 2;
+    }
+    else if(strcmp(command,"exit") && !hasParam1 && !hasParam2)
         return 1;
-    else if(strcmp(command,"invalidOpcode") && strcmp(param1,"") && strcmp(param2,""))
+    else if(strcmp(command,"invalidOpcode") && !hasParam1 && !hasParam2)
         invalidOpcode();
-    else if(strcmp(command,"clear") && strcmp(param1,"") && strcmp(param2,""))
+    else if(strcmp(command,"clear") && !hasParam1 && !hasParam2)
         clearConsole();
-    else if(strcmp(command,"quotient") && !strcmp(param1,"") && !strcmp(param2,"")){
+    else if(strcmp(command,"quotient") && hasParam1 && hasParam2){
         int a = stringToInt(param1), b = stringToInt(param2);
         quotient(a,b);
     }
     else
-        printfError("%s %s %s %s: command not found \n",command,param1,param2,param3);    
+        printfError("%s%s%s%s: command not found \n",command,param1,param2,param3);    
     
     return  0;
 }
-void man(){
-    printf("\ngame\nexit\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
-}
+
 
 
 void printTerminal(){

@@ -78,6 +78,7 @@ static bool goToTerminal = false;
     int key_pressed();
     void parseKeyboard();
     bool limitInput(char ch);
+    void changeVel();
 //
 
 //para inicializar el juego de cero
@@ -164,9 +165,16 @@ void startGameRec(void){
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
 
+    /*aumentar velocidad*/
+    changeVel();
+
     printObjects(curr_BallPos, curr_BarPos, block);
 }
-
+void changeVel(){
+    if(time.tick%(18*15) == 0){
+        ball.vel+=2;
+    }
+}
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);

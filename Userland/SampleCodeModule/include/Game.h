@@ -20,9 +20,7 @@ struct Blocks{
 };
 struct Time{
     int past;                   //tiempo en el juego time_past
-    int relative_start[6];  
-    int relative;          ///va de 0 a 15s
-    int start[6];
+    int tick;
 };
 
 
@@ -51,7 +49,6 @@ void startGameRec(void);
 
 void print_blocks();
 
-int past_time();
 
 void handleBallMov();
 
@@ -104,8 +101,4 @@ int finishGame(int time_past);
 
 void ballNextPos(int * auxPos);
 
-
-void setRelativeStartTime();
-
-int past_time(void);
 #endif

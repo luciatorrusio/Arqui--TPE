@@ -81,12 +81,13 @@ static bool goToTerminal = false;
 //para inicializar el juego de cero
 int runGame(void){
     time.past=0;
+    timr.tick = 0;
     lives = LIVESi;
     blocks.left= R_BLOCKS*C_BLOCKS;                            
     
     ball.pos[X]=SCREEN_WIDTH/2;
     ball.pos[Y]=SCREEN_HEIGHT/2;      
-    ball.vel=1;
+    ball.vel= 3;
     ball.dir = D; 
     
     bar_pos[X]=SCREEN_WIDTH/2;
@@ -108,13 +109,6 @@ int runGame(void){
 //cuando quiero retomar el juego
 int startGame(){
     int aux;
-    setRelativeStartTime();
-    time.start[0]=time.relative_start[0];
-    time.start[1]=time.relative_start[1];
-    time.start[2]=time.relative_start[2];
-    time.start[3]=time.relative_start[3];
-    time.start[4]=time.relative_start[4];
-    time.start[5]=time.relative_start[5];
     print_blocks();
 
     // GameTick = 2 real tick
@@ -143,14 +137,12 @@ int startGame(){
     }while(!stopWhile);
 
     if(aux){ 
-        time.past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO
         return 0;
     }
         
     if(lives == 0  || blocks.left == 0 ){
-        time.past=past_time();
-        finishGame(time.past);
+        finishGame(time.past / 18);
         return 0;        
     } 
     return 0;
@@ -160,14 +152,7 @@ int startGame(){
 
 //juega recursivamente
 void startGameRec(void){ 
-    time.relative=(GetSeconds()- time.relative_start[4]) + (GetMinutes()-time.relative_start[3]) *60 + (GetHours() - time.relative_start[2]) * 60 *60 + (GetDayOfMonth()- time.relative_start[1]) *60*60*24 + (GetYear() - time.relative_start[0])*60*60*24*365; 
-    /*
-    if(time.relative >= 15){
-        ball.vel++;
-        setRelativeStartTime();
-    }
-    */
-    
+    time.tick ++;
     int curr_BallPos[]={ball.pos[X], ball.pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
     
@@ -604,20 +589,6 @@ int finishGame(int time_past){
         //printf("better luck next time! time: %d seconds", time_past);
     }
     return 0;
-}
-
-int past_time(){
-    return (time.relative + time.relative_start[0] - time.start[0] + time.relative_start[1] - time.start[1] + time.relative_start[2] - time.start[2] + time.relative_start[3] - time.start[3] + time.relative_start[4] - time.start[4]);
-}
-
-
-void setRelativeStartTime(){
-    time.relative_start[0]=GetYear();
-    time.relative_start[1]=GetMonth();
-    time.relative_start[2]= GetDayOfMonth();
-    time.relative_start[3]= GetHours();
-    time.relative_start[4]= GetMinutes();
-    time.relative_start[5]= GetSeconds();
 }
 
 void print_ball(int * ball_pos,int color){

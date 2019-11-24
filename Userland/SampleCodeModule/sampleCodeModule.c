@@ -5,7 +5,8 @@
 
 #include "include/Terminal.h"
 #include "../Include/Curses.h"
-
+#include "include/Game.h"
+#include "include/gamePrinter.h"
 #include <stdlib.h>
 #include "../Include/Debugger.h"
 #include "../Include/deviceInfo.h"
@@ -33,7 +34,6 @@ void menu(){
     setSize(init);
 
 }
-
 
 int main() {
 	int exit=0;

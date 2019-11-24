@@ -16,4 +16,6 @@ void getBpp(int * size);
 
 void setSize(unsigned int size);
 
+void print(int *pos,int lenght,int height,int fontColor);
+
 #endif

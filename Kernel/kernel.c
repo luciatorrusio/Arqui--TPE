@@ -65,9 +65,7 @@ int main()
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
 
-
-	
-	
+			
 	((EntryPoint)sampleCodeModuleAddress)();
 
 

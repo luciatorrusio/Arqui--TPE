@@ -1,6 +1,7 @@
 #include <ReadDispatcher.h>
 #include <Curses.h>
-
+#include <timer.h>
+#include <stdint.h>
 
 
 
@@ -31,6 +32,13 @@ void dispatchRead(void * firstParam,void * secondParam,void * thirdParam){
         case 2: // TERMINAL CONFIGURATION
         {
 
+            break;
+        }
+        case 4: // Timer
+        {
+            uint64_t * ticks = secondParam;
+
+            *ticks = ticks_elapsed();
             break;
         }
     }

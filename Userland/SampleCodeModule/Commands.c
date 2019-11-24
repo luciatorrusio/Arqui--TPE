@@ -78,16 +78,13 @@ int invalidOpcode(){
 int printMem(uint64_t memDirection){
 
     char rawMem[32];
-    printf("GOLL");
     readMem(memDirection,rawMem,32);
     
     char printStr[(16 * 3) + 1];
 
-    printf("Reading Memory: \n");
-
     for(int j=0 ; j <2 ; j++){
         for(int i = 0 ; i < 16 ; i++){
-            HexToString(printStr + i*3,3,rawMem[16 * j +i]);
+            HexToStringSPECIAL(printStr + i*3,3,rawMem[16 * j +i]);
             printStr[(i*3)-1] = ' ';
         }
         printf("%s\n",printStr);

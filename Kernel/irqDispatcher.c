@@ -118,12 +118,10 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_SQUARES: { break;}
 		case FD_MEMORY: { 
 			
-			printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
+			// printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
 			uint64_t position = firstParam;
 			char * buff = secondParam;
 			int size = thirdParam;
-
-			// printf("POSITION: 0x%x.  size: %d",position,size);
 
 			readMem(position,buff,size);
 

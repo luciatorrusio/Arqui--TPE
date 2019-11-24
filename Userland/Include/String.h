@@ -27,6 +27,8 @@ int strcmp(char * s1,char * s2);
 
 int stringToInt(char * buff);
 
+void HexToStringSPECIAL(char * buffer, int buffSize, uint64_t num);
+
 
 
 

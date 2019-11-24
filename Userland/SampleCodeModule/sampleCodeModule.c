@@ -14,11 +14,12 @@
 int main() {
 
 
-	printf("HI! Ask \"man\" for a command menu\n");
+	// printf("HI! Ask \"man\" for a command menu\n");
 	
-	 runTerminal();
+	//  runTerminal();
 
-	printf("LEAVING MAIN\n");
+	runGame();
+
 
 	return 0xDEA;
 }

@@ -168,12 +168,12 @@ void printLeftover(int * curr_BarPos){
     int auxPos[]= {0,0};
     int length = bar_pos[X] - curr_BarPos[X];
     if(length > 0){// yendo para la derecha
-        auxPos[X] = bar_pos[X] - BAR_LENGTH/2 - length/2;
+        auxPos[X] = bar_pos[X] - BAR_LENGTH - length/2;
         auxPos[Y] =  bar_pos[Y];
         printOnScreen(auxPos, BAR_LENGTH, BAR_HEIGHT, BLACK);
     }
     if(length < 0){//yendo para la izquierda
-        auxPos[X] = bar_pos[X] + BAR_LENGTH/2 + length/2;
+        auxPos[X] = bar_pos[X] + BAR_LENGTH+ length/2;
         auxPos[Y] =  bar_pos[Y];
         printOnScreen(auxPos, BAR_LENGTH, BAR_HEIGHT, BLACK);
     }
@@ -186,14 +186,15 @@ void printLeftover(int * curr_BarPos){
 void handleBarMov(){
     //barHitWall devuelve un int que representa que pared esta chocando
     int w = barHitWall();
+    int arrow = arrow_pressed();
     //if(right_arrow_pressed()){
-    if(arrow_pressed() == RIGHT_ARROW){
+    if(arrow == RIGHT_ARROW){
         if(!(w == RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
         }
     }
     //if(left_arrow_pressed()){
-    if(arrow_pressed() == LEFT_ARROW){
+    if(arrow== LEFT_ARROW){
         if(!(w == LEFT)){      
              bar_pos[X]  -= bar_vel;                     //muevo la barra para la izquierda
         }
@@ -204,11 +205,13 @@ void handleBallMov(void){
     //si pega contra una pared
     walls wall;
     barSides bar_side;
-    ballHitBlock(block);
+    ballHitBlock(block);            // se fija en donde y en que bloque pego
     if( (wall = ballHitWall()) ){   //NONE = 0 entonces devuelve FALSE
         
         switch(wall){
             case FLOOR:
+            case LLCORNER:
+            case LRCORNER:
                 lives -=1; 
                 ball.pos[X]=SCREEN_WIDTH/2;
                 ball.pos[Y]=SCREEN_HEIGHT/2;
@@ -219,21 +222,16 @@ void handleBallMov(void){
             case LEFT:    
             case RIGHT:
             case UPPER:
-                invertDirection(wall);
-            break;
             case URCORNER:
-                ball.dir = LD;
-            break;
             case ULCORNER:
-                ball.dir = RD;
+                invertDirection(wall);
             break;
         }
     }
     //si pega contra un bloque
-    else if(block[0] != NO_BLOCK){
-         
-        blocks.matrix[block[0]][block[1]]=0;
-        invertDirection(block[2]); //acordarse que si pega en la derecha tiene que devolver wall = LEFT
+    else if(block[0] != NO_BLOCK){      
+        blocks.matrix[block[1]][block[0]]=0;
+        invertDirection(block[2]);
     }
     //Si pega en la barra
     else if( (bar_side = ballHitBar()) ){

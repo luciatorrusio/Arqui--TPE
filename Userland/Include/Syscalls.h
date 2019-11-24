@@ -4,6 +4,8 @@
 #define STDOUT 1
 #define STDERR 2
 
+#define FD_STDOUT_COLOR (0xB)
+
 typedef struct{
     char ch;
     int fontColor;

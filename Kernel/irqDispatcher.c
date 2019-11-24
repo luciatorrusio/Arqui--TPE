@@ -21,6 +21,7 @@
 #define FD_SCREENCONFIG 		(0x08)
 #define FD_TIMER				(0x09)
 #define FD_TIME					(0x0A)
+#define FD_STDOUT_COLOR			(0x0B)
 
 #define ID_WRITE				(0x01)
 #define ID_DELETE				(0x02)
@@ -59,10 +60,11 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 		case 0x81:
 
 			dispatchWrite(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
-			int_81(firstParam,secondParam,thirdParam,fourthParam);
+			//int_81(firstParam,secondParam,thirdParam,fourthParam);
 		break;
 		case 0x82:
-			int_82(firstParam,secondParam);
+			dispatchDelete(firstParam);
+			//int_82(firstParam,secondParam);
 			break;
 		case 0x83:
 			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
@@ -108,7 +110,7 @@ void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourth
 		}
 		case 4:
 		{
-			printLineColorAt(secondParam);
+			// printLineColorAt(secondParam);
 				break;
 		}
 	}
@@ -200,6 +202,8 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
                 printf(buffer);
 	
 			break;
+
+			return;
 		}
 		case FD_STDERR:{
                 
@@ -219,8 +223,6 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 			int length = secondParam;
 			int height=thirdParam;
 			int fontColor=fourthParam;
-
-			// printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",pos[0],pos[1],length,height,fontColor);
 			
 			print(pos,length,height,fontColor);
 			break;
@@ -230,7 +232,13 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_SCREENCONFIG: break;
 		case FD_TIMER: break;
 		case FD_TIME: break;
+		case FD_STDOUT_COLOR:{
+			 printLineColorAt(firstParam);
+
+			break;
+		}
 	}
+	
 }
 
 

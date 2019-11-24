@@ -51,11 +51,14 @@ void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,
         colorString[i].backgroundColor = backgroundColor;
         colorString[i].x=posX;
         colorString[i].y=posY;
+
     }
         colorString[i].ch = 0;
-        
 
-    writeColor(colorString);
+
+        write(FD_STDOUT_COLOR,colorString,0,0,0);
+
+    //writeColor(colorString);
 
 }
 

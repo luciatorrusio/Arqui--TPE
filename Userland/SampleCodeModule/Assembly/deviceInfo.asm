@@ -1,6 +1,6 @@
 GLOBAL __READMEM__
 GLOBAL __GETREGISTERS__
-
+GLOBAL __executeCodeFromAddress__
 
 
 
@@ -57,6 +57,14 @@ __READMEM__:
         ret
 
 
+__executeCodeFromAddress__:
+
+		enter 0,0
+
+		jmp rdi
+
+		leave
+		ret
 
 
 

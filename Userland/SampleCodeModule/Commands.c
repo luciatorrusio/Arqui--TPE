@@ -5,6 +5,27 @@
 #include "../Include/Curses.h"
 #include "../Include/Time.h"
 
+extern void __executeCodeFromAddress__(void * address);
+
+int quotient(int a, int b){
+
+    printf("I'm going to calculate the quotient of %d divided by %d\n",a,b);
+
+    int result =  (a)/ (b);
+    
+    printf("The result is %d\n",result);
+    return 0;
+}
+
+int invalidOpcode(){
+
+    uint64_t temp = 13123;
+
+    __executeCodeFromAddress__(&temp);
+
+    return 0;
+}
+
 int printMem(uint64_t memDirection){
 
     char rawMem[32];
@@ -94,18 +115,6 @@ int infoReg(){
 
 int time(){
 
-/* Cuando este el printf lo terminamos
-    char arr[200];
-    char month[10];
-    cleanArr(arr,200);
-
-    IntToString(month,10,GetMonth());
-    append("Month: ",arr,200);
-
-    append(month,arr,200);
-
-    printf(arr);
- */
  printf("%d/%d/%d %d:%d:%d \n",GetDayOfMonth(),GetMonth(),GetYear(),GetHours(),GetMinutes(),GetSeconds());   
     return 0;
 

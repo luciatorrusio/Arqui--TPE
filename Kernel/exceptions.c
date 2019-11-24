@@ -11,9 +11,6 @@
 
 
 
-static void zero_division();
-
-
 void exceptionDispatcher(int exception, void * firstParam,void * secondParam) {
 
 	

@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "../Include/String.h"
 #include <stdarg.h>
+
 int strlen(char * str){
     int i = 0;
     while(str[i]!=0)
@@ -48,6 +49,35 @@ int stringToInt(char * buff){
 	}
 	return aux;
 }
+
+int power(int x,int y){
+	if(y == 0)
+		return 1;
+	else
+		return x * power(x,y-1);
+}
+
+
+void DoubleToString(char * buff, int buffSize, float num){
+	IntToString(buff,buffSize, num);
+	int start =strlen(buffSize);
+
+	if(start + 1 < buffSize){
+		buff[start++] = '.';
+
+		int digits = (buffSize - (start+10) > 0) ? 10 : buffSize -start -1;
+
+
+		int newNumber = ((float)(num - (int) num)) * power(10,digits);
+
+		IntToString(start,buffSize - start, newNumber);
+	}
+}
+
+
+
+
+
 void HexToString(char * buffer, int buffSize, uint64_t num){
 
     for(int i = 0 ; i < buffSize ; i++)
@@ -152,6 +182,11 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			{char * aux2 =va_arg(args,char *);
 			append(aux2,string+(*k),size-1-(*k));	
 			break;}	
+		case 'f':
+		case 'F':{
+			int aux3=va_arg(args,int);
+			DoubleToString(string+(*k),size-1-(*k),aux3);
+		}
 		case 'x':
 		case 'X':
 		{	IntToString(string+(*k),size-1-(*k),va_arg(args,int));

@@ -36,6 +36,7 @@ int runTerminal(){
 
     clearArray(TerminalType,MAXBUFFER);
     TypeIndex = 0;
+    printf(">>>>  "); 
     do{
         
 		int key = readKey();
@@ -55,7 +56,8 @@ int runTerminal(){
                 if(key == '\n'){
                     interpretCommand();
                     clearArray(TerminalType,MAXBUFFER);
-                    TypeIndex = 0;          
+                    TypeIndex = 0;  
+                    printf(">>>>  ");        
                 }
                 
             }
@@ -71,37 +73,48 @@ int interpretCommand(){
     char command[MAXBUFFER];
     char param1[MAXBUFFER];
     char param2[MAXBUFFER];
+    char param3[MAXBUFFER];
+
 
     overwriteArrayUpTo(TerminalType,command,' ');
     overwriteArrayUpTo(TerminalType+strlen(command)+1,param1,' ');
-    overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+1,param2,' ');
+    overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+2,param2,' ');
+    overwriteArrayUpTo(TerminalType+strlen(command)+strlen(param1)+strlen(param2)+3,param3,' ');
+
+    printf("Command: %s\n",command);
+
     
-    if(!strcmp(param2,"")){
+    if(!strcmp(param3,"")){
         printfError("ERROR\n");
         return 0;
     }
-    if(strcmp(command,"time") && strcmp(param1,""))
+    if(strcmp(command,"time") && strcmp(param1,"") && strcmp(param2,""))
         time();
-    else if(strcmp(command,"man") && strcmp(param1,""))
+    else if(strcmp(command,"man") && strcmp(param1,"") && strcmp(param2,""))
         man();
-    else if(strcmp(command,"infoReg") && strcmp(param1,""))
+    else if(strcmp(command,"infoReg") && strcmp(param1,"") && strcmp(param2,""))
         infoReg();
-    else if(strcmp(command,"printMem") && !strcmp(param1,"")){
+    else if(strcmp(command,"printMem") && !strcmp(param1,"") && strcmp(param2,"")){
         int a = stringToInt(param1);
         printMem(a);
     }
-    else if(strcmp(command,"game") && strcmp(param1,""))
+    else if(strcmp(command,"game") && strcmp(param1,"") && strcmp(param2,""))
         printf("aca iria el juego\n");
-    else if(strcmp(command,"clear") && strcmp(param1,"")){ 
-               clearConsole();
-               }
+    else if(strcmp(command,"invalidOpcode") && strcmp(param1,"") && strcmp(param2,""))
+        invalidOpcode();
+    else if(strcmp(command,"clear") && strcmp(param1,"") && strcmp(param2,""))
+        clearConsole();
+    else if(strcmp(command,"quotient") && !strcmp(param1,"") && !strcmp(param2,"")){
+        int a = stringToInt(param1), b = stringToInt(param2);
+        quotient(a,b);
+    }
     else
-        printfError("%s%s%s: command not found \n",command,param1,param2);    
+        printfError("%s %s %s %s: command not found \n",command,param1,param2,param3);    
     
     return  0;
 }
 void man(){
-    printf("\ntime\nman\ngame\ninfoReg\nprintMem\ngame\nclear\n");
+    printf("\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
 }
 
 

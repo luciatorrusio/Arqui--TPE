@@ -86,32 +86,37 @@ static int info[2];
     void changeVel();
 //
 
+static bool startOver = true;
+
 //para inicializar el juego de cero
 int runGame(void){
-    int aux;
-    getScreenWidth(&aux);
-    SCREEN_WIDTH=aux;
-    getScreenHeight(&aux);
-    SCREEN_HEIGHT=aux;    
-    time.past=0;
-    time.tick = 0;
-    lives = LIVESi;
-    blocks.left= R_BLOCKS*C_BLOCKS;                            
-    
-    ball.pos[X]=SCREEN_WIDTH/2;
-    ball.pos[Y]=SCREEN_HEIGHT/2;      
-    ball.vel= 3;
-    ball.dir = D; 
-    
-    bar_pos[X]=SCREEN_WIDTH/2;
-    bar_pos[Y]=BAR_YPOS; 
-    
-    info[X]=SCREEN_WIDTH/2;
-    info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
-    //pongo la matriz de bloques todos en uno, (osea que estan)
-    for(int i = 0; i < C_BLOCKS ; i++){
-        for(int j = 0; j < R_BLOCKS; j++){
-            blocks.matrix[j][i]= 1;
+
+    if(startOver){
+        int aux;
+        getScreenWidth(&aux);
+        SCREEN_WIDTH=aux;
+        getScreenHeight(&aux);
+        SCREEN_HEIGHT=aux;    
+        time.past=0;
+        time.tick = 0;
+        lives = LIVESi;
+        blocks.left= R_BLOCKS*C_BLOCKS;                            
+        
+        ball.pos[X]=SCREEN_WIDTH/2;
+        ball.pos[Y]=SCREEN_HEIGHT/2;      
+        ball.vel= 3;
+        ball.dir = D; 
+        
+        bar_pos[X]=SCREEN_WIDTH/2;
+        bar_pos[Y]=BAR_YPOS; 
+        
+        info[X]=SCREEN_WIDTH/2;
+        info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
+        //pongo la matriz de bloques todos en uno, (osea que estan)
+        for(int i = 0; i < C_BLOCKS ; i++){
+            for(int j = 0; j < R_BLOCKS; j++){
+                blocks.matrix[j][i]= 1;
+            }
         }
     }
 
@@ -124,11 +129,13 @@ int runGame(void){
 //cuando quiero retomar el juego
 int startGame(){
     int aux;
-    print_blocks();
+    //print_blocks();
     table();
+    while(1);
     // GameTick = 2 real tick
     bool stopWhile = false;
     goToTerminal = false;
+    lives = 3;
 	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;
 
     baseTicks = getTicks();
@@ -139,8 +146,10 @@ int startGame(){
         if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
             gameTicks++;
             previusTick = realTicks;
-            if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
+            if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0 ){
                 // Condicion de retorno
+
+                int a = 1/0;
                 stopWhile = true;
             }else
             {
@@ -152,11 +161,12 @@ int startGame(){
     }while(!stopWhile);
 
     if(aux){ 
-        //COMPLETAR!!! TIENE QUE PASAR ALGO
+        startOver = false;
         return 0;
     }
         
     if(lives == 0  || blocks.left == 0 ){
+        startOver = true;
         finishGame(time.tick / 18);
         return 0;        
     } 
@@ -511,6 +521,7 @@ walls ballHitWall(){
     }else if(auxPos[X]   <= BALL_RADIO){
         return LEFT;
     }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
+        printf("X: %d, Y: %d\n",auxPos[X], auxPos[Y]);
         return FLOOR;
     }else if(auxPos[Y]   <= BALL_RADIO ){
         return UPPER;
@@ -691,10 +702,10 @@ int key_pressed(){
 }
 void table(){
     printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-info[1],YELLOW);
-    printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
-    printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
-    printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.tick/18);
-    tableData();
+    // printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
+    // printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
+    // printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.tick/18);
+    // tableData();
 }
 
 void tableData(){

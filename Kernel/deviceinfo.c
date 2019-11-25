@@ -26,6 +26,8 @@ void getDeviceInfo(void* ptr){
     dev->screenHeight = SCREEN_HEIGHT;
     dev->screenWidth = SCREEN_WIDTH;
 
+	printf("SCREEN H: %d, W: %d\n", SCREEN_WIDTH, SCREEN_WIDTH);
+
     
 
 }

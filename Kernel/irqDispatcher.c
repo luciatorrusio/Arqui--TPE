@@ -113,7 +113,6 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_SQUARES: { break;}
 		case FD_MEMORY: { 
 			
-			// printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
 			uint64_t position = firstParam;
 			char * buff = secondParam;
 			int size = thirdParam;
@@ -128,6 +127,9 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 			break;
 		}
 		case FD_DEVICE_INFO: { 
+
+			printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
+
 			getDeviceInfo(firstParam);
 			break;
 		}
@@ -168,6 +170,8 @@ void dispatchDelete(void * fd){
 
 void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
 	char * buffer = firstParam;
+
+
 
 	switch(fd){
 		case FD_STDOUT:{

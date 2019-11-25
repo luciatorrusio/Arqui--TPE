@@ -25,7 +25,7 @@ void menu(){
     setSize(init*2);
 	getBpp(&aux);
     y+=charHeight*aux+3;
-    printfColorAt("11111,Dellisola   58489,Torrusio   59820,PUIG",0xFFFFFF,0x00,position,y);
+    printfColorAt("58025,Dellisola   58489,Torrusio   59820,PUIG",0xFFFFFF,0x00,position,y);
     y+=charHeight*aux+3;
     printfColorAt("1) Game",0xFFFFFF,0x00,position*2,y);
     printfColorAt("2) Terminal",0xFFFFFF,0x00,position*4+30,y);

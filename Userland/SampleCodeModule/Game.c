@@ -4,6 +4,7 @@
 #include "../Include/Time.h"
 #include "../Include/deviceInfo.h"
 #include <stdbool.h>
+#include "./include/Speaker.h"
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
@@ -82,6 +83,7 @@ static int info[2];
     bool limitInput(char ch);
     void table();
     void tableData();
+    void changeVel();
 //
 
 //para inicializar el juego de cero
@@ -176,9 +178,16 @@ void startGameRec(void){
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
 
+    changeVel();
+
     printObjects(curr_BallPos, curr_BarPos, block);
 }
-
+void changeVel(){
+    if(time.tick % (15 *18) == 0){
+        ball.vel+=2;
+        beep();
+    }
+}
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);
@@ -252,6 +261,7 @@ void handleBallMov(void){
             case LLCORNER:
             case LRCORNER:
                 lives -=1; 
+                print_bar(ball.pos, BLACK);
                 ball.pos[X]=SCREEN_WIDTH/2;
                 ball.pos[Y]=SCREEN_HEIGHT/2;
                 ball.dir= D;
@@ -498,11 +508,11 @@ walls ballHitWall(){
     ballNextPos(auxPos);
     if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
         return RIGHT;
-    }else if(auxPos[X] - BALL_RADIO <= 0){
+    }else if(auxPos[X]   <= BALL_RADIO){
         return LEFT;
-    }else if(auxPos[Y] + BALL_RADIO >= SCREEN_HEIGHT){
+    }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
         return FLOOR;
-    }else if(auxPos[Y] - BALL_RADIO <= 0 ){
+    }else if(auxPos[Y]   <= BALL_RADIO ){
         return UPPER;
     }
     return NONE;
@@ -511,7 +521,7 @@ walls ballHitWall(){
 walls barHitWall(){
     if( ( bar_pos[X]+ bar_vel + (BAR_LENGTH /2) ) >= SCREEN_WIDTH){
         return RIGHT;
-    }else if(bar_pos[X] -bar_vel- BAR_LENGTH/2 <= 0){
+    }else if(bar_pos[X] -bar_vel <= BAR_LENGTH/2){
         return LEFT;
     }
     return NONE;
@@ -610,7 +620,7 @@ int finishGame(int time_past){
     if(blocks.left == 0){
         printfColorAt("Congratulations you've won!!",RED,BLACK,90,100);
         printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
-    
+           
     }else{
 
         printfColorAt("Better luck next time!",RED,BLACK,90,100);
@@ -690,5 +700,5 @@ void tableData(){
 
     printfColorAt("%d",BLACK,YELLOW,260,info[1],blocks.left);
     printfColorAt("%d",BLACK,YELLOW,520,info[1],lives);
-    printfColorAt("%d",BLACK,YELLOW,850,info[1],time.past/18);
+    printfColorAt("%d",BLACK,YELLOW,850,info[1],time.tick/18);
 }

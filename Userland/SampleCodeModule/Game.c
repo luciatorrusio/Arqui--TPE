@@ -8,7 +8,6 @@
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-
 #define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
 #define BAR_HEIGHT                  (4*SCREEN_HEIGHT/200)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
@@ -261,7 +260,7 @@ void handleBallMov(void){
             case LLCORNER:
             case LRCORNER:
                 lives -=1; 
-                print_bar(ball.pos, BLACK);
+                print_bar(bar_pos, BLACK);
                 ball.pos[X]=SCREEN_WIDTH/2;
                 ball.pos[Y]=SCREEN_HEIGHT/2;
                 ball.dir= D;

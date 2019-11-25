@@ -128,7 +128,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		}
 		case FD_DEVICE_INFO: { 
 
-			printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
+			// printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
 
 			getDeviceInfo(firstParam);
 			break;

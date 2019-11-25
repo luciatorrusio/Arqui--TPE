@@ -54,10 +54,7 @@ void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,
     }
         colorString[i].ch = 0;
 
-    printf(string);
         write(FD_STDOUT_COLOR,colorString,0,0,0);
-
-    //writeColor(colorString);
 
 }
 

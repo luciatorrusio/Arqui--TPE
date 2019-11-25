@@ -39,18 +39,7 @@ void menu(){
 static int selector = -1;
 
 int main() {
-	int height=0, width=0;
-	getScreenHeight(&height);
-	getScreenWidth(&width);
 
-	printf("SCREEN H: %d, W: %d\n", height, width);
-
-	// runGame();
-	while (1)
-	{
-		/* code */
-	}
-	
 
 
 	int exit=0;

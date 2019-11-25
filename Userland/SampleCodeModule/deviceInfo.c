@@ -60,7 +60,7 @@ void getScreenWidth(unsigned int * s){
 
     read(FD_DEVICE_INFO,&temp,0,0,0);
 
-    *s = temp.charWidht;
+    *s = temp.screenWidth;
     
 }
 
@@ -70,6 +70,6 @@ void getScreenHeight(unsigned int * s){
 
     read(FD_DEVICE_INFO,&temp,0,0,0);
 
-    *s = temp.charWidht;
+    *s = temp.screenHeight;
 
 }

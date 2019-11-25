@@ -129,13 +129,12 @@ int runGame(void){
 //cuando quiero retomar el juego
 int startGame(){
     int aux;
-    //print_blocks();
+    print_blocks();
     table();
-    while(1);
+
     // GameTick = 2 real tick
     bool stopWhile = false;
     goToTerminal = false;
-    lives = 3;
 	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;
 
     baseTicks = getTicks();
@@ -149,7 +148,6 @@ int startGame(){
             if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0 ){
                 // Condicion de retorno
 
-                int a = 1/0;
                 stopWhile = true;
             }else
             {
@@ -202,7 +200,7 @@ void changeVel(){
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);
     print_ball(curr_BallPos,BLACK );
-    //print_bar(curr_BarPos, BLACK); 
+    print_bar(curr_BarPos, BLACK); 
     print_ball(ball.pos, PURPLE );
     int x, y;
     if(block[X]!= NO_BLOCK){
@@ -521,7 +519,6 @@ walls ballHitWall(){
     }else if(auxPos[X]   <= BALL_RADIO){
         return LEFT;
     }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
-        printf("X: %d, Y: %d\n",auxPos[X], auxPos[Y]);
         return FLOOR;
     }else if(auxPos[Y]   <= BALL_RADIO ){
         return UPPER;
@@ -702,10 +699,10 @@ int key_pressed(){
 }
 void table(){
     printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-info[1],YELLOW);
-    // printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
-    // printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
-    // printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.tick/18);
-    // tableData();
+    printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
+    printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
+    printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.tick/18);
+    tableData();
 }
 
 void tableData(){

@@ -65,6 +65,8 @@ int main()
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
 
+	// printf("SCREEN H: %d, W: %d\n", SCREEN_WIDTH, SCREEN_WIDTH);
+
 			
 	((EntryPoint)sampleCodeModuleAddress)();
 

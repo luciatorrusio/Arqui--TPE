@@ -4,6 +4,7 @@
 #include "../Include/Time.h"
 #include "../Include/deviceInfo.h"
 #include <stdbool.h>
+#include "./include/Speaker.h"
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
@@ -82,6 +83,7 @@ static int info[2];
     bool limitInput(char ch);
     void table();
     void tableData();
+    void changeVel();
 //
 
 //para inicializar el juego de cero
@@ -176,9 +178,16 @@ void startGameRec(void){
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
 
+    changeVel();
+
     printObjects(curr_BallPos, curr_BarPos, block);
 }
-
+void changeVel(){
+    if(time.tick % (15 *18) == 0){
+        ball.vel+=2;
+        beep();
+    }
+}
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);

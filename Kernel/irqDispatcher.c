@@ -142,7 +142,14 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
             *ticks = ticks_elapsed();	
 			break;
 		}
-		case FD_TIME: { break;}
+		case FD_TIME: { 
+			 printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.\n",fd,firstParam,secondParam,thirdParam,fourthParam);
+			int * value = secondParam;
+			*value = handleTimeRequest(firstParam);
+
+			printf("VALUE: %d\n",*value);
+			break;
+			}
 		case FD_STDOUT_COLOR: { break;}
 	}
 }

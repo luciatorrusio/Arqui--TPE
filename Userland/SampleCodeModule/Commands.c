@@ -161,8 +161,13 @@ int infoReg(){
 }
 
 int time(){
-
- printf("%d/%d/%d %d:%d:%d \n",GetDayOfMonth(),GetMonth(),GetYear(),GetHours(),GetMinutes(),GetSeconds());   
+    int dayofMonth = GetDayOfMonth();
+    int month = GetMonth();
+    int year = GetYear();
+    int hour = GetHours();
+    int minutes = GetMinutes();
+    int seconds = GetSeconds();
+    printf("%d/%d/%d %d:%d:%d \n",dayofMonth,month,year,hour, minutes,seconds);   
     return 0;
 
 }

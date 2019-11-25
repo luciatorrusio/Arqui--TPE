@@ -10,11 +10,13 @@ extern void __time__(int id, int * time);
 int getTime(int id);
 
 int GetSeconds(){
-    return getTime(SECONDS);
+    int ret = getTime(SECONDS);
+    return ret;
 }
 
 int GetMinutes(){
-    return getTime(MINUTES);
+    int ret = getTime(MINUTES);
+    return ret;
 }
 
 int GetHours(){
@@ -39,8 +41,9 @@ int GetYear(){
 
 
 int getTime(int id){
-    int time = -1;
-    __time__(id,&time);
+    int time = 0;
+
+    read(FD_TIME,id,&time,0,0);
 
     return time;
 }

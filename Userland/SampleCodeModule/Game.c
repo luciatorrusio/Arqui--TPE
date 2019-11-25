@@ -2,22 +2,22 @@
 #include "../Include/Time.h"
 #include "../Include/Curses.h"
 #include "../Include/Time.h"
+#include "../Include/deviceInfo.h"
 #include <stdbool.h>
+#include "./include/Speaker.h"
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-#define SCREEN_HEIGHT               600//completar
-#define SCREEN_WIDTH                600//completar
-
 #define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
-#define BAR_HEIGHT                  (4*SCREEN_HEIGHT/100)                
+#define BAR_HEIGHT                  (4*SCREEN_HEIGHT/200)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
 
 #define BLOCK_WIDTH                 ((2*SCREEN_WIDTH/3) / C_BLOCKS)
 #define BLOCK_XSEPARATION           ((SCREEN_WIDTH/3) / C_BLOCKS)
 #define BLOCK_HEIGHT                ( (SCREEN_HEIGHT/2) / ( R_BLOCKS + 2) )
 #define BLOCK_YSEPARATION           ( (2*BLOCK_HEIGHT ) / (R_BLOCKS +2 ))
-#define BALL_RADIO                  (1*SCREEN_HEIGHT/200) 
+
+#define BALL_RADIO                  (SCREEN_HEIGHT/100) 
 
 #define bar_vel                     (2*SCREEN_WIDTH/100)
 
@@ -28,18 +28,17 @@
 //COLORES
     #define BLACK                       0x000000
     #define WHITE                       0xFFFFFF
-    #define BLUE                        0x1
-    #define GREEN                       0x2
-    #define AQUA                        0x3
-    #define RED                         0x4
-    #define PURPLE                      0x5
-    #define YELLOW                      0x6
-    #define LightBlue                   0x9
-    #define LightGreen                  0xA
-    #define LightAqua                   0xB
-    #define LightRed                    0xC
-    #define LightPurple                 0xD
-    #define LightYellow                 0xE   
+    #define BLUE                        0x0000FF
+    #define GREEN                       0x00FF00
+    #define AQUA                        0x00FFFF
+    #define RED                         0xFF0000
+    #define PURPLE                      0XBB00FF
+    #define YELLOW                      0xFFFF00
+    #define LightBlue                   0x6677FF
+    #define LightGreen                  0x33FF44
+    #define LightRed                    0xFF00FF
+    #define LightPurple                 0x7700FF
+  
 //
 
 #define X                           0
@@ -70,28 +69,49 @@ static int keyBufferBack = 0;
 
 static bool goToTerminal = false;
 
+unsigned int SCREEN_HEIGHT;
+unsigned int SCREEN_WIDTH;
+static int info[2];
 
-
+static int initialize=0;
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
     void printLeftover(int * curr_BarPos);
     int key_pressed();
+    void parseKeyboard();
+    bool limitInput(char ch);
+    void table();
+    void tableData();
+    void changeVel();
 //
 
 //para inicializar el juego de cero
 int runGame(void){
+    if(initialize==1){
+        startGame();
+        return 0;
+    }
+    initialize=1;
+    int aux;
+    getScreenWidth(&aux);
+    SCREEN_WIDTH=aux;
+    getScreenHeight(&aux);
+    SCREEN_HEIGHT=aux;    
     time.past=0;
+    time.tick = 0;
     lives = LIVESi;
     blocks.left= R_BLOCKS*C_BLOCKS;                            
     
     ball.pos[X]=SCREEN_WIDTH/2;
     ball.pos[Y]=SCREEN_HEIGHT/2;      
-    ball.vel=1;
+    ball.vel= 3;
     ball.dir = D; 
     
     bar_pos[X]=SCREEN_WIDTH/2;
     bar_pos[Y]=BAR_YPOS; 
     
+    info[X]=SCREEN_WIDTH/2;
+    info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
@@ -108,15 +128,8 @@ int runGame(void){
 //cuando quiero retomar el juego
 int startGame(){
     int aux;
-    setRelativeStartTime();
-    time.start[0]=time.relative_start[0];
-    time.start[1]=time.relative_start[1];
-    time.start[2]=time.relative_start[2];
-    time.start[3]=time.relative_start[3];
-    time.start[4]=time.relative_start[4];
-    time.start[5]=time.relative_start[5];
     print_blocks();
-
+    table();
     // GameTick = 2 real tick
     bool stopWhile = false;
     goToTerminal = false;
@@ -143,32 +156,27 @@ int startGame(){
     }while(!stopWhile);
 
     if(aux){ 
-        time.past += past_time();
         //COMPLETAR!!! TIENE QUE PASAR ALGO
         return 0;
     }
         
     if(lives == 0  || blocks.left == 0 ){
-        time.past=past_time();
-        finishGame(time.past);
-        return 0;        
+        int x=finishGame(time.tick / 18);
+        initialize=0;
+        if(x==0)
+            goToTerminal=true;
+        else
+{   runGame();}        
     } 
     return 0;
 }
 
 
 
- //juega recursivamente
-
-void startGameRec(void){ 
-    time.relative=(GetSeconds()- time.relative_start[4]) + (GetMinutes()-time.relative_start[3]) *60 + (GetHours() - time.relative_start[2]) * 60 *60 + (GetDayOfMonth()- time.relative_start[1]) *60*60*24 + (GetYear() - time.relative_start[0])*60*60*24*365; 
-    /*
-    if(time.relative >= 15){
-        ball.vel++;
-        setRelativeStartTime();
-    }
-    */
-    
+//juega recursivamente
+void startGameRec(void){
+    tableData(); 
+    time.tick ++;
     int curr_BallPos[]={ball.pos[X], ball.pos[Y]};
     int curr_BarPos[]={bar_pos[X], bar_pos[Y]};
     
@@ -177,25 +185,37 @@ void startGameRec(void){
     
     /*MOVIMIENTO DE LA PELOTA*/
     handleBallMov();
-    //modificar velocidad de 
+
+    changeVel();
 
     printObjects(curr_BallPos, curr_BarPos, block);
 }
-
+void changeVel(){
+    if(time.tick % (15 *18) == 0){
+        ball.vel+=2;
+        beep();
+    }
+}
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);
     print_ball(curr_BallPos,BLACK );
     //print_bar(curr_BarPos, BLACK); 
-    print_ball(ball.pos, WHITE );
+    print_ball(ball.pos, PURPLE );
     int x, y;
     if(block[X]!= NO_BLOCK){
-        x = ((block[0]+1) * BLOCK_WIDTH) + BLOCK_XSEPARATION*(block[0]+ 1 +1) ;
-        y =  (block[1] * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(block[1] +1) ;
+        x = block[0];
+        y = block[1];
+        matrixToXY(&x, &y);
         print_block(x, y, BLACK);   
     }
-    print_bar(bar_pos, WHITE);
+    print_bar(bar_pos, BLUE);
     
+}
+
+void matrixToXY(int * c, int * r){
+    *c = (*c * BLOCK_WIDTH) + (BLOCK_WIDTH/2)+ BLOCK_XSEPARATION*(*c+1) ;
+    *r = (*r * BLOCK_HEIGHT) + (BLOCK_HEIGHT/2) + BLOCK_YSEPARATION*(*r+1) ;        
 }
 void printLeftover(int * curr_BarPos){
     int auxPos[]= {0,0};
@@ -220,7 +240,6 @@ void handleBarMov(){
     //barHitWall devuelve un int que representa que pared esta chocando
     int w = barHitWall();
     int key = key_pressed();
-    //if(right_arrow_pressed()){
     if(key == RIGHT_ARROW){
         if(!(w == RIGHT)){
             bar_pos[X] += bar_vel;                     //muevo la barra para la derecha
@@ -250,6 +269,7 @@ void handleBallMov(void){
             case LLCORNER:
             case LRCORNER:
                 lives -=1; 
+                print_bar(bar_pos, BLACK);
                 ball.pos[X]=SCREEN_WIDTH/2;
                 ball.pos[Y]=SCREEN_HEIGHT/2;
                 ball.dir= D;
@@ -360,10 +380,11 @@ void print_blocks(){
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j <R_BLOCKS ; j++){
-            x = (i * BLOCK_WIDTH) + BLOCK_XSEPARATION*(i+1) ;
-            y =  (j * BLOCK_HEIGHT) + BLOCK_YSEPARATION*(j+1) ;
+            x=i;
+            y=j;
+            matrixToXY(&x, &y);
             if( blocks.matrix[j][i] == 1){
-                print_block( x ,y,WHITE);
+                print_block( x ,y,AQUA);
             }else{
                print_block( x , y,BLACK);
             }
@@ -495,11 +516,11 @@ walls ballHitWall(){
     ballNextPos(auxPos);
     if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
         return RIGHT;
-    }else if(auxPos[X] - BALL_RADIO <= 0){
+    }else if(auxPos[X]   <= BALL_RADIO){
         return LEFT;
-    }else if(auxPos[Y] + BALL_RADIO >= SCREEN_HEIGHT){
+    }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
         return FLOOR;
-    }else if(auxPos[Y] - BALL_RADIO <= 0 ){
+    }else if(auxPos[Y]   <= BALL_RADIO ){
         return UPPER;
     }
     return NONE;
@@ -508,7 +529,7 @@ walls ballHitWall(){
 walls barHitWall(){
     if( ( bar_pos[X]+ bar_vel + (BAR_LENGTH /2) ) >= SCREEN_WIDTH){
         return RIGHT;
-    }else if(bar_pos[X] -bar_vel- BAR_LENGTH/2 <= 0){
+    }else if(bar_pos[X] -bar_vel <= BAR_LENGTH/2){
         return LEFT;
     }
     return NONE;
@@ -537,54 +558,50 @@ void ballHitBlock(int * block){
 
 
 walls ballTouchingWall(int c, int r){
-    
+    int a ;
     int nextPos[2];
     ballNextPos(nextPos);
-    
-    
-    if(ballBetweenXSides(nextPos, c, r) && ballBetweenYSides(nextPos, c, r)){
-        
-        blocks.left -=1;
-        
-        if( ballBetweenXSides(ball.pos, c, r) ){
-            
-            if(ball.dir == U || ball.dir == LU || ball.dir == RU){
+    if(ballBetweenYSides(nextPos, c, r)){
+        if(ballBetweenXSides(nextPos, c, r)){
+            blocks.left -=1;
+            if( ballBetweenXSides(ball.pos, c, r) ){
+                if(ball.dir == U || ball.dir == LU || ball.dir == RU){
                 
-                return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+                    return UPPER;//en verdad es la parte de abajo del bloque pero se comporta como la pared de arriba
+                }
+                if(ball.dir == D || ball.dir == LD || ball.dir == RD){
+                    return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
+                }
             }
-            if(ball.dir == D || ball.dir == LD || ball.dir == RD){
-                return FLOOR; //en verdad esta tocando la parte de arriba pero se comporta como piso
-            }
-        }
-        if(ballBetweenYSides(ball.pos, c, r)){
+            if(ballBetweenYSides(ball.pos, c, r)){
             
-            if(ball.dir == LU || ball.dir == LD){
-                return LEFT;
+                if(ball.dir == LU || ball.dir == LD){
+                    return LEFT;
+                }
+                if(ball.dir == RU || ball.dir == RD){
+                    return RIGHT; 
+                }
             }
-            if(ball.dir == RU || ball.dir == RD){
-                return RIGHT; 
-            }
-        }
-        if( !ballBetweenYSides(ball.pos, c, r) && !ballBetweenXSides(ball.pos, c, r)){
+            if( !ballBetweenYSides(ball.pos, c, r) && !ballBetweenXSides(ball.pos, c, r)){
             
-            switch(ball.dir){
-                case LU:
-                    return ULCORNER;    
-                break;
-                case RU:
-                    return URCORNER;
-                break;
-                case LD:
-                    return  LLCORNER;
-                break;
-                case RD:
-                    return LRCORNER;
-                break;
+                switch(ball.dir){
+                    case LU:
+                        return ULCORNER;    
+                    break;
+                    case RU:
+                        return URCORNER;
+                    break;
+                    case LD:
+                        return  LLCORNER;
+                    break;
+                    case RD:
+                        return LRCORNER;
+                    break;
             
+                }
             }
         }
     }
-    
     return NONE;
 }
 
@@ -596,7 +613,7 @@ int ballBetweenXSides(int * auxPos, int c, int r){
 }
 
 int ballBetweenYSides(int * auxPos, int c, int r){
-    int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION - BLOCK_HEIGHT/2 ;
+    int lowerSideOfBlock = (r+1) * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
     int upperSideOfBlock =  r * BLOCK_HEIGHT + (r+1) * BLOCK_YSEPARATION;
 
     return ballBetween(auxPos[Y], upperSideOfBlock, lowerSideOfBlock); 
@@ -604,26 +621,27 @@ int ballBetweenYSides(int * auxPos, int c, int r){
 
 
 int finishGame(int time_past){
+        clearConsole();
+        int init;
+        getBpp(&init);
+        setSize(init*3);
     if(blocks.left == 0){
-       // printf("congratulations you've won!! it took you %d seconds", time_past);
+        printfColorAt("Congratulations you've won!!",RED,BLACK,90,100);
+        printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
+           
     }else{
-        //printf("better luck next time! time: %d seconds", time_past);
+
+        printfColorAt("Better luck next time!",RED,BLACK,90,100);
+        printfColorAt("Time: %d seconds",RED,BLACK,115,120,time_past);
     }
+        printfColorAt("Press x to restart or q to quit",BLUE,BLACK,50,140,time_past);
+        setSize(init);
+        char c;
+        while((c=readKey())!='x'&& c!='q');
+        clearConsole();
+        if(c=='x')
+         return 1;
     return 0;
-}
-
-int past_time(){
-    return (time.relative + time.relative_start[0] - time.start[0] + time.relative_start[1] - time.start[1] + time.relative_start[2] - time.start[2] + time.relative_start[3] - time.start[3] + time.relative_start[4] - time.start[4]);
-}
-
-
-void setRelativeStartTime(){
-    time.relative_start[0]=GetYear();
-    time.relative_start[1]=GetMonth();
-    time.relative_start[2]= GetDayOfMonth();
-    time.relative_start[3]= GetHours();
-    time.relative_start[4]= GetMinutes();
-    time.relative_start[5]= GetSeconds();
 }
 
 void print_ball(int * ball_pos,int color){
@@ -642,15 +660,23 @@ void print_block(int x,int y,int color){
 int stopKeyPressed(){
 
     return goToTerminal;
-    // char key = readKey();
-    // if(key == LEAVE_KEY){
-    //     return 1;
-    // }
-    // return 0;
 }
 
 
+bool limitInput(char ch){
 
+    if(keyBufferFront-3 > keyBufferBack){
+            return ch == KeyBuffer[keyBufferFront-1] && ch == KeyBuffer[keyBufferFront-2] && ch == KeyBuffer[keyBufferFront-3];
+    }
+    else if(keyBufferBack > keyBufferFront){
+        
+        if(keyBufferFront -3> 0 ){
+            return ch == KeyBuffer[keyBufferFront-1] && ch == KeyBuffer[keyBufferFront-2] && ch == KeyBuffer[keyBufferFront-3];
+        }
+    }
+
+    return false;
+}
 
 void parseKeyboard(){
     if(keyBufferFront + 1 == keyBufferBack )
@@ -658,7 +684,7 @@ void parseKeyboard(){
         
     int temp = readKey();
 
-    if(temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY)
+    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY) && !limitInput(temp))
         KeyBuffer[keyBufferFront++ % 200] = temp;
 
 }
@@ -672,4 +698,20 @@ int key_pressed(){
     return KeyBuffer[keyBufferBack++ % 200];
 
 
+}
+void table(){
+    printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-info[1],YELLOW);
+    printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
+    printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
+    printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.tick/18);
+    tableData();
+}
+
+void tableData(){
+    if(blocks.left==9)
+        printfColorAt(" ",YELLOW,YELLOW,268,info[1]);    
+
+    printfColorAt("%d",BLACK,YELLOW,260,info[1],blocks.left);
+    printfColorAt("%d",BLACK,YELLOW,520,info[1],lives);
+    printfColorAt("%d",BLACK,YELLOW,850,info[1],time.tick/18);
 }

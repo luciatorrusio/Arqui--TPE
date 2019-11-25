@@ -1,10 +1,15 @@
 #include "../Include/deviceInfo.h"
 extern void __READMEM__(uint64_t position, char * buff, unsigned size);
 extern void __GETREGISTERS__(void * reg);
+
 extern void __GETBPP__(void * bpp);
 extern void __SETBPP__(int bpp);
+
 extern void __GETCHARH__(unsigned int * c);
 extern void __GETCHARW__(unsigned int * c);
+
+extern void __GETSCREENW__(unsigned int * s);
+extern void __GETSCREENH__(unsigned int * s);
 
 void getRegisters(Registers * reg){
 
@@ -32,4 +37,12 @@ void getCharHeight(unsigned int * c){
 
 void getCharWidth(unsigned int * c){
     __GETCHARW__(c);
+}
+
+void getScreenWidth(unsigned int * s){
+    __GETSCREENW__(s);
+}
+
+void getScreenHeight(unsigned int * s){
+    __GETSCREENH__(s);
 }

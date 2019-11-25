@@ -159,6 +159,18 @@ void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
 			return;
 			break;
 		}
+		case 0x07:{
+			unsigned int * aux=firstParam;
+			*aux=SCREEN_WIDTH;
+			return;
+			break;
+		}
+		case 0x08:{
+			unsigned int * aux=firstParam;
+			*aux=SCREEN_HEIGHT;
+			return;
+			break;
+		}
 		default:{
 			printf("ID que mande: %d",id);
 		}

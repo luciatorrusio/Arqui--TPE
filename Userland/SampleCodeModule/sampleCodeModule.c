@@ -26,7 +26,7 @@ void menu(){
     setSize(init*2);
 	getBpp(&aux);
     y+=charHeight*aux+3;
-    printfColorAt("11111,Dellisola   59123,Tourrusio   59820,PUIG",0xFFFFFF,0x00,position,y);
+    printfColorAt("58025,Dellisola   59123,Tourrusio   59820,PUIG",0xFFFFFF,0x00,position,y);
     y+=charHeight*aux+3;
     printfColorAt("1) Game",0xFFFFFF,0x00,position*2,y);
     printfColorAt("2) Terminal",0xFFFFFF,0x00,position*4+30,y);
@@ -40,25 +40,6 @@ static int selector = -1;
 
 int main() {
 
-// 	 int pos[2]={300,(78*600/100)};
-
-
-// // 	// printOnScreen(pos,50,50,0xFFFFFF);
-
-// // 	// while (1)
-// // 	// {
-// // 	// }
-	
-// // 	// 		clearConsole();
-
-// 	runGame();
-// // // printf("X: %d, Y: %d, W: %d, H: %d, COLOR: %x\n",pos[0],pos[1],17*600/100,4*600/100,0xFFFFFF);
-
-// // //     printOnScreen(pos,17*600/100,4*600/100,0xFFFFFF);
-
-// // 	print_bar(pos,0xFF0000);
-
-//  	return 0;
 
 	int exit=0;
 	while(exit!=1)

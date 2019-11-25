@@ -55,9 +55,21 @@ void getCharWidth(unsigned int * c){
 }
 
 void getScreenWidth(unsigned int * s){
-    __GETSCREENW__(s);
+
+         DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *s = temp.charWidht;
+    
 }
 
 void getScreenHeight(unsigned int * s){
-    __GETSCREENH__(s);
+
+         DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *s = temp.charWidht;
+
 }

@@ -53,3 +53,11 @@ void getCharWidth(unsigned int * c){
 
     *c = temp.charWidht;
 }
+
+void getScreenWidth(unsigned int * s){
+    __GETSCREENW__(s);
+}
+
+void getScreenHeight(unsigned int * s){
+    __GETSCREENH__(s);
+}

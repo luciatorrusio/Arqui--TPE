@@ -5,7 +5,8 @@ GLOBAL __GETBPP__
 GLOBAL __SETBPP__
 GLOBAL __GETCHARH__
 GLOBAL __GETCHARW__
-
+GLOBAL __GETSCREENH__
+GLOBAL __GETSCREENW__
 section .text
 
 %macro pushState 0
@@ -125,6 +126,27 @@ __GETCHARW__:
 
 		mov rbx,rdi
         mov rax,0x6
+        int 0x81
+
+        leave
+        ret
+
+__GETSCREENW__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x7
+        int 0x81
+
+        leave
+        ret
+__GETSCREENH__:
+
+        enter 0,0
+
+		mov rbx,rdi
+        mov rax,0x8
         int 0x81
 
         leave

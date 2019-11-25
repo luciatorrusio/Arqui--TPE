@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include "gamePrinter.h"
-#define R_BLOCKS  5                                   //Cantidad de filas de bloques
-#define C_BLOCKS  8                                   //Cantidad de columnas de bloques
+#define R_BLOCKS  4                                   //Cantidad de filas de bloques
+#define C_BLOCKS  5                                   //Cantidad de columnas de bloques
 
 typedef enum ballDirec{LU, U, RU, RD, D, LD} ballDirec;                                                         //Left up, up, right up, right down, down, left down
 typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } walls;           //los bordes de la pantalla
@@ -20,9 +20,7 @@ struct Blocks{
 };
 struct Time{
     int past;                   //tiempo en el juego time_past
-    int relative_start[6];  
-    int relative;          ///va de 0 a 15s
-    int start[6];
+    int tick;
 };
 
 
@@ -51,7 +49,6 @@ void startGameRec(void);
 
 void print_blocks();
 
-int past_time();
 
 void handleBallMov();
 
@@ -104,8 +101,4 @@ int finishGame(int time_past);
 
 void ballNextPos(int * auxPos);
 
-
-void setRelativeStartTime();
-
-int past_time(void);
 #endif

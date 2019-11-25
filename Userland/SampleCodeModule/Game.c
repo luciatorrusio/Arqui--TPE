@@ -509,7 +509,7 @@ walls ballHitWall(){
         return RIGHT;
     }else if(auxPos[X] - BALL_RADIO <= 0){
         return LEFT;
-    }else if(auxPos[Y] + BALL_RADIO >= SCREEN_HEIGHT){
+    }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
         return FLOOR;
     }else if(auxPos[Y] - BALL_RADIO <= 0 ){
         return UPPER;

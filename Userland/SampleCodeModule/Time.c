@@ -36,7 +36,8 @@ int GetMonth(){
 }
 
 int GetYear(){
-    return getTime(YEAR);
+    int ret = getTime(YEAR);
+    return ret;
 }
 
 

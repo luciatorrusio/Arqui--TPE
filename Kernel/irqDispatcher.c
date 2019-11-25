@@ -58,21 +58,16 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 			int_21();
 			break;
 		case 0x80:
-			// int_80(firstParam,secondParam,thirdParam,fourthParam);
 			dispatchRead(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 			break;
 		case 0x81:
 
 			dispatchWrite(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
-			//int_81(firstParam,secondParam,thirdParam,fourthParam);
 		break;
 		case 0x82:
 			dispatchDelete(firstParam);
-			//int_82(firstParam,secondParam);
 			break;
-		case 0x83:
-			// int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
-			break;
+
 	
 	}
 }
@@ -143,70 +138,15 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 			break;
 		}
 		case FD_TIME: { 
-			 printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.\n",fd,firstParam,secondParam,thirdParam,fourthParam);
 			int * value = secondParam;
 			*value = handleTimeRequest(firstParam);
 
-			printf("VALUE: %d\n",*value);
 			break;
 			}
 		case FD_STDOUT_COLOR: { break;}
 	}
 }
 
-
-void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
-	//printf("En Kernel.ID que mande: %d\n",id);
-
-	switch (id)
-	{
-		case 0x01: // READMEM
-		{
-			// uint64_t position = firstParam;
-			// char * buff = secondParam;
-			// unsigned size = thirdParam;
-
-			// readMem(position,buff,size);
-
-			break;
-		}
-		case 0x02: // GETREGISTERS
-		{
-			// getRegisters(firstParam,secondParam,thirdParam);
-			return;
-			break;
-		}
-		case 0x03:{
-			// getBpp(firstParam);
-			return;
-			break;
-		}
-		case 0x04:{
-			// setSize(firstParam);
-			return;
-			break;
-		}
-		case 0x05:{
-			// unsigned int * aux=firstParam;
-			// *aux=CHAR_HEIGHT;
-			return;
-			break;
-		}
-		case 0x06:{
-			// unsigned int * aux=firstParam;
-			// *aux=CHAR_WIDTH;
-			return;
-			break;
-		}
-		default:{
-			printf("ID que mande: %d",id);
-		}
-	}
-}
-
-void int_82(int timeID, int * value){
-	*value = handleTimeRequest(timeID);
-}
 
 
 

@@ -8,7 +8,6 @@
 #include "include/Game.h"
 #include "include/gamePrinter.h"
 #include <stdlib.h>
-#include "../Include/Debugger.h"
 #include "../Include/deviceInfo.h"
 void menu(){
 	unsigned int init;

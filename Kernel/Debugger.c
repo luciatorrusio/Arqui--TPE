@@ -25,6 +25,8 @@ void PrintExceptionDetails(char * name, uint64_t * stackPointer, uint64_t * inst
 	Registers reg;
     getRegisters(&reg,stackPointer,instructionPointer);
 
+
+
 	printfColor("EXCEPTION: %s | IP: 0X%X\n",WHITE,RED,name,reg.rip);
 
 	printf("RAX: 0X%X | RBX: 0X%X | RCX: 0X%X | RDX: 0X%X\n",reg.rax,reg.rbx,reg.rcx,reg.rdx);
@@ -34,6 +36,10 @@ void PrintExceptionDetails(char * name, uint64_t * stackPointer, uint64_t * inst
 	printf("R10: 0X%X | R11: 0X%X | R12: 0X%X | R13: 0X%X\n",reg.r10,reg.r11,reg.r12,reg.r13);
 
 	printf("R14: 0X%X | R15: 0X%X \n",reg.r14,reg.r15);
+
+        return;
+
+    
 
 }
 

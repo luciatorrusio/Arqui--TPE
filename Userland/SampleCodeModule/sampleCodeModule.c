@@ -80,7 +80,6 @@ int main() {
 		
 	}
 
-	int a = 1/0;
 	clearConsole();
 
 	unsigned int init;

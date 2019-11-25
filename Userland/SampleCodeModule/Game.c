@@ -619,7 +619,7 @@ int finishGame(int time_past){
     if(blocks.left == 0){
         printfColorAt("Congratulations you've won!!",RED,BLACK,90,100);
         printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
-    
+           
     }else{
 
         printfColorAt("Better luck next time!",RED,BLACK,90,100);
@@ -699,5 +699,5 @@ void tableData(){
 
     printfColorAt("%d",BLACK,YELLOW,260,info[1],blocks.left);
     printfColorAt("%d",BLACK,YELLOW,520,info[1],lives);
-    printfColorAt("%d",BLACK,YELLOW,850,info[1],time.past/18);
+    printfColorAt("%d",BLACK,YELLOW,850,info[1],time.tick/18);
 }

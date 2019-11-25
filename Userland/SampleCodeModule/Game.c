@@ -8,7 +8,6 @@
 
 #define LIVESi                      3//cantidad de vidas al iniciar el juego    
 
-
 #define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
 #define BAR_HEIGHT                  (4*SCREEN_HEIGHT/200)                
 #define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
@@ -74,7 +73,7 @@ unsigned int SCREEN_HEIGHT;
 unsigned int SCREEN_WIDTH;
 static int info[2];
 
-
+static int initialize=0;
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
     void printLeftover(int * curr_BarPos);
@@ -90,33 +89,35 @@ static bool startOver = true;
 
 //para inicializar el juego de cero
 int runGame(void){
-
-    if(startOver){
-        int aux;
-        getScreenWidth(&aux);
-        SCREEN_WIDTH=aux;
-        getScreenHeight(&aux);
-        SCREEN_HEIGHT=aux;    
-        time.past=0;
-        time.tick = 0;
-        lives = LIVESi;
-        blocks.left= R_BLOCKS*C_BLOCKS;                            
-        
-        ball.pos[X]=SCREEN_WIDTH/2;
-        ball.pos[Y]=SCREEN_HEIGHT/2;      
-        ball.vel= 3;
-        ball.dir = D; 
-        
-        bar_pos[X]=SCREEN_WIDTH/2;
-        bar_pos[Y]=BAR_YPOS; 
-        
-        info[X]=SCREEN_WIDTH/2;
-        info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
-        //pongo la matriz de bloques todos en uno, (osea que estan)
-        for(int i = 0; i < C_BLOCKS ; i++){
-            for(int j = 0; j < R_BLOCKS; j++){
-                blocks.matrix[j][i]= 1;
-            }
+    if(initialize==1){
+        startGame();
+        return 0;
+    }
+    initialize=1;
+    int aux;
+    getScreenWidth(&aux);
+    SCREEN_WIDTH=aux;
+    getScreenHeight(&aux);
+    SCREEN_HEIGHT=aux;    
+    time.past=0;
+    time.tick = 0;
+    lives = LIVESi;
+    blocks.left= R_BLOCKS*C_BLOCKS;                            
+    
+    ball.pos[X]=SCREEN_WIDTH/2;
+    ball.pos[Y]=SCREEN_HEIGHT/2;      
+    ball.vel= 3;
+    ball.dir = D; 
+    
+    bar_pos[X]=SCREEN_WIDTH/2;
+    bar_pos[Y]=BAR_YPOS; 
+    
+    info[X]=SCREEN_WIDTH/2;
+    info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
+    //pongo la matriz de bloques todos en uno, (osea que estan)
+    for(int i = 0; i < C_BLOCKS ; i++){
+        for(int j = 0; j < R_BLOCKS; j++){
+            blocks.matrix[j][i]= 1;
         }
     }
 
@@ -164,9 +165,12 @@ int startGame(){
     }
         
     if(lives == 0  || blocks.left == 0 ){
-        startOver = true;
-        finishGame(time.tick / 18);
-        return 0;        
+        int x=finishGame(time.tick / 18);
+        initialize=0;
+        if(x==0)
+            goToTerminal=true;
+        else
+{   runGame();}        
     } 
     return 0;
 }
@@ -269,7 +273,7 @@ void handleBallMov(void){
             case LLCORNER:
             case LRCORNER:
                 lives -=1; 
-                print_bar(ball.pos, BLACK);
+                print_bar(bar_pos, BLACK);
                 ball.pos[X]=SCREEN_WIDTH/2;
                 ball.pos[Y]=SCREEN_HEIGHT/2;
                 ball.dir= D;
@@ -634,8 +638,13 @@ int finishGame(int time_past){
         printfColorAt("Better luck next time!",RED,BLACK,90,100);
         printfColorAt("Time: %d seconds",RED,BLACK,115,120,time_past);
     }
+        printfColorAt("Press x to restart or q to quit",BLUE,BLACK,50,140,time_past);
         setSize(init);
-
+        char c;
+        while((c=readKey())!='x'&& c!='q');
+        clearConsole();
+        if(c=='x')
+         return 1;
     return 0;
 }
 

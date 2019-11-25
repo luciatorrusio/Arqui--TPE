@@ -58,22 +58,6 @@ int power(int x,int y){
 }
 
 
-void DoubleToString(char * buff, int buffSize, float num){
-	IntToString(buff,buffSize, num);
-	int start =strlen(buffSize);
-
-	if(start + 1 < buffSize){
-		buff[start++] = '.';
-
-		int digits = (buffSize - (start+10) > 0) ? 10 : buffSize -start -1;
-
-
-		int newNumber = ((float)(num - (int) num)) * power(10,digits);
-
-		IntToString(start,buffSize - start, newNumber);
-	}
-}
-
 
 
 

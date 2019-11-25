@@ -157,8 +157,11 @@ int startGame(){
     }
         
     if(lives == 0  || blocks.left == 0 ){
-        finishGame(time.tick / 18);
-        return 0;        
+        int x=finishGame(time.tick / 18);
+        if(x==0)
+            goToTerminal=true;
+        else
+            startGame();        
     } 
     return 0;
 }
@@ -626,8 +629,13 @@ int finishGame(int time_past){
         printfColorAt("Better luck next time!",RED,BLACK,90,100);
         printfColorAt("Time: %d seconds",RED,BLACK,115,120,time_past);
     }
+        printfColorAt("Press x to restart or q to quit",BLUE,BLACK,115,140,time_past);
         setSize(init);
-
+        char c;
+        while((c=readKey())!='x'&& c!='q');
+        clearConsole();
+        if(c=='x')
+         return 1;
     return 0;
 }
 

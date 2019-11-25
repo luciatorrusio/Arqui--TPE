@@ -167,11 +167,6 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			{char * aux2 =va_arg(args,char *);
 			append(aux2,string+(*k),size-1-(*k));	
 			break;}	
-		case 'f':
-		case 'F':{
-			int aux3=va_arg(args,int);
-			DoubleToString(string+(*k),size-1-(*k),aux3);
-		}
 		case 'x':
 		case 'X':
 		{	

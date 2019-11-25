@@ -18,7 +18,7 @@ int quotient(int a, int b){
 }
 
 int man(){
-    printf("\ngame\nexit\ntime\nman\ngame\ninvalidOpcode\ninfoReg\nquotient\nprintMem\ngame\nclear\n");
+    printf("\ngame\nexit\ntime\nman\ninvalidOpcode\ninfoReg\nquotient\nprintMem\nclear\n");
     return 0;
 }
 

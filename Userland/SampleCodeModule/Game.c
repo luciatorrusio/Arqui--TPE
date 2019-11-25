@@ -680,7 +680,7 @@ void table(){
     printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-info[1],YELLOW);
     printfColorAt("Blocks left :",BLACK,YELLOW,150,info[1]);
     printfColorAt("Lives :",BLACK,YELLOW,450,info[1]);
-    printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.past/18);
+    printfColorAt("Time :",BLACK,YELLOW,800,info[1],time.tick/18);
     tableData();
 }
 

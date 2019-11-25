@@ -507,11 +507,11 @@ walls ballHitWall(){
     ballNextPos(auxPos);
     if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
         return RIGHT;
-    }else if(auxPos[X] - BALL_RADIO <= 0){
+    }else if(auxPos[X]   <= BALL_RADIO){
         return LEFT;
     }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
         return FLOOR;
-    }else if(auxPos[Y] - BALL_RADIO <= 0 ){
+    }else if(auxPos[Y]   <= BALL_RADIO ){
         return UPPER;
     }
     return NONE;
@@ -520,7 +520,7 @@ walls ballHitWall(){
 walls barHitWall(){
     if( ( bar_pos[X]+ bar_vel + (BAR_LENGTH /2) ) >= SCREEN_WIDTH){
         return RIGHT;
-    }else if(bar_pos[X] -bar_vel- BAR_LENGTH/2 <= 0){
+    }else if(bar_pos[X] -bar_vel <= BAR_LENGTH/2){
         return LEFT;
     }
     return NONE;

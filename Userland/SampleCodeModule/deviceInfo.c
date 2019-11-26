@@ -1,5 +1,5 @@
 #include "../Include/deviceInfo.h"
-#include "../include/Syscalls.h"
+#include "../Include/Syscalls.h"
 
 extern void __GETREGISTERS__(void * reg);
 

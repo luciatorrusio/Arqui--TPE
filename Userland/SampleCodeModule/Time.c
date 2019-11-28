@@ -4,7 +4,7 @@
 enum{
 SECONDS, MINUTES, HOURS, DAYOFWEEK, DAYOFMONTH, MONTH, YEAR
 };
-extern void __time__(int id, int * time);
+
 
 
 int getTime(int id);

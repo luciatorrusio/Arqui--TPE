@@ -32,20 +32,14 @@
 
 
 void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
-void dispatchDelete(void * fd);
+void dispatchDelete(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 
 
 static void int_20();
-// static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
-// static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam);
-
-
 static void int_21();
-void int_82(int timeID, int * value);
 
 
-static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
 void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam) {
 
@@ -61,11 +55,10 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 			dispatchRead(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 			break;
 		case 0x81:
-
 			dispatchWrite(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 		break;
 		case 0x82:
-			dispatchDelete(firstParam);
+			dispatchDelete(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 			break;
 
 	
@@ -152,29 +145,41 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 
 
 
-void dispatchDelete(void * fd){
-	switch ((int)fd)
-	{
-		case DELETE_CURRENT_CHAR:{
-			removeLastChar();
+void dispatchDelete(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
+	switch(fd){
+		case FD_STDOUT: { 
+
+			if(firstParam == DELETE_CURRENT_CHAR){
+				removeLastChar();
+			}else if(firstParam == DELETE_ALL_DISPLAY){
+				clearConsole();
+			}
 			break;
 		}
-		case DELETE_ALL_DISPLAY:{
-			clearConsole();
+		case FD_STDERR: { break;}
+		case FD_STDIN: { break;}
+		case FD_SPEAKER: { 
+			stopSound();
 			break;
 		}
+		case FD_SQUARES: { break;}
+		case FD_MEMORY: { break;}
+		case FD_REGISTERS: { break;}
+		case FD_DEVICE_INFO: { break;}
+		case FD_TIMER: { break;}
+		case FD_TIME: { break;}
+		case FD_STDOUT_COLOR: { break;}
 	}
+	
 }
 
 
 
 void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
-	char * buffer = firstParam;
-
-
 
 	switch(fd){
 		case FD_STDOUT:{
+			char * buffer = firstParam;
 
             if(buffer[1] == 0)
                 putChar(*buffer);
@@ -186,7 +191,7 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 			return;
 		}
 		case FD_STDERR:{
-                
+            char * buffer = firstParam;
 			if(buffer[1] == 0)
 			   putCharColor(*buffer,0xFF0000,0x0000);
 			else
@@ -195,7 +200,7 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
         }
 		case FD_STDIN: break;
         case FD_SPEAKER:{
-            beep();
+            playSound(firstParam);
             break;
         }
 		case FD_SQUARES:{ 

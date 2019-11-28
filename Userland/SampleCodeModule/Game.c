@@ -86,6 +86,8 @@ static int initialize=0;
 //
 
 static bool startOver = true;
+static bool isPlayingSound = false;
+static int soundTimer = 0;
 
 //para inicializar el juego de cero
 int runGame(void){
@@ -154,6 +156,16 @@ int startGame(){
             {
                 startGameRec();
             }
+
+            if(isPlayingSound){
+                if(soundTimer <= gameTicks){
+                    soundTimer = gameTicks + 5;
+                    playSound(1000);
+                }else{
+                    stopSound();
+                    isPlayingSound = false;
+                }
+            }
         }
 
 
@@ -170,7 +182,9 @@ int startGame(){
         if(x==0)
             goToTerminal=true;
         else
-{   runGame();}        
+        {   
+            runGame();
+        }        
     } 
     return 0;
 }
@@ -197,7 +211,7 @@ void startGameRec(void){
 void changeVel(){
     if(time.tick % (15 *18) == 0){
         ball.vel+=2;
-        beep();
+        isPlayingSound = true;
     }
 }
 

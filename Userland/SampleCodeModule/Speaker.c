@@ -1,10 +1,14 @@
 #include "include/Speaker.h"
 #include "../Include/Syscalls.h"
 
-#define FD_SPEAKER (3)
 
-void beep(){
+void playSound(int frecuency){
 
-    write(FD_SPEAKER,0,0,0,0);
+    write(FD_SPEAKER,frecuency,0,0,0);
 
+}
+
+
+void stopSound(){
+    delete(FD_SPEAKER,NULL,NULL,NULL,NULL);
 }

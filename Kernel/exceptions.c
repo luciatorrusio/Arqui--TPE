@@ -11,26 +11,25 @@
 
 
 
-void exceptionDispatcher(int exception, void * firstParam,void * secondParam) {
-
-	
+void exceptionDispatcher(int exception, uint64_t * stackPointer,void * secondParam) {
 		switch(exception){
 			case ZERO_EXCEPTION_ID:
 			{
-				PrintExceptionDetails("DIVISION BY ZERO",firstParam,secondParam);
+				PrintExceptionDetails("DIVISION BY ZERO",stackPointer,*(stackPointer+17));
 				
 				break;
 			}
 			case INVALID_OPCODE_EXCEPTION_ID:
 			{
-				PrintExceptionDetails("Invalid OPCODE",firstParam,secondParam);
+				PrintExceptionDetails("Invalid OPCODE",stackPointer,*(stackPointer+17));
 				break;
 			}
 			default:{
-				PrintExceptionDetails("UNKNOWN EXCEPTION",firstParam,secondParam);
+				PrintExceptionDetails("UNKNOWN EXCEPTION",stackPointer,*(stackPointer+17));
 			}
-		}
 
+		}
+//		*(stackPointer+17)=*(stackPointer+9);
 		
 }
 

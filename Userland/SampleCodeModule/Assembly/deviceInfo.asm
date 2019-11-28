@@ -57,7 +57,6 @@ __executeCodeFromAddress__:
 __GETREGISTERS__:
 
         enter 0,0
-		mov r15,0x123321
 		pushState ; Es feo esto
         mov rcx,rsp
 

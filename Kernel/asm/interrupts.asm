@@ -31,13 +31,16 @@ EXTERN exceptionDispatcher
 SECTION .text
 
 %macro pushState 0
+
 	push rax
 	push rbx
 	push rcx
 	push rdx
+	
 	push rbp
 	push rdi
 	push rsi
+	
 	push r8
 	push r9
 	push r10
@@ -58,18 +61,22 @@ SECTION .text
 	pop r10
 	pop r9
 	pop r8
+	
 	pop rsi
 	pop rdi
 	pop rbp
+	
 	pop rdx
 	pop rcx
 	pop rbx
 	pop rax
+
 %endmacro
 
 %macro irqHandlerMaster 1
 	pushState
-	
+	mov rdx,[rsp]	; Guardo la direccion del IP
+
 	
 	mov r9, r9 ; Quinto Param
 	mov r8, rdx ; Cuarto Param
@@ -90,20 +97,42 @@ SECTION .text
 
 
 
+;%macro exceptionHandler 1
+;	pushState
+;	
+;	mov rsi, rsp	; Guardo la direccion del SP
+;	mov rdi, %1 ; pasaje de parametro
+;
+;	call exceptionDispatcher
+;	popState
+;
+;	mov qword [rsp],SampleCodeAdress ;Cambio la direccion de retorno por el main
+;	
+;	iretq
+;%endmacro
 %macro exceptionHandler 1
-	mov rdx,[rsp]	; Guardo la direccion del IP
-	pushState
-
-	mov rsi, rsp	; Guardo la direccion del SP
-	mov rdi, %1 ; pasaje de parametro
-
-	call exceptionDispatcher
-	popState
-
-	mov qword [rsp],SampleCodeAdress ;Cambio la direccion de retorno por el main
+	  pushState
 	
-	iretq
-%endmacro
+	call _cli
+
+	  mov rdi, %1 ; first parameter
+	  mov rsi, rsp ; second parameter
+	
+	  push rbp
+	  mov rbp, rsp
+	  
+		call exceptionDispatcher
+	
+	  mov rsp, rbp
+	  pop rbp
+	call _sti
+
+	  popState
+	  mov [rsp+8*17],rdi;			
+		iretq
+	%endmacro
+
+
 
 
 _hlt:

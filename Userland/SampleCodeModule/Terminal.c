@@ -113,8 +113,9 @@ int interpretCommand(){
     }
     else if(strcmp(command,"exit") && !hasParam1 && !hasParam2)
         return 1;
-    else if(strcmp(command,"invalidOpcode") && !hasParam1 && !hasParam2)
+    else if(strcmp(command,"invalidOpcode") && !hasParam1 && !hasParam2){
         invalidOpcode();
+        }
     else if(strcmp(command,"clear") && !hasParam1 && !hasParam2)
         clearConsole();
     else if(strcmp(command,"quotient") && hasParam1 && hasParam2){

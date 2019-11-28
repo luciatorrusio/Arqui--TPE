@@ -69,7 +69,7 @@ int explainCommand(char * command){
 int invalidOpcode(){
 
     char * temp = "CRASH";
-
+    
     __executeCodeFromAddress__(temp);
 
     return 0;

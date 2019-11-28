@@ -7,14 +7,13 @@
 
 
 #define MAXBUFFER 1000
-#define FD_LAST_CHAR 1
-#define FD_ALL_DISPLAY 2
+
 
 
 
 void clearConsole()
 {
-    delete(FD_ALL_DISPLAY);
+    delete(DELETE_ALL_DISPLAY);
 }
 
 
@@ -27,7 +26,7 @@ void printf(const char * format, ...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    write(STDOUT,string);
+    write(FD_STDOUT,string,0,0,0);
 }
 
 void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,int y,...){
@@ -51,11 +50,11 @@ void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,
         colorString[i].backgroundColor = backgroundColor;
         colorString[i].x=posX;
         colorString[i].y=posY;
+
     }
         colorString[i].ch = 0;
-        
 
-    writeColor(colorString);
+        write(FD_STDOUT_COLOR,colorString,0,0,0);
 
 }
 
@@ -69,14 +68,14 @@ void printfError(const char * format,...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    write(STDERR,string);
+    write(FD_STDERR,string,0,0,0);
 
 }
 
 
 
 void RemoveLastCharFromDisplay(){
-    delete(FD_LAST_CHAR);
+    delete(DELETE_CURRENT_CHAR);
 }
 
 
@@ -84,7 +83,7 @@ void putChar( char ch)
 {
     char buff[2]={0,0};
     buff[0]=ch;
-    write(STDOUT,buff);
+    write(FD_STDOUT,buff,0,0,0);
 
 }
 
@@ -92,7 +91,7 @@ void putChar( char ch)
 int readKey()
 {
     static char buff[2];
-    read(1,buff,2);
+    read(FD_STDIN,buff,2,0,0);
     char retValue = buff[0];
     buff[0] = 0;
     return retValue;

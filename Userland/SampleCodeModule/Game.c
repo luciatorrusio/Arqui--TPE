@@ -85,6 +85,8 @@ static int initialize=0;
     void changeVel();
 //
 
+static bool startOver = true;
+
 //para inicializar el juego de cero
 int runGame(void){
     if(initialize==1){
@@ -130,6 +132,7 @@ int startGame(){
     int aux;
     print_blocks();
     table();
+
     // GameTick = 2 real tick
     bool stopWhile = false;
     goToTerminal = false;
@@ -143,8 +146,9 @@ int startGame(){
         if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
             gameTicks++;
             previusTick = realTicks;
-            if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0){
+            if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0 ){
                 // Condicion de retorno
+
                 stopWhile = true;
             }else
             {
@@ -156,7 +160,7 @@ int startGame(){
     }while(!stopWhile);
 
     if(aux){ 
-        //COMPLETAR!!! TIENE QUE PASAR ALGO
+        startOver = false;
         return 0;
     }
         
@@ -200,7 +204,7 @@ void changeVel(){
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);
     print_ball(curr_BallPos,BLACK );
-    //print_bar(curr_BarPos, BLACK); 
+    print_bar(curr_BarPos, BLACK); 
     print_ball(ball.pos, PURPLE );
     int x, y;
     if(block[X]!= NO_BLOCK){
@@ -650,11 +654,14 @@ void print_ball(int * ball_pos,int color){
 
 void print_bar(int * bar_pos,int color){
     printOnScreen(bar_pos,BAR_LENGTH,BAR_HEIGHT,color);
+
 }
 
 void print_block(int x,int y,int color){
     int pos[]= {x, y};
+
     printOnScreen(pos,BLOCK_WIDTH,BLOCK_HEIGHT,color);
+
 }
 
 int stopKeyPressed(){

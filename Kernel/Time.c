@@ -64,8 +64,12 @@ int GetMonth(){
     return mm1*10 + mm2;
 }
 
+#include <Curses.h>
+
 int GetYear(){
-    int aa1 = __GetTime__(9);
-    int aa2 = __GetTime__(9)/16 - aa1*16 ;
-    return 2000 + aa1 * 10 + aa2;
+    int aa1 = __GetTime__(9)/16;
+    int aa2 = __GetTime__(9) - aa1*16 ;
+    int a = aa1 * 10 + aa2;
+
+    return a  ;
 }

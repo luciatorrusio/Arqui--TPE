@@ -8,7 +8,6 @@
 #include "include/Game.h"
 #include "include/gamePrinter.h"
 #include <stdlib.h>
-#include "../Include/Debugger.h"
 #include "../Include/deviceInfo.h"
 void menu(){
 	unsigned int init;
@@ -18,6 +17,8 @@ void menu(){
 	getBpp(&init);
 	setSize(5*init);
 	getBpp(&aux);
+
+	printf("BBP: %d",init);
 	
 	int position=67;
 	int y=30;
@@ -79,7 +80,6 @@ int main() {
 		
 	}
 
-	int a = 1/0;
 	clearConsole();
 
 	unsigned int init;

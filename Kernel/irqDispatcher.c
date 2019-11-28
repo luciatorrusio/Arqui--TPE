@@ -10,21 +10,40 @@
 #include <SpeakerDriver.h>
 #include <font.h>
 #include <VideoDriver.h>
+#include <ConsoleDriver.h>
 
-#define FD_STDOUT (1)
-#define FD_STDERR (2)
-#define FD_SPEAKER (3)
+
+
+#define FD_STDOUT 				(0x01)
+#define FD_STDERR 				(0x02)
+#define FD_STDIN 				(0x03)
+#define FD_SPEAKER 				(0x04)
+#define FD_SQUARES 				(0x05)
+#define FD_MEMORY 				(0x06)
+#define FD_REGISTERS			(0x07)
+#define FD_DEVICE_INFO 			(0x08)
+#define FD_TIMER				(0x09)
+#define FD_TIME					(0x0A)
+#define FD_STDOUT_COLOR			(0x0B)
+
+#define DELETE_CURRENT_CHAR 1
+#define DELETE_ALL_DISPLAY 3
+
+
+
+void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
+void dispatchDelete(void * fd);
+void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 
 
 static void int_20();
-static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
-static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam);
+// static void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam);
+// static void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam);
 
 
 static void int_21();
 void int_82(int timeID, int * value);
 
-void dispatchDelete(void * fd);
 
 static void int_81(int id, void * firstParam,void * secondParam,void * thirdParam);
 
@@ -39,17 +58,16 @@ void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * th
 			int_21();
 			break;
 		case 0x80:
-			int_80(firstParam,secondParam,thirdParam,fourthParam);
+			dispatchRead(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 			break;
 		case 0x81:
-			int_81(firstParam,secondParam,thirdParam,fourthParam);
+
+			dispatchWrite(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
 		break;
 		case 0x82:
-			int_82(firstParam,secondParam);
+			dispatchDelete(firstParam);
 			break;
-		case 0x83:
-			int_83(firstParam,secondParam,thirdParam,fourthParam,fifthParam);
-			break;
+
 	
 	}
 }
@@ -64,149 +82,147 @@ void int_21(){
 	
 }
 
-void int_80(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam){
-	int id = firstParam;
-	int fileDescriptor = secondParam;
-	char * buffer = (char *) thirdParam;
 
-	
-	switch (id)
-	{
-		case 1:{ // WRITE
-			switch(fileDescriptor){
-				case FD_STDOUT:{
-                    if(buffer[1] == 0)
-                        putChar(*buffer);
-				    else
-                        printf(buffer);
-	
-					break;
+
+
+
+void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
+
+	switch(fd){
+		case FD_STDOUT: { break;}
+		case FD_STDERR: { break;}
+		case FD_STDIN: { 
+
+			char * buffer = (char *) firstParam;
+            int bufferSize = secondParam;
+			int i = 0;		
+			int temp;
+			do{
+				temp = returnKey();
+				
+				if( temp != -1 ){
+					buffer[i++]=temp;
 				}
-				case FD_STDERR:{
-                
-				    if(buffer[1] == 0)
-					    putCharColor(*buffer,0xFF0000,0x0000);
-				    else
-					    printfColor(buffer,0xFF0000,0x0000);
-                
-                    break;
-                }
-                case FD_SPEAKER:{
-                    beep();
-                    break;
-                }
-			}
+
+			}while( temp!= -1 && i <bufferSize-1 );
+			buffer[i] = 0;
+			
 			break;
 		}
-		case 2:{ // Delete
-			dispatchDelete(secondParam);
-            break;
-		}
-		case 3: // read
-		{
-			dispatchRead(secondParam,thirdParam,fourthParam);
-			break;
-		}
-		case 4:
-		{
-			printLineColorAt(secondParam);
-				break;
-		}
-	}
-}
-
-
-void int_81(int id, void * firstParam,void * secondParam,void * thirdParam){
-	//printf("En Kernel.ID que mande: %d\n",id);
-
-	switch (id)
-	{
-		case 0x01: // READMEM
-		{
+		case FD_SPEAKER: { break;}
+		case FD_SQUARES: { break;}
+		case FD_MEMORY: { 
+			
 			uint64_t position = firstParam;
 			char * buff = secondParam;
-			unsigned size = thirdParam;
+			int size = thirdParam;
 
 			readMem(position,buff,size);
 
+
 			break;
 		}
-		case 0x02: // GETREGISTERS
-		{
+		case FD_REGISTERS: { 
 			getRegisters(firstParam,secondParam,thirdParam);
-			return;
 			break;
 		}
-		case 0x03:{
-			getBpp(firstParam);
-			return;
+		case FD_DEVICE_INFO: { 
+
+			// printf("FD: %d. PAR1 %d. PAR2 %d. PAR3 %d. PAR4 %d.",fd,firstParam,secondParam,thirdParam,fourthParam);
+
+			getDeviceInfo(firstParam);
 			break;
 		}
-		case 0x04:{
-			setSize(firstParam);
-			return;
+		case FD_TIMER: { 
+
+			uint64_t * ticks = firstParam;
+            *ticks = ticks_elapsed();	
 			break;
 		}
-		case 0x05:{
-			unsigned int * aux=firstParam;
-			*aux=CHAR_HEIGHT;
-			return;
+		case FD_TIME: { 
+			int * value = secondParam;
+			*value = handleTimeRequest(firstParam);
+
 			break;
-		}
-		case 0x06:{
-			unsigned int * aux=firstParam;
-			*aux=CHAR_WIDTH;
-			return;
-			break;
-		}
-		case 0x07:{
-			unsigned int * aux=firstParam;
-			*aux=SCREEN_WIDTH;
-			return;
-			break;
-		}
-		case 0x08:{
-			unsigned int * aux=firstParam;
-			*aux=SCREEN_HEIGHT;
-			return;
-			break;
-		}
-		default:{
-			printf("ID que mande: %d",id);
-		}
+			}
+		case FD_STDOUT_COLOR: { break;}
 	}
 }
 
-void int_82(int timeID, int * value){
-	*value = handleTimeRequest(timeID);
-}
 
-#define CURRENT_CHAR 1
-#define ALL_DISPLAY 2
-#include <ConsoleDriver.h>
+
 
 void dispatchDelete(void * fd){
 	switch ((int)fd)
 	{
-		case CURRENT_CHAR:{
+		case DELETE_CURRENT_CHAR:{
 			removeLastChar();
 			break;
 		}
-		case ALL_DISPLAY:{
+		case DELETE_ALL_DISPLAY:{
 			clearConsole();
 			break;
 		}
 	}
 }
-void int_83(void * firstParam,void * secondParam,void * thirdParam,void * fourthParam,void * fifthParam){
-	int id = firstParam;
-	int * pos = secondParam;
-	int length = thirdParam;
-	int height=fourthParam;
-	int fontColor=fifthParam;
-	
 
-	print(pos,length,height,fontColor);
+
+
+void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
+	char * buffer = firstParam;
+
+
+
+	switch(fd){
+		case FD_STDOUT:{
+
+            if(buffer[1] == 0)
+                putChar(*buffer);
+			else
+                printf(buffer);
+	
+			break;
+
+			return;
+		}
+		case FD_STDERR:{
+                
+			if(buffer[1] == 0)
+			   putCharColor(*buffer,0xFF0000,0x0000);
+			else
+				printfColor(buffer,0xFF0000,0x0000);
+            break;
+        }
+		case FD_STDIN: break;
+        case FD_SPEAKER:{
+            beep();
+            break;
+        }
+		case FD_SQUARES:{ 
+			int * pos = firstParam;
+			int length = secondParam;
+			int height=thirdParam;
+			int fontColor=fourthParam;
+			
+			print(pos,length,height,fontColor);
+			break;
+			}
+		case FD_MEMORY: break;
+		case FD_REGISTERS: break;
+		case FD_DEVICE_INFO: {
+			setSize(firstParam);
+			break;
+		}
+		case FD_TIMER: break;
+		case FD_TIME: break;
+		case FD_STDOUT_COLOR:{
+			 printLineColorAt(firstParam);
+
+			break;
+		}
+	}
+	
 }
+
 
 

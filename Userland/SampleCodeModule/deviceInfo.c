@@ -1,48 +1,75 @@
 #include "../Include/deviceInfo.h"
-extern void __READMEM__(uint64_t position, char * buff, unsigned size);
+#include "../Include/Syscalls.h"
+
 extern void __GETREGISTERS__(void * reg);
 
-extern void __GETBPP__(void * bpp);
-extern void __SETBPP__(int bpp);
 
-extern void __GETCHARH__(unsigned int * c);
-extern void __GETCHARW__(unsigned int * c);
+typedef struct{
+    unsigned int bbp;
+    unsigned int charHeight;
+    unsigned int charWidht;
+    unsigned int screenHeight;
+    unsigned int screenWidth;
+}DeviceInfo;
 
-extern void __GETSCREENW__(unsigned int * s);
-extern void __GETSCREENH__(unsigned int * s);
 
 void getRegisters(Registers * reg){
 
+    // NO PUEDO CAMBIER ESTO POR UN READ POR LA FORMA EN LA QUE AGARRO EL STACKPOINTER
     __GETREGISTERS__(reg);
 }
-void readMem(uint64_t position, char * buff, unsigned size){
+void readMem(uint64_t position, char * buff, int size){
 
-    __READMEM__(position,buff,size);
+    read(FD_MEMORY,position,buff,size,0);
 
 }
 
 void getBpp(unsigned int * bpp){
 
-    __GETBPP__(bpp);
+    DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *bpp = temp.bbp;
 
 }
 
 void setSize(unsigned int bpp){
-    __SETBPP__(bpp);
+    write(FD_DEVICE_INFO,bpp,0,0,0);
 }
 
 void getCharHeight(unsigned int * c){
-    __GETCHARH__(c);
+     DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *c = temp.charHeight;
 }
 
 void getCharWidth(unsigned int * c){
-    __GETCHARW__(c);
+     DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *c = temp.charWidht;
 }
 
 void getScreenWidth(unsigned int * s){
-    __GETSCREENW__(s);
+
+         DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *s = temp.screenWidth;
+    
 }
 
 void getScreenHeight(unsigned int * s){
-    __GETSCREENH__(s);
+
+         DeviceInfo temp;
+
+    read(FD_DEVICE_INFO,&temp,0,0,0);
+
+    *s = temp.screenHeight;
+
 }

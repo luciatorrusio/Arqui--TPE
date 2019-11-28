@@ -5,6 +5,6 @@
 
 void beep(){
 
-    write(FD_SPEAKER,0);
+    write(FD_SPEAKER,0,0,0,0);
 
 }

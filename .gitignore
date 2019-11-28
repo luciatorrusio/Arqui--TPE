@@ -65,3 +65,5 @@ dkms.conf
 /Toolchain/ModulePacker/*.bin
 
 run.sh.save
+
+ldellisola\@192.168.0.56

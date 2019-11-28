@@ -5,6 +5,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+typedef struct{
+    char ch;
+    int fontColor;
+    int backgroundColor;
+    int x;
+    int y;
+}ColorChar;
+
 
 #define MAXBUFFER 1000
 
@@ -13,7 +21,7 @@
 
 void clearConsole()
 {
-    delete(DELETE_ALL_DISPLAY);
+    delete(FD_STDOUT,DELETE_ALL_DISPLAY,NULL,NULL,NULL);
 }
 
 
@@ -75,7 +83,7 @@ void printfError(const char * format,...){
 
 
 void RemoveLastCharFromDisplay(){
-    delete(DELETE_CURRENT_CHAR);
+    delete(FD_STDOUT,DELETE_CURRENT_CHAR,NULL,NULL,NULL);
 }
 
 

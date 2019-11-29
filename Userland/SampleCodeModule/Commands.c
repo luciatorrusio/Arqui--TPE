@@ -5,7 +5,7 @@
 #include "../Include/Curses.h"
 #include "../Include/Time.h"
 
-extern void __executeCodeFromAddress__(void * address);
+extern void __UD2__();
 
 int quotient(int a, int b){
 
@@ -67,10 +67,8 @@ int explainCommand(char * command){
 }
 
 int invalidOpcode(){
-
-    char * temp = "CRASH";
-
-    __executeCodeFromAddress__(temp);
+    
+    __UD2__();
 
     return 0;
 }

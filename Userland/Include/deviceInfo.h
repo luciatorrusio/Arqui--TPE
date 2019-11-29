@@ -5,7 +5,7 @@
 
 typedef struct 
 {
-        uint64_t rax;
+    uint64_t rax;
     uint64_t rbx;
     uint64_t rcx;
     uint64_t rdx;
@@ -22,11 +22,12 @@ typedef struct
     uint64_t r15;
 
     uint64_t rip;
+    uint64_t rsp;
         
 }Registers;
 
 
-void getRegisters(Registers * reg);
+Registers getRegisters();
 void readMem(uint64_t position, char * buff, int size);
 void getBpp(unsigned int * bpp);
 void setSize(unsigned int  bpp);

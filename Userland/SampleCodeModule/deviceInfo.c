@@ -1,7 +1,7 @@
 #include "../Include/deviceInfo.h"
 #include "../Include/Syscalls.h"
 
-extern void __GETREGISTERS__(void * reg);
+// extern void __GETREGISTERS__(void * reg);
 
 
 typedef struct{
@@ -13,11 +13,44 @@ typedef struct{
 }DeviceInfo;
 
 
-void getRegisters(Registers * reg){
+void recoverRegisters(uint64_t * stackPointer){
 
-    // NO PUEDO CAMBIER ESTO POR UN READ POR LA FORMA EN LA QUE AGARRO EL STACKPOINTER
-    __GETREGISTERS__(reg);
+    Registers structure;
+    //  push ebp
+    //  mov ebp, esp
+    structure.r15 = *(stackPointer + 0);    
+    structure.r14 = *(stackPointer + 1);
+    structure.r13 = *(stackPointer + 2);
+    structure.r12 = *(stackPointer + 3);
+    structure.r11 = *(stackPointer + 4);
+    structure.r10 = *(stackPointer + 5);
+    structure.r9 = *(stackPointer + 6);
+    structure.r8 = *(stackPointer + 7);
+    structure.rsi = *(stackPointer + 8);
+    structure.rdi = *(stackPointer + 9);
+
+    // Cuando entra a la funcion me guarda en el rbp la posicion del stackpointer antes de entrar 
+    // a la funcion.
+    structure.rsp = *(stackPointer + 10);
+
+    structure.rdx = *(stackPointer + 11);
+    structure.rcx = *(stackPointer + 12);
+    structure.rbx = *(stackPointer + 13);
+    structure.rax = *(stackPointer + 14);
+
+    // Al armar el stack frame pusheo al stack el valor del rbp.
+    structure.rbp = *(stackPointer + 15);
+
+    return structure;
+
+
 }
+
+
+// void getRegisters(Registers * reg){
+
+//     __GETREGISTERS__(reg);
+// }
 void readMem(uint64_t position, char * buff, int size){
 
     read(FD_MEMORY,position,buff,size,0);

@@ -37,7 +37,7 @@ void PrintExceptionDetails(char * name, uint64_t * stackPointer, uint64_t * inst
 
 	printf("R14: 0X%X | R15: 0X%X \n",reg.r14,reg.r15);
 
-        return;
+    return;
 
     
 

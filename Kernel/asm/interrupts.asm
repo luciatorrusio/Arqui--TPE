@@ -75,7 +75,6 @@ SECTION .text
 
 %macro irqHandlerMaster 1
 	pushState
-	mov rdx,[rsp]	; Guardo la direccion del IP
 
 	
 	mov r9, r9 ; Quinto Param
@@ -113,22 +112,25 @@ SECTION .text
 %macro exceptionHandler 1
 	  pushState
 	
-	call _cli
-
 	  mov rdi, %1 ; first parameter
 	  mov rsi, rsp ; second parameter
-	
-	  push rbp
-	  mov rbp, rsp
+
 	  
-		call exceptionDispatcher
-	
-	  mov rsp, rbp
-	  pop rbp
-	call _sti
+	  call exceptionDispatcher
 
 	  popState
-	  mov [rsp+8*17],rdi;			
+
+	  push rax
+
+	  mov rax, [rsp+8]
+	  inc rax
+	  inc rax
+	  inc rax
+
+	  mov [rsp+8], rax
+
+	  pop rax
+	
 		iretq
 	%endmacro
 

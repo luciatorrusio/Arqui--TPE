@@ -29,7 +29,7 @@ void exceptionDispatcher(int exception, uint64_t * stackPointer,void * secondPar
 			}
 
 		}
-//		*(stackPointer+17)=*(stackPointer+9);
+		//*(stackPointer+17)=*(stackPointer+9);
 		
 }
 

@@ -96,41 +96,15 @@ SECTION .text
 
 
 
-;%macro exceptionHandler 1
-;	pushState
-;	
-;	mov rsi, rsp	; Guardo la direccion del SP
-;	mov rdi, %1 ; pasaje de parametro
-;
-;	call exceptionDispatcher
-;	popState
-;
-;	mov qword [rsp],SampleCodeAdress ;Cambio la direccion de retorno por el main
-;	
-;	iretq
-;%endmacro
 %macro exceptionHandler 1
-	  pushState
+	  	pushState
 	
-	  mov rdi, %1 ; first parameter
-	  mov rsi, rsp ; second parameter
+	  	mov rdi, %1 ; first parameter
+	  	mov rsi, rsp ; second parameter
 
-	  
-	  call exceptionDispatcher
+	  	call exceptionDispatcher
 
-	  popState
-
-	  push rax
-
-	  mov rax, [rsp+8]
-	  inc rax
-	  inc rax
-	  inc rax
-
-	  mov [rsp+8], rax
-
-	  pop rax
-	
+	  	popState
 		iretq
 	%endmacro
 

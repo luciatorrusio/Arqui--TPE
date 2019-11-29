@@ -1,5 +1,8 @@
-GLOBAL __GETREGISTERS__
-GLOBAL __executeCodeFromAddress__
+GLOBAL getRegisters
+GLOBAL __UD2__
+
+
+EXTERN recoverRegisters
 
 section .text
 
@@ -43,29 +46,41 @@ section .text
 
 
 
-__executeCodeFromAddress__:
+__UD2__:
 
 		enter 0,0
 
-		jmp rdi
+		ud2
 
 		leave
 		ret
 
 
 
-__GETREGISTERS__:
+getRegisters:
 
         enter 0,0
-		pushState ; Es feo esto
-        mov rcx,rsp
 
-        mov rdx,0
-        mov rcx,rcx
-        mov rbx, rdi    ; Puntero a la struct
-        mov rax,0x07
-        int 0x80
+		; mov rax, 10
+		; mov rbx, 11
+		; mov rcx, 12
+		; mov rdx, 13
+		; mov r15, 21
+		; mov r14, 20
+		; mov r13, 19
+		; mov r12,18
+		; mov r11,17
+		; mov r10,16
+		; mov r8,8
+		; mov r9, 9
+		; mov rdi, 255
+		; mov rsi, 238
 
+		pushState 
+        mov rdi,rsp
+
+		call recoverRegisters
+        
         leave
         ret
 

@@ -6,7 +6,7 @@
 
 int printMem(uint64_t memDirection);
 
-int infoReg();
+extern int infoReg();
 
 int time();
 

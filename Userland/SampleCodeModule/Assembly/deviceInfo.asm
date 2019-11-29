@@ -1,8 +1,8 @@
-GLOBAL getRegisters
+GLOBAL infoReg
 GLOBAL __UD2__
 
 
-EXTERN recoverRegisters
+EXTERN printRegisters
 
 section .text
 
@@ -57,30 +57,17 @@ __UD2__:
 
 
 
-getRegisters:
+infoReg:
 
         enter 0,0
 
-		; mov rax, 10
-		; mov rbx, 11
-		; mov rcx, 12
-		; mov rdx, 13
-		; mov r15, 21
-		; mov r14, 20
-		; mov r13, 19
-		; mov r12,18
-		; mov r11,17
-		; mov r10,16
-		; mov r8,8
-		; mov r9, 9
-		; mov rdi, 255
-		; mov rsi, 238
-
 		pushState 
         mov rdi,rsp
+		
 
-		call recoverRegisters
+		call printRegisters
+
+		mov rax,0
         
         leave
         ret
-

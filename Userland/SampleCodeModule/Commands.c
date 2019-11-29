@@ -99,61 +99,39 @@ void cleanArr(char * arr, int size){
 }
 
 
-int infoReg(){
+int printRegisters(uint64_t * storage){
     
-    Registers reg;
-    getRegisters(&reg);
+	printf("RAX: 0x%x\n",storage[14]);
     
-    char temp[17]={'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0};    
+	printf("RBX: 0x%x\n",storage[13]);
     
-    HexToString(temp,17,reg.rax);
-	printf("RAX: 0x%s\n",temp);
-    
-    HexToString(temp,17,reg.rbx);
-	printf("RBX: 0x%s\n",temp);
-    
-	HexToString(temp,17,reg.rcx);
-	printf("RCX: 0x%s\n",temp);
+	printf("RCX: 0x%x\n",storage[12]);
     	
-    HexToString(temp,17,reg.rdx);
-	printf("RDX: 0x%s\n",temp);
+	printf("RDX: 0x%x\n",storage[11]);
     
-    HexToString(temp,17,reg.rbp);
-	printf("RBP: 0x%s\n",temp);
+	printf("RBP: 0x%x\n",storage[15]);
 
+	printf("RDI: 0x%x\n",storage[9]);
 
-    HexToString(temp,17,reg.rsi);
-	printf("RSI: 0x%s\n",temp);
+	printf("RSI: 0x%x\n",storage[8]);
     	
-    HexToString(temp,17,reg.rdi);
-	printf("RDI: 0x%s\n",temp);
-    
-    HexToString(temp,17,reg.r8);
-	printf("R8: 0x%s\n",temp);	
+	printf("R8: 0x%x\n",storage[7]);
 
-    HexToString(temp,17,reg.r9);
-	printf("R9: 0x%s\n",temp);	
+	printf("R9: 0x%x\n",storage[6]);
 	
-    HexToString(temp,17,reg.r10);
-	printf("R10: 0x%s\n",temp);	
+	printf("R10: 0x%x\n",storage[5]);
 
-    HexToString(temp,17,reg.r11);
-	printf("R11: 0x%s\n",temp);	
+	printf("R11: 0x%x\n",storage[4]);
 	
-    HexToString(temp,17,reg.r12);
-	printf("R12: 0x%s\n",temp);	
+	printf("R12: 0x%x\n",storage[3]);
 	
-	HexToString(temp,17,reg.r13);
-	printf("R13: 0x%s\n",temp);	
+	printf("R13: 0x%x\n",storage[2]);
 	
-    HexToString(temp,17,reg.r14);
-	printf("R14: 0x%s\n",temp);	
+	printf("R14: 0x%x\n",storage[1]);
 	
-    HexToString(temp,17,reg.r15);
-	printf("R15: 0x%s\n",temp);	
+	printf("R15: 0x%x\n",storage[0]);
 
-    HexToString(temp,17,reg.rip);
-	printf("RIP: 0x%s\n",temp);	
+	printf("RSP: 0x%x\n",storage[10]);	
     return 0;
 
 }

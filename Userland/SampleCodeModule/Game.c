@@ -917,14 +917,15 @@ void invertDirection(walls wall){
 walls ballHitWall(){
     int auxPos[2];
     ballNextPos(auxPos);
-    if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
-        return RIGHT;
-    }else if(auxPos[X]   <= BALL_RADIO){
+    if(auxPos[X]   <= BALL_RADIO){
         return LEFT;
-    }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
-        return FLOOR;
     }else if(auxPos[Y]   <= BALL_RADIO ){
         return UPPER;
+    }else if(auxPos[X] + BALL_RADIO >= SCREEN_WIDTH ){
+        return RIGHT;
+    
+    }else if(auxPos[Y] + BALL_RADIO >= BAR_YPOS+BAR_HEIGHT){
+        return FLOOR;
     }
     return NONE;
 }

@@ -129,6 +129,388 @@ int runGame(void){
     return 0;
 }
 
+
+void manageSound(uint64_t realTick){
+
+    uint64_t tick = realTick % 1171;
+
+    switch(tick){
+        case 0:{
+            playSound(660);
+            break;
+        }
+        case 2:{
+            stopSound();
+            break;
+        }
+        case 5:{
+            playSound(660);
+            break;
+        }
+        case 7:{
+            stopSound();
+            break;
+        }
+        case 13:{
+            playSound(500);
+            break;
+        }
+        case 15:{
+            stopSound();
+            break;
+        }
+        case 21:{
+            playSound(510);
+            break;
+        }
+        case 23:{
+            stopSound();
+            break;
+        }
+        case 25:{
+            playSound(660);
+            break;
+        }
+        case 27:{
+            stopSound();
+            break;
+        }
+        case 33:{
+            playSound(770);
+            break;
+        }
+        case 35:{
+            stopSound();
+            break;
+        }
+        case 46:{
+            playSound(380);
+            break;
+        }
+        case 48:{
+            stopSound();
+            break;
+        }
+        case 60:{
+            playSound(510);
+            break;
+        }
+        case 62: stopSound();break;
+        case 71:playSound(380);break;
+        case 73:stopSound();break;
+        case 81:playSound(320);break;
+        case 83:stopSound();break;
+        case 93: playSound(440);break;
+        case 95: stopSound();break;
+        case 101: playSound(480);break;
+        case 102: stopSound(); break;
+        case 108: playSound(450); break;
+        case 110:stopSound();break;
+        case 113: playSound(430);break;
+        case 115: stopSound(); break;
+        case 121: playSound(380); break;
+        case 123: stopSound();break;
+        case 127: playSound(660);break;
+        case 129: stopSound(); break;
+        case 133: playSound(760);break;
+        case 134: stopSound();break;
+        case 137: playSound(860);break;
+        case 139: stopSound(); break;
+        case 145: playSound(700); break;
+        case 147: stopSound();break;
+        case 150: playSound(760);break;
+        case 151: stopSound();break;
+        case 158: playSound(660); break;
+        case 159: stopSound();break;
+        case 165: playSound(520); break;
+        case 166: stopSound(); break;
+        case 169: playSound(580);break;
+        case 170: stopSound(); break;
+        case 173: playSound(480); break;
+        case 174: stopSound(); break;
+        case 184: playSound(510); break;
+        case 186: stopSound(); break;
+        case 195: playSound(380); break;
+        case 197: stopSound(); break;
+        case 205: playSound(320); break;
+        case 207: stopSound(); break;
+        case 217: playSound(440); break;
+        case 219: stopSound(); break;
+        case 225: playSound(480); break;
+        case 226: stopSound(); break;
+        case 232: playSound(450); break;
+        case 234: stopSound(); break;
+        case 237: playSound(430); break;
+        case 235: stopSound(); break;
+        case 241: playSound(380); break;
+        case 243: stopSound(); break;
+        case 247: playSound(660); break;
+        case 249: stopSound(); break;
+        case 253: playSound(760); break;
+        case 254: stopSound(); break;
+        case 257: playSound(760); break;
+        case 258: stopSound(); break;
+        case 261: playSound(860); break;
+        case 263: stopSound(); break;
+        case 269: playSound(700); break;
+        case 270: stopSound(); break;
+        case 273: playSound(760); break;
+        case 274: stopSound(); break;
+        case 281: playSound(660); break;
+        case 282: stopSound(); break;
+        case 288: playSound(520); break;
+        case 289: stopSound(); break;
+        case 292: playSound(580); break;
+        case 293: stopSound(); break;
+        case 296: playSound(480); break;
+        case 297: stopSound(); break;
+        case 307: playSound(500); break;
+        case 309: stopSound(); break;
+        case 315: playSound(760); break;
+        case 317: stopSound(); break;
+        case 319: playSound(720); break;
+        case 321: stopSound(); break;
+        case 324: playSound(680); break;
+        case 326: stopSound(); break;
+        case 329: playSound(620); break;
+        case 332: stopSound(); break;
+        case 338: playSound(650); break;
+        case 341: stopSound(); break;
+        case 347: playSound(380); break;
+        case 349: stopSound(); break;
+        case 352: playSound(430); break;
+        case 354: stopSound(); break;
+        case 360: playSound(430); break;
+        case 362: stopSound(); break;
+        case 365: playSound(500); break;
+        case 367: stopSound(); break;
+        case 373: playSound(430); break;
+        case 375: stopSound(); break;
+        case 378: playSound(500); break;
+        case 380: stopSound(); break;
+        case 382: playSound(570); break;
+        case 384: stopSound(); break;
+        case 388: playSound(500); break;
+        case 390: stopSound(); break;
+        case 396: playSound(760); break;
+        case 398: stopSound(); break;
+        case 400: playSound(720); break;
+        case 402: stopSound();break;
+        case 406: playSound(500); break;
+        case 408: stopSound(); break;
+        case 414: playSound(760); break;
+        case 416: stopSound(); break;
+        case 418: playSound(720); break;
+        case 420: stopSound(); break;
+        case 423: playSound(680); break;
+        case 425: stopSound(); break;
+        case 428: playSound(620); break;
+        case 431: stopSound(); break;
+        case 437: playSound(650); break;
+        case 441: stopSound(); break;
+        case 447: playSound(1020); break;
+        case 448: stopSound(); break;
+        case 454: playSound(1020); break;
+        case 455: stopSound(); break;
+        case 458: playSound(1020); break;
+        case 459: stopSound(); break;
+        case 465: playSound(380); break;
+        case 466: stopSound(); break;
+        case 472: playSound(500); break;
+        case 474: stopSound(); break;
+        case 500: playSound(760); break;
+        case 502: stopSound(); break;
+        case 504: playSound(720); break;
+        case 506: stopSound(); break;
+        case 509: playSound(680); break;
+        case 511: stopSound(); break;
+        case 514: playSound(620); break;
+        case 517: stopSound(); break;
+        case 523: playSound(650); break;
+        case 526: stopSound(); break;
+        case 532: playSound(380); break;
+        case 534: stopSound(); break;
+        case 537: playSound(430); break;
+        case 539: stopSound(); break;
+        case 542: playSound(500); break;
+        case 544: stopSound(); break;
+        case 560: playSound(430); break;
+        case 562: stopSound(); break;
+        case 565: playSound(500); break;
+        case 567: stopSound(); break;
+        case 569: playSound(570); break;
+        case 571: stopSound(); break;
+        case 579: playSound(585); break;
+        case 581: stopSound(); break;
+        case 590: playSound(550); break;
+        case 592: stopSound(); break;
+        case 600: playSound(500); break;
+        case 602: stopSound(); break;
+        case 609: playSound(380); break;
+        case 611: stopSound(); break;
+        case 617: playSound(500); break;
+        case 619: stopSound(); break;
+        case 625: playSound(500); break;
+        case 627: stopSound(); break;
+        case 630: playSound(500); break;
+        case 632: stopSound(); break;
+        case 638: playSound(500); break;
+        case 640: stopSound(); break;
+        case 646: playSound(760); break;
+        case 648: stopSound(); break;
+        case 650: playSound(720); break;
+        case 652: stopSound(); break;
+        case 655: playSound(680); break;
+        case 657: stopSound(); break;
+        case 660: playSound(620); break;
+        case 663: stopSound(); break;
+        case 669: playSound(650); break;
+        case 672: stopSound(); break;
+        case 678: playSound(380); break;
+        case 680: stopSound(); break;
+        case 683: playSound(430); break;
+        case 685: stopSound(); break;
+        case 688: playSound(500); break;
+        case 690: stopSound(); break;
+        case 696: playSound(430); break;
+        case 698: stopSound(); break;
+        case 701: playSound(500); break;
+        case 703: stopSound(); break;
+        case 705: playSound(570); break;
+        case 707: stopSound(); break;
+        case 711: playSound(500); break;
+        case 713: stopSound(); break;
+        case 719: playSound(760); break;
+        case 721: stopSound(); break;
+        case 723: playSound(720); break;
+        case 725: stopSound(); break;
+        case 728: playSound(680); break;
+        case 730: stopSound(); break;
+        case 733: playSound(620); break;
+        case 736: stopSound(); break;
+        case 742: playSound(650); break;
+        case 746: stopSound(); break;
+        case 752: playSound(1020); break;
+        case 753: stopSound(); break;
+        case 759: playSound(1020); break;
+        case 760: stopSound(); break;
+        case 763: playSound(1020); break;
+        case 764: stopSound(); break;
+        case 770: playSound(380); break;
+        case 772: stopSound(); break;
+        case 778: playSound(500); break;
+        case 780: stopSound(); break;
+        case 786: playSound(760); break;
+        case 788: stopSound(); break;
+        case 790: playSound(720); break;
+        case 792: stopSound(); break;
+        case 795: playSound(680); break;
+        case 797: stopSound(); break;
+        case 800: playSound(620); break;
+        case 803: stopSound(); break;
+        case 809: playSound(650); break;
+        case 812: stopSound(); break;
+        case 818: playSound(380); break;
+        case 820: stopSound(); break;
+        case 823: playSound(430); break;
+        case 825: stopSound(); break;
+        case 828: playSound(500); break;
+        case 830: stopSound(); break;
+        case 836: playSound(430); break;
+        case 838: stopSound(); break;
+        case 841: playSound(500); break;
+        case 843: stopSound(); break;
+        case 845: playSound(570); break;
+        case 857: stopSound(); break; 
+        case 865: playSound(585); break;
+        case 867: stopSound(); break;
+        case 866: playSound(550); break;
+        case 868: stopSound(); break;
+        case 876: playSound(500); break;
+        case 878: stopSound(); break;
+        case 885: playSound(380); break;
+        case 887: stopSound(); break;
+        case 893: playSound(500); break;
+        case 895: stopSound(); break;
+        case 901: playSound(500); break;
+        case 903: stopSound(); break;
+        case 906: playSound(500); break;
+        case 908: stopSound(); break;
+        case 914: playSound(500); break;
+        case 915: stopSound(); break;
+        case 918: playSound(500); break;
+        case 920: stopSound(); break;
+        case 926: playSound(500); break;
+        case 927: stopSound(); break;
+        case 934: playSound(500); break;
+        case 936: stopSound(); break;
+        case 939: playSound(580); break;
+        case 941: stopSound(); break;
+        case 948: playSound(660); break;
+        case 950: stopSound(); break;
+        case 953: playSound(500); break;
+        case 955: stopSound(); break;
+        case 961: playSound(430); break;
+        case 963: stopSound(); break;
+        case 966: playSound(380); break;
+        case 968: stopSound(); break;
+        case 980: playSound(500); break;
+        case 981: stopSound(); break;
+        case 984: playSound(500); break;
+        case 986: stopSound(); break;
+        case 992: playSound(500); break;
+        case 993: stopSound(); break;
+        case 1000: playSound(500); break;
+        case 1002: stopSound(); break;
+        case 1005: playSound(580); break;
+        case 1007: stopSound(); break;
+        case 1010: playSound(660); break;
+        case 1012: stopSound(); break;
+        case 1023: playSound(870); break;
+        case 1025: stopSound(); break;
+        case 1031: playSound(760); break;
+        case 1033: stopSound(); break;
+        case 1045: playSound(500); break;
+        case 1046: stopSound(); break;
+        case 1049: playSound(500); break;
+        case 1051: stopSound(); break;
+        case 1057: playSound(500); break;
+        case 1058: stopSound(); break;
+        case 1065: playSound(500); break;
+        case 1067: stopSound(); break;
+        case 1070: playSound(580); break;
+        case 1072: stopSound(); break;
+        case 1079: playSound(660); break;
+        case 1081: stopSound(); break;
+        case 1084: playSound(500); break;
+        case 1086: stopSound(); break;
+        case 1092: playSound(430); break;
+        case 1094: stopSound(); break;
+        case 1097: playSound(380); break;
+        case 1099: stopSound(); break;
+        case 1111: playSound(660); break;
+        case 1113: stopSound(); break;
+        case 1116: playSound(660); break;
+        case 1118: stopSound(); break;
+        case 1124: playSound(660); break;
+        case 1126: stopSound(); break;
+        case 1132: playSound(510); break;
+        case 1134: stopSound(); break;
+        case 1136: playSound(660); break;
+        case 1138: stopSound(); break;
+        case 1144: playSound(770); break;
+        case 1146: stopSound(); break;
+        case 1157: playSound(380); break;
+        case 1159: stopSound(); break;
+        default:{break;}
+    }
+
+    
+
+
+}
+
+
 //cuando quiero retomar el juego
 int startGame(){
     int aux;
@@ -150,26 +532,29 @@ int startGame(){
             previusTick = realTicks;
             if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0 ){
                 // Condicion de retorno
-
                 stopWhile = true;
             }else
             {
                 startGameRec();
             }
 
-            if(isPlayingSound){
-                if(soundTimer <= gameTicks){
-                    soundTimer = gameTicks + 5;
-                    playSound(1000);
-                }else{
-                    stopSound();
-                    isPlayingSound = false;
-                }
-            }
+            manageSound(realTicks);
+
+            // if(isPlayingSound){
+            //     if(soundTimer <= gameTicks){
+            //         soundTimer = gameTicks + 5;
+            //         playSound(1000);
+            //     }else{
+            //         stopSound();
+            //         isPlayingSound = false;
+            //     }
+            // }
         }
 
 
     }while(!stopWhile);
+
+    stopSound();
 
     if(aux){ 
         startOver = false;

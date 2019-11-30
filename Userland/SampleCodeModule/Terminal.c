@@ -104,7 +104,7 @@ int interpretCommand(){
     else if(strcmp(command,"infoReg") && !hasParam1 && !hasParam2)
         infoReg();
     else if(strcmp(command,"printMem") && hasParam1 && !hasParam2){
-        int a = stringToInt(param1);
+        int a = stringToHexa(param1);
         printMem(a);
     }
     else if(strcmp(command,"game") && !hasParam1 && !hasParam2){

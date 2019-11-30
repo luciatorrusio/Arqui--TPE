@@ -211,3 +211,39 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			*k=strlen(string);	
 
 }
+int stringToHexa(char *buff){
+	int aux=0;
+	for(int i=0;*(buff+i)!=0;i++){
+		int c;
+		switch(*(buff+i)){
+			case('A'):{
+				c=10;
+				break;
+			}
+			case('B'):{
+				c=11;
+				break;
+			}
+			case('C'):{
+				c=12;
+				break;
+			}
+			case('D'):{
+				c=13;
+				break;
+			}
+			case('E'):{
+				c=14;
+				break;
+			}
+			case('F'):{
+				c=15;
+				break;
+			}
+			default:
+				c=(*(buff+i)-'0');
+		}
+		aux=aux*16+c;
+	}
+	return aux;
+}

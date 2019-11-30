@@ -602,8 +602,7 @@ void changeVel(){
 
 void printObjects(int * curr_BallPos, int * curr_BarPos,int * block){
     printLeftover(curr_BarPos);
-    print_ball(curr_BallPos,BLACK );
-    print_bar(curr_BarPos, BLACK); 
+    print_ball(curr_BallPos,BLACK ); 
     print_ball(ball.pos, PURPLE );
     int x, y;
     if(block[X]!= NO_BLOCK){

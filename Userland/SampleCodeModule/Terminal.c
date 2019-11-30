@@ -105,6 +105,10 @@ int interpretCommand(){
         infoReg();
     else if(strcmp(command,"printMem") && hasParam1 && !hasParam2){
         int a = stringToHexa(param1);
+        if(a==-1){
+        printf("Invalid Position\n");
+        return 0;
+        }
         printMem(a);
     }
     else if(strcmp(command,"game") && !hasParam1 && !hasParam2){

@@ -88,8 +88,7 @@ static int initialize=0;
 //
 
 static bool startOver = true;
-static bool isPlayingSound = false;
-static int soundTimer = 0;
+
 
 //para inicializar el juego de cero
 int runGame(void){
@@ -210,7 +209,6 @@ void startGameRec(void){
 void changeVel(){
     if(time.tick % (15 *18) == 0){
         ball.vel+=1;
-        isPlayingSound = true;
     }
 }
 
@@ -285,7 +283,6 @@ void handleBallMov(void){
             case LLCORNER:
             case LRCORNER:
                 lives -=1; 
-                ball.vel = BALL_INITIAL_VELOCITY;
                 print_bar(bar_pos, BLACK);
                 ball.pos[X]=SCREEN_WIDTH/2;
                 ball.pos[Y]=SCREEN_HEIGHT/2;
@@ -741,19 +738,6 @@ void tableData(){
 void manageSound(uint64_t realTick){
 
 
-    if(isPlayingSound){
-                if(soundTimer < realTick){
-                    soundTimer = realTick + 10;
-                    stopSound();
-                    playSound(400);
-                }else if(soundTimer == realTick){
-                    stopSound();
-                    isPlayingSound = false;
-
-
-                }
-    }
-    else{
         uint64_t tick = realTick % 1171;
 
         switch(tick){
@@ -1126,7 +1110,7 @@ void manageSound(uint64_t realTick){
             case 1159: stopSound(); break;
             default:{break;}
         }
-    }
+    
     
 
 

@@ -54,13 +54,13 @@
 
 static int lives;                    //cantidad de vidas que tiene
 
-static struct Ball ball;
+static  Ball ball;
 
 static int bar_pos[2];
 
-static struct Blocks blocks;
+static  Blocks blocks;
 
-static struct Time time;
+static  Time time;
 
 int block[3];
 
@@ -85,47 +85,110 @@ static int initialize=0;
     void tableData();
     void changeVel();
     void manageSound(uint64_t realTick);
+    void loadConfig(Game * game);
+    void saveConfig(Game * game);
 //
 
 static bool startOver = true;
 
+void loadConfig(Game * game){
 
-//para inicializar el juego de cero
-int runGame(void){
-    if(initialize==1){
-        startGame();
-        return 0;
-    }
-    initialize=1;
-    int aux;
-    getScreenWidth(&aux);
-    SCREEN_WIDTH=aux;
-    getScreenHeight(&aux);
-    SCREEN_HEIGHT=aux;    
-    time.past=0;
-    time.tick = 0;
-    lives = LIVESi;
-    blocks.left= R_BLOCKS*C_BLOCKS;                            
+    SCREEN_WIDTH= game->SCREEN_WIDTH ;
+    SCREEN_HEIGHT= game->SCREEN_HEIGHT;    
+    time.past= game->time.past;
+    time.tick = game->time.tick;
+    lives = game->lives ;
+    blocks.left = game->blocks.left ;                        
+
+    ball = game->ball;
     
-    ball.pos[X]=SCREEN_WIDTH/2;
-    ball.pos[Y]=SCREEN_HEIGHT/2;      
-    ball.vel= BALL_INITIAL_VELOCITY;
-    ball.dir = D; 
+    bar_pos[X]= game->bar_pos[X] ;
+    bar_pos[Y]= game->bar_pos[Y] ;
+
+
     
-    bar_pos[X]=SCREEN_WIDTH/2;
-    bar_pos[Y]=BAR_YPOS; 
-    
-    info[X]=SCREEN_WIDTH/2;
-    info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
+    info[X]=game->info[X] ;
+    info[Y]=game->info[Y] ;
     //pongo la matriz de bloques todos en uno, (osea que estan)
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
-            blocks.matrix[j][i]= 1;
+            blocks.matrix[j][i]= game->blocks.matrix[j][i] ;
+        }
+    }
+
+}
+
+void saveConfig(Game * game){
+    
+     game->SCREEN_WIDTH =SCREEN_WIDTH;
+     game->SCREEN_HEIGHT= SCREEN_HEIGHT;    
+     game->time.past = time.past;
+     game->time.tick = time.tick ;
+     game->lives =lives ;
+     game->blocks.left =blocks.left;                        
+
+     game->ball =  ball ;
+    
+     game->bar_pos[X] =bar_pos[X] ;
+     game->bar_pos[Y] =bar_pos[Y];
+
+
+    
+    game->info[X] = info[X] ;
+    game->info[Y] =info[Y];
+    //pongo la matriz de bloques todos en uno, (osea que estan)
+    for(int i = 0; i < C_BLOCKS ; i++){
+        for(int j = 0; j < R_BLOCKS; j++){
+             game->blocks.matrix[j][i]= blocks.matrix[j][i] ;
+        }
+    }
+}
+
+
+//para inicializar el juego de cero
+int runGame(Game * game){
+    if(game->initialize==1){
+
+        loadConfig(game);
+
+        startGame(game);
+        return 0;
+    }
+    game->initialize=1;
+    int aux;
+    getScreenWidth(&aux);
+    SCREEN_WIDTH= game->SCREEN_WIDTH =aux;
+    getScreenHeight(&aux);
+    SCREEN_HEIGHT= game->SCREEN_HEIGHT = aux;    
+    time.past=0;
+    game->time.past = 0;
+    time.tick = game->time.tick = 0;
+    lives = game->lives = LIVESi;
+    blocks.left = game->blocks.left = R_BLOCKS*C_BLOCKS;                            
+    
+    ball.pos[X] = SCREEN_WIDTH/2;
+    ball.pos[Y]=SCREEN_HEIGHT/2;      
+    ball.vel= BALL_INITIAL_VELOCITY;
+    ball.dir = D; 
+
+    game->ball = ball;
+    
+    bar_pos[X]= game->bar_pos[X] = SCREEN_WIDTH/2;
+    bar_pos[Y]= game->bar_pos[Y] =BAR_YPOS; 
+
+
+    
+    info[X]=game->info[X] =SCREEN_WIDTH/2;
+    info[Y]=game->info[Y] =SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
+    //pongo la matriz de bloques todos en uno, (osea que estan)
+    for(int i = 0; i < C_BLOCKS ; i++){
+        for(int j = 0; j < R_BLOCKS; j++){
+            blocks.matrix[j][i]= game->blocks.matrix[j][i] =  1;
         }
     }
 
     /*comienza el juego  */
-    startGame();      
+    startGame(game);      
     
     return 0;
 }
@@ -135,7 +198,7 @@ int runGame(void){
 
 
 //cuando quiero retomar el juego
-int startGame(){
+int startGame(Game * game){
     int aux;
     print_blocks();
     table();
@@ -155,6 +218,7 @@ int startGame(){
             if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0 ){
                 // Condicion de retorno
                 stopWhile = true;
+                
             }else
             {
                 startGameRec();
@@ -171,17 +235,21 @@ int startGame(){
 
     if(aux){ 
         startOver = false;
+        saveConfig(game);
         return 0;
     }
         
     if(lives == 0  || blocks.left == 0 ){
         int x=finishGame(time.tick / 18);
         initialize=0;
-        if(x==0)
+        if(x==0){
             goToTerminal=true;
+            game->initialize = 0;
+        }
         else
         {   
-            runGame();
+            game->initialize = 0;
+            runGame(game);
         }        
     } 
     return 0;

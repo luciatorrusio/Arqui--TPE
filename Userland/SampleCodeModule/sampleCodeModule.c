@@ -9,6 +9,11 @@
 #include "include/gamePrinter.h"
 #include <stdlib.h>
 #include "../Include/deviceInfo.h"
+
+
+
+
+
 void menu(){
 	unsigned int init;
 	unsigned int aux;
@@ -51,6 +56,8 @@ int main() {
 			clearConsole();
 			if(selector == '2')
 				printf("HI! Ask \"man\" for a command menu\n");
+
+			game.initialize = 0;
 		}
 
 		if(selector == '2'){
@@ -63,7 +70,7 @@ int main() {
 		}
 		else if(selector == '1'){
 			clearConsole();
-			switch(runGame()){
+			switch(runGame(&game)){
 				case 1: exit = 1; break;
 				default: selector = '2'; break;
 			}

@@ -70,6 +70,8 @@ int invalidOpcode(){
     
     __UD2__();
 
+    printf("SE ROMPE TOOD\n");
+
     return 0;
 }
 

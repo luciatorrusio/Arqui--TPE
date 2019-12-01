@@ -2,8 +2,9 @@
 #define TERMINAL_H
 
 #include <stdarg.h>
+#include "Game.h"
 
-
+static Game game;
 
 int runTerminal();
 

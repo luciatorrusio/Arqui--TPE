@@ -5,25 +5,44 @@
 #define R_BLOCKS  4                                   //Cantidad de filas de bloques
 #define C_BLOCKS  5                                   //Cantidad de columnas de bloques
 
+#include <stdbool.h>
+
+
 typedef enum ballDirec{LU, U, RU, RD, D, LD} ballDirec;                                                         //Left up, up, right up, right down, down, left down
 typedef enum walls{NONE = 0, LEFT, RIGHT, UPPER, FLOOR, URCORNER, ULCORNER, LRCORNER, LLCORNER } walls;           //los bordes de la pantalla
 typedef enum barSides{N = 0, L, R, UL, UM, UR} barSides;                                                             //none, left, right, upperLeft, UpperMiddle, UpperRight
 
-struct Ball {
+typedef struct  {
     int pos[2];                                    //pelota en el medio de ls pantalla
     int vel;                                       //la velocidad cuenta de a cuantos cuadraditos se mueve
     ballDirec dir;
-};
-struct Blocks{
+}Ball;
+typedef struct {
     int matrix[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
     int left; 
-};
-struct Time{
+}Blocks;
+typedef struct {
     int past;                   //tiempo en el juego time_past
     int tick;
-};
+}Time;
+
+typedef struct 
+{
+    int lives;
+    Ball ball;
+    int bar_pos[2];
+    Blocks blocks;
+    Time time;
+    int block[3];
+    bool goToTerminal;
+    unsigned int SCREEN_HEIGHT;
+    unsigned int SCREEN_WIDTH;
+    int info[2];
+    int initialize;
 
 
+    
+}Game;
 
 //devuelve 0 si no fue precionada la tecla especial
 int stopKeyPressed();
@@ -39,11 +58,11 @@ int right_arrow_pressed();
 void print_block(int x, int y,int color);
 
 //Inicialiizar el juego desde cero
-int runGame(void);
+int runGame(Game * game);
 
 
 //para volver si fue pausado
-int startGame(void);
+int startGame(Game * game);
 void startGameRec(void);
 
 

@@ -58,9 +58,9 @@ static struct Ball ball={{-1,-1},-1,-1};
 
 static int bar_pos[2] = {-1,-1};
 
-static struct Blocks blocks;
+static struct Blocks blocks = {-1,-1};
 
-static struct Time time;
+static struct Time time={-1,-1};
 
 int block[3]={-1,-1,-1};
 

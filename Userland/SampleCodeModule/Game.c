@@ -279,7 +279,7 @@ void handleBallMov(void){
     //si pega contra una pared
     walls wall;
     barSides bar_side;
-    ballHitBlock(block);            // se fija en donde y en que bloque pego
+    ballHitBlock();            // se fija en donde y en que bloque pego
     if( (wall = ballHitWall()) ){   //NONE = 0 entonces devuelve FALSE
         
         switch(wall){
@@ -554,7 +554,7 @@ walls barHitWall(){
     return NONE;
 }
 
-void ballHitBlock(int * block){
+void ballHitBlock(){
     walls auxWall;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){

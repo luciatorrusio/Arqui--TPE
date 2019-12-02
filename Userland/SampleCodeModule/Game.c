@@ -74,7 +74,6 @@ unsigned int SCREEN_HEIGHT;
 unsigned int SCREEN_WIDTH;
 static int info[2];
 
-static int initialize=0;
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
     void printLeftover(int * curr_BarPos);
@@ -241,7 +240,6 @@ int startGame(Game * game){
         
     if(lives == 0  || blocks.left == 0 ){
         int x=finishGame(time.tick / 18);
-        initialize=0;
         if(x==0){
             goToTerminal=true;
             printf("VOlviendolo cero");

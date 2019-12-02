@@ -44,6 +44,8 @@ typedef struct
     
 }Game;
 
+static Game game={-1,{{-1,-1},-1,-1},{-1,-1},-1,-1,-1,-1,-1,-1,-1};
+
 //devuelve 0 si no fue precionada la tecla especial
 int stopKeyPressed();
 

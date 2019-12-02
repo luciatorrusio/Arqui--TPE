@@ -74,6 +74,8 @@ static int SCREEN_HEIGHT= -1;
 static int SCREEN_WIDTH= -1;
 static int info[2]={-1,-1};
 
+static uint64_t gameTicks = -1;
+
 static int initialize= -1;
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
@@ -105,7 +107,9 @@ int runGame(void){
     time.past=0;
     time.tick = 0;
     lives = LIVESi;
-    blocks.left= R_BLOCKS*C_BLOCKS;                            
+    blocks.left= R_BLOCKS*C_BLOCKS;       
+        gameTicks = 0;
+                     
     
     ball.pos[X]=SCREEN_WIDTH/2;
     ball.pos[Y]=SCREEN_HEIGHT/2;      
@@ -142,7 +146,7 @@ int startGame(){
 
     bool stopWhile = false;
     goToTerminal = false;
-	uint64_t baseTicks = 0,realTicks = 0, gameTicks = 0, previusTick = 0;
+	uint64_t baseTicks = 0,realTicks = 0, previusTick = 0;
 
     baseTicks = getTicks();
     do{

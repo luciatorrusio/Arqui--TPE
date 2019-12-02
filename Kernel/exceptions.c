@@ -40,7 +40,7 @@ void exceptionDispatcher(int exception, uint64_t * stackPointer) {
 			Yo que 	que al entrar en una funcion pusheo el RBP y copio el valor del RSP al EBP. Entoces
 			el RBP tiene el puntero al stack que me interesa.
 		*/
-*(stackPointer+15) = 0x400000;
+//*(stackPointer+15) = 0x400000;
 		// *(stackPointer+15)  = *(sp - 1);
 		// *(stackPointer + 18) = sp;
 		// *(stackPointer + 10) = *(sp);

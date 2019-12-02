@@ -103,8 +103,11 @@ SECTION .text
 	  	mov rsi, rsp ; second parameter
 
 	  	call exceptionDispatcher
-
+		
+		mov qword [rsp+15*8],0x400000
+		
 	  	popState
+		
 		iretq
 	%endmacro
 

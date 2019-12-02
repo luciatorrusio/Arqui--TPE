@@ -10,7 +10,23 @@
 #include <stdlib.h>
 #include "../Include/deviceInfo.h"
 
+typedef struct 
+{
+    int lives;
+    Ball ball;
+    int bar_pos[2];
+    Blocks blocks;
+    Time time;
+    int block[3];
+    bool goToTerminal;
+    unsigned int SCREEN_HEIGHT;
+    unsigned int SCREEN_WIDTH;
+    int info[2];
+    int initialize;
 
+
+    
+}Games;
 
 
 
@@ -40,8 +56,11 @@ void menu(){
     setSize(init);
 
 }
+static int initG = -1;
 
 static int selector = -1;
+static Games game;
+
 
 int main() {
 
@@ -56,13 +75,10 @@ int main() {
 			clearConsole();
 			if(selector == '2')
 				printf("HI! Ask \"man\" for a command menu\n");
-
-			game.initialize = 0;
+			game.initialize = initG;
 		}
 
-		if(selector == '2'){
-
-			
+		if(selector == '2'){			
 			switch(runTerminal()){
 				case 1: exit = 1; break;
 				case 2: selector = '1'; break;
@@ -70,6 +86,16 @@ int main() {
 		}
 		else if(selector == '1'){
 			clearConsole();
+			if(initG==-1){
+				printf("Si es 0\n");
+				initG=2;
+			}
+			else
+				printf("%d %d",initG,game.initialize);
+
+			if(game.initialize==-1)
+				printf("Es 0");
+				
 			switch(runGame(&game)){
 				case 1: exit = 1; break;
 				default: selector = '2'; break;

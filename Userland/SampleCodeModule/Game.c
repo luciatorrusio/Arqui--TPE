@@ -244,6 +244,7 @@ int startGame(Game * game){
         initialize=0;
         if(x==0){
             goToTerminal=true;
+            printf("VOlviendolo cero");
             game->initialize = 0;
         }
         else

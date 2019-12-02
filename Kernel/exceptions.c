@@ -18,7 +18,7 @@ void exceptionDispatcher(int exception, uint64_t * stackPointer) {
 				PrintExceptionDetails("DIVISION BY ZERO",stackPointer,*(stackPointer+15));
 				// Esta instruccion solo salta cuando se usan las instrucciones DIV y IDIV, 
 				// y funciona con ambas insutrcciones.
-				*(stackPointer+15) += 3;
+				//*(stackPointer+15) += 3;
 				break;
 			}
 			case INVALID_OPCODE_EXCEPTION_ID:
@@ -26,7 +26,7 @@ void exceptionDispatcher(int exception, uint64_t * stackPointer) {
 				PrintExceptionDetails("Invalid OPCODE",stackPointer,*(stackPointer+15));
 				// Hay varias formas de que se salte esta excepcion. De esta forma salta si se usa a la 
 				// instruccion UD2
-				*(stackPointer+15) += 2;
+				//*(stackPointer+15) += 2;
 				break;
 			}
 			default:{

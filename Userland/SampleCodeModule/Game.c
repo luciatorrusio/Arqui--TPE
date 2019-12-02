@@ -52,17 +52,17 @@
 #define LEAVE_KEY                  'q'
 
 
-static int lives;                    //cantidad de vidas que tiene
+static int lives = -1;                    //cantidad de vidas que tiene
 
-static struct Ball ball;
+static struct Ball ball={{-1,-1},-1,-1};
 
-static int bar_pos[2];
+static int bar_pos[2] = {-1,-1};
 
 static struct Blocks blocks;
 
 static struct Time time;
 
-int block[3];
+int block[3]={-1,-1,-1};
 
 static char KeyBuffer[200];
 static int keyBufferFront = 0;
@@ -70,11 +70,11 @@ static int keyBufferBack = 0;
 
 static bool goToTerminal = false;
 
-unsigned int SCREEN_HEIGHT;
-unsigned int SCREEN_WIDTH;
-static int info[2];
+static int SCREEN_HEIGHT= -1;
+static int SCREEN_WIDTH= -1;
+static int info[2]={-1,-1};
 
-static int initialize=0;
+static int initialize= -1;
 //DECLARACION DE FUNCIONES
     void printObjects(int * curr_BallPos, int * curr_BarPos,int * block);
     void printLeftover(int * curr_BarPos);

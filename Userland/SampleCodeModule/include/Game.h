@@ -79,7 +79,7 @@ walls ballHitWall();
 walls barHitWall();
 
 //Devuelve en block la pos en la mariz del bloque que choco y que borde del bloque, sino choco devuelve NO_BLOCK en la primer pos
-void ballHitBlock(int* block);
+void ballHitBlock();
 
 //para ver si la la pelota(auxPos), esta dentro del rectangulo marcado
 int insideSquare(int * auxPos, int * LLSquare, int * URSquare);

@@ -51,6 +51,7 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 #define RIGHT_ARROW                'l' 
 #define UP_ARROW                   'i'
 #define DOWN_ARROW                 'k'
+#define ENTER                      '\n'
 #define LEAVE_KEY                  'q'
 
 
@@ -194,9 +195,7 @@ int startGame(){
                 stopWhile = true;
             }else
             {
-                print_usr();
                 startGameRec();
-                print_usr();
             }
 
         }
@@ -225,26 +224,39 @@ int startGame(){
 //Esta funcion mueve al usuario y reacciona dependiendo que tecla presiona el usuario
 void handleUsrMov(){
     int key = key_pressed();
+    int x,y;
     if(key == RIGHT_ARROW){
         if(usr_pos[X] != C_BLOCKS -1){
+            print_tile(usr_pos[X],usr_pos[Y]);
+            print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[X] += 1;                     //muevo al usuario para la derecha
         }
     }
     if(key == LEFT_ARROW){
         if(usr_pos[X] != 0){
+            print_tile(usr_pos[X],usr_pos[Y]);
+            print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[X] -= 1;                     //muevo al usuario para la izquierda
         }
     } 
     if(key == UP_ARROW){
         if(usr_pos[Y] != 0){
+            print_tile(usr_pos[X],usr_pos[Y]);
+            print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[Y] -= 1;                     //muevo al usuario para arriba
         }
     }
     if(key == DOWN_ARROW){
         if(usr_pos[Y] != R_BLOCKS-1){
+            print_tile(usr_pos[X],usr_pos[Y]);
+            print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[Y] += 1;                     //muevo al usuario para abajo
         }
     } 
+    if(key == ENTER){
+        // si estoy parada sobre una pieza de curr_usr entonces seleccionarla para darle opciones de jugada.
+        // activar variable "pieza seleccionada"
+    }
     if(key == LEAVE_KEY){
         goToTerminal = true;
     }
@@ -255,7 +267,7 @@ void print_usr(){
     usr[X]=usr_pos[X]*BLOCK_WIDTH;
     usr[Y]=usr_pos[Y]*BLOCK_HEIGHT;
     if(curr_usr == 1){
-        print_border(usr, BLOCK_WIDTH ,BLOCK_HEIGHT, GREEN);
+        print_border(usr, BLOCK_WIDTH ,BLOCK_HEIGHT, BLUE);
     } else {
         print_border(usr, BLOCK_WIDTH ,BLOCK_HEIGHT, RED);        
     }
@@ -272,14 +284,7 @@ void startGameRec(void){
 }
 
 void printObjects(int * block){
-    int x, y;
-    if(block[X]!= NO_BLOCK){
-        x = block[0];
-        y = block[1];
-        matrixToXY(&x, &y);
-        print_block(x, y, BLACK);   
-    }
-    
+    print_usr(); 
 }
 
 void matrixToXY(int * c, int * r){
@@ -299,16 +304,28 @@ void print_blocks(){
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j <R_BLOCKS ; j++){
-            x=i;
-            y=j;
-            matrixToXY(&x, &y);
-            if( (i%2 == 0 && j%2 == 0 )|| (i%2 == 1 && j%2==1)){
-                print_block( x ,y,WHITE);
+            print_tile(i,j);
+            print_piece(i, j);
+        }
+    }
+}
+void print_tile(int i, int j){
+    int x=i;
+    int y=j;
+    matrixToXY(&x, &y);
+    if( (i%2 == 0 && j%2 == 0 )|| (i%2 == 1 && j%2==1)){
+        print_block( x ,y,WHITE);
                 
-            }else{
-               print_block( x , y,BLACK);
-            }
-            if( blocks.matrix[j][i] == PAWN1){
+    }else{
+        print_block( x , y,BLACK);
+    }
+}
+
+void print_piece(int i, int j){
+    int x=i;
+    int y=j;
+    matrixToXY(&x, &y);
+    if( blocks.matrix[j][i] == PAWN1){
                 print_block( x ,y,AQUA);
             } else if( blocks.matrix[j][i] == PAWN2){
                 print_block( x ,y,BLUE);
@@ -334,10 +351,7 @@ void print_blocks(){
                 print_block( x ,y,LightRed);
             }
             
-        }
-    }
 }
-
 
 int finishGame(int time_past){
         clearConsole();

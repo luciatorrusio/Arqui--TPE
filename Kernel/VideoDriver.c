@@ -107,26 +107,28 @@ void print(int *pos,int lenght,int height,int fontColor){
 		}
 	}
 }
+
+//Print de un tile seleccionado, muy usado para donde esta paradoo el usr
 void print_border(int *pos,int lenght,int height,int fontColor){
 	int x = pos[0];
 	int y = pos[1];
-	for (int i = 0; i < lenght; i++)
+	for (int i = 2; i < lenght-2; i++)
 	{
-		drawPixel(x+i, y, fontColor);
-		drawPixel(x+i, y+1, fontColor);
-		drawPixel(x+i, y+2, fontColor);
-		drawPixel(x+i, y+height, fontColor);
-		drawPixel(x+i, y+height+1, fontColor);
-		drawPixel(x+i, y+height+2, fontColor);
+		drawPixel(x+i, y+4, fontColor);
+		drawPixel(x+i, y+5, fontColor);
+		drawPixel(x+i, y+6, fontColor);
+		drawPixel(x+i, y+height-4, fontColor);
+		drawPixel(x+i, y+height-3, fontColor);
+		drawPixel(x+i, y+height-2, fontColor);
 	}
-	for (int j = 0; j < height; j++)
+	for (int j = 2; j < height-2; j++)
 	{
-		drawPixel(x, y+j, fontColor);
-		drawPixel(x, y+j, fontColor);
-		drawPixel(x, y+j, fontColor);
-		drawPixel(x+lenght, y+j, fontColor);
-		drawPixel(x+lenght+1, y+j, fontColor);
-		drawPixel(x+lenght+2, y+j, fontColor);
+		drawPixel(x+4, y+j, fontColor);
+		drawPixel(x+5, y+j, fontColor);
+		drawPixel(x+6, y+j, fontColor);
+		drawPixel(x+lenght-4, y+j, fontColor);
+		drawPixel(x+lenght-3, y+j, fontColor);
+		drawPixel(x+lenght-3, y+j, fontColor);
 	}
 }
 

@@ -25,6 +25,7 @@
 #define FD_TIMER				(0x09)
 #define FD_TIME					(0x0A)
 #define FD_STDOUT_COLOR			(0x0B)
+#define FD_BORDER 				(0x0C)
 
 #define DELETE_CURRENT_CHAR 1
 #define DELETE_ALL_DISPLAY 3
@@ -104,6 +105,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		}
 		case FD_SPEAKER: { break;}
 		case FD_SQUARES: { break;}
+		case FD_BORDER: { break;}
 		case FD_MEMORY: { 
 			
 			uint64_t position = firstParam;
@@ -163,6 +165,7 @@ void dispatchDelete(int fd,void * firstParam, void * secondParam,void * thirdPar
 			break;
 		}
 		case FD_SQUARES: { break;}
+		case FD_BORDER: { break;}
 		case FD_MEMORY: { break;}
 		case FD_REGISTERS: { break;}
 		case FD_DEVICE_INFO: { break;}
@@ -210,6 +213,15 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 			int fontColor=fourthParam;
 			
 			print(pos,length,height,fontColor);
+			break;
+			}
+		case FD_BORDER:{ 
+			int * pos = firstParam;
+			int length = secondParam;
+			int height=thirdParam;
+			int fontColor=fourthParam;
+			
+			print_border(pos,length,height,fontColor);
 			break;
 			}
 		case FD_MEMORY: break;

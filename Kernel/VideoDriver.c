@@ -107,6 +107,28 @@ void print(int *pos,int lenght,int height,int fontColor){
 		}
 	}
 }
+void print_border(int *pos,int lenght,int height,int fontColor){
+	int x = pos[0];
+	int y = pos[1];
+	for (int i = 0; i < lenght; i++)
+	{
+		drawPixel(x+i, y, fontColor);
+		drawPixel(x+i, y+1, fontColor);
+		drawPixel(x+i, y+2, fontColor);
+		drawPixel(x+i, y+height, fontColor);
+		drawPixel(x+i, y+height+1, fontColor);
+		drawPixel(x+i, y+height+2, fontColor);
+	}
+	for (int j = 0; j < height; j++)
+	{
+		drawPixel(x, y+j, fontColor);
+		drawPixel(x, y+j, fontColor);
+		drawPixel(x, y+j, fontColor);
+		drawPixel(x+lenght, y+j, fontColor);
+		drawPixel(x+lenght+1, y+j, fontColor);
+		drawPixel(x+lenght+2, y+j, fontColor);
+	}
+}
 
 void setSize(unsigned int s){
 	SCREEN_bPP=s;

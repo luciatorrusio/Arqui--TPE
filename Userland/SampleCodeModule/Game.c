@@ -49,6 +49,8 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 
 #define LEFT_ARROW                 'j'
 #define RIGHT_ARROW                'l' 
+#define UP_ARROW                   'i'
+#define DOWN_ARROW                 'k'
 #define LEAVE_KEY                  'q'
 
 
@@ -220,20 +222,42 @@ int startGame(){
     return 0;
 }
 
+//Esta funcion mueve al usuario y reacciona dependiendo que tecla presiona el usuario
 void handleUsrMov(){
-    //barHitWall devuelve un int que representa que pared esta chocando
     int key = key_pressed();
-    
+    if(key == RIGHT_ARROW){
+        if(usr_pos[X] != C_BLOCKS -1){
+            usr_pos[X] += 1;                     //muevo al usuario para la derecha
+        }
+    }
+    if(key == LEFT_ARROW){
+        if(usr_pos[X] != 0){
+            usr_pos[X] -= 1;                     //muevo al usuario para la izquierda
+        }
+    } 
+    if(key == UP_ARROW){
+        if(usr_pos[Y] != 0){
+            usr_pos[Y] -= 1;                     //muevo al usuario para arriba
+        }
+    }
+    if(key == DOWN_ARROW){
+        if(usr_pos[Y] != R_BLOCKS-1){
+            usr_pos[Y] += 1;                     //muevo al usuario para abajo
+        }
+    } 
     if(key == LEAVE_KEY){
         goToTerminal = true;
     }
 }
 
 void print_usr(){
+    int usr[2];
+    usr[X]=usr_pos[X]*BLOCK_WIDTH;
+    usr[Y]=usr_pos[Y]*BLOCK_HEIGHT;
     if(curr_usr == 1){
-        print_border(usr_pos, BLOCK_WIDTH ,BLOCK_HEIGHT, GREEN);
+        print_border(usr, BLOCK_WIDTH ,BLOCK_HEIGHT, GREEN);
     } else {
-        print_border(usr_pos, BLOCK_WIDTH ,BLOCK_HEIGHT, RED);        
+        print_border(usr, BLOCK_WIDTH ,BLOCK_HEIGHT, RED);        
     }
 }
 
@@ -372,8 +396,7 @@ void parseKeyboard(){
         keyBufferBack++;
         
     int temp = readKey();
-    printfColorAt("Blocks %d",YELLOW,BLACK,800,100, time.past);
-    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY) && !limitInput(temp))
+    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY || temp == UP_ARROW || temp == DOWN_ARROW) && !limitInput(temp))
         KeyBuffer[keyBufferFront++ % 200] = temp;
 
 }

@@ -15,6 +15,7 @@
 #define FD_TIME					(0x0A)
 #define FD_STDOUT_COLOR			(0x0B)
 #define FD_BORDER 				(0x0C)
+#define FD_HIGHLIGHT            (0x0D)
 
 #define DELETE_CURRENT_CHAR 1
 #define DELETE_ALL_DISPLAY 3

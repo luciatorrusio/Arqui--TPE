@@ -131,6 +131,24 @@ void print_border(int *pos,int lenght,int height,int fontColor){
 		drawPixel(x+lenght-3, y+j, fontColor);
 	}
 }
+//Print de un tile highlighteado, usado para mostrarle las opciones para mover una pieza al usuario
+void print_highlight(int *pos,int lenght,int height,int fontColor){
+	int x = pos[0];
+	int y = pos[1];
+	for (int i = 2; i <height-2; i++)
+    {
+        for (int j = 2; j < lenght-2; j++)
+        {
+            if( (i%6 == 0 && j%6 == 0 )|| (i%6 != 0 && j%6 != 0)){
+                  
+            }else{
+				drawPixel(x+j, y+i, fontColor);
+			}
+        }
+	}
+     
+}
+
 
 void setSize(unsigned int s){
 	SCREEN_bPP=s;

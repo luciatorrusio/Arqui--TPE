@@ -17,12 +17,7 @@
 #define BLOCK_HEIGHT                (SCREEN_HEIGHT/9)
 #define BLOCK_YSEPARATION           (0)
 
-#define BALL_RADIO                  (SCREEN_HEIGHT/100) 
-
-#define bar_vel                     (2*SCREEN_WIDTH/100)
-
 #define REAL_TO_GAME_TICKS              (1)
-#define BALL_INITIAL_VELOCITY (3)
 
 enum pieces1 {PAWN1, BISHOP1, KNIGHT1, ROOK1, QUEEN1, KING1};
 enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
@@ -45,25 +40,31 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 #define X                           0
 #define Y                           1
 
-#define NO_BLOCK                   -1
+#define NO_PIECE                   -1
+#define NO_HIGHLIGHT               -1
+#define HIGHLIGHT                   1
 
 #define LEFT_ARROW                 'j'
 #define RIGHT_ARROW                'l' 
 #define UP_ARROW                   'i'
 #define DOWN_ARROW                 'k'
-#define ENTER                      '\n'
+#define ENTER                      's'
 #define LEAVE_KEY                  'q'
 
 
 static int lives = -1;                    //cantidad de vidas que tiene
 
-static struct Ball ball={{-1,-1},-1,-1};
 
 static int usr_pos[2] = {-1,-1};
 static int curr_usr = 0;
+static bool select=false;
+
+static struct Board board = {-1,-1};
+static struct PieceSet set1 = {-1,-1};
+static struct PieceSet set2 = {-1,-1};
+static struct Board highlightBoard = {-1,-1};
 
 
-static struct Blocks blocks = {-1,-1};
 
 static struct Time time={-1,-1};
 
@@ -94,6 +95,7 @@ static int initialize= -1;
     void manageSound(uint64_t realTick);
     void initializePositions();
     void print_usr();
+    void next_highlight();
 //
 
 static bool startOver = true;
@@ -118,8 +120,8 @@ int runGame(void){
     usr_pos[Y]=0;
     // comienza jugando el jugador 1
     curr_usr=1; 
-    lives = LIVESi;
-    blocks.left= R_BLOCKS*C_BLOCKS;       
+    set1.left = 16;
+    set2.left = 16;       
     gameTicks = 0;
     
     info[X]=SCREEN_WIDTH/2;
@@ -137,36 +139,50 @@ int runGame(void){
 void initializePositions(){
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
-            blocks.matrix[j][i]= 100;
+            set1.board[j][i]= NO_PIECE;
+            set2.board[j][i]= NO_PIECE;
+            highlightBoard.board[j][i] = NO_HIGHLIGHT;
         }
     }
     
     for (int i = 0; i < R_BLOCKS; i++)
     {
-        blocks.matrix[i][1]=PAWN1;
+        set1.board[i][1]=PAWN1;
     }
     for (int i = 0; i < R_BLOCKS; i++)
     {
-        blocks.matrix[i][6]=PAWN2;
+        set2.board[i][6]=PAWN2;
     }
-    blocks.matrix[0][0]=ROOK1;
-    blocks.matrix[7][0]=ROOK1;
-    blocks.matrix[0][7]=ROOK2;
-    blocks.matrix[7][7]=ROOK2;
-    blocks.matrix[1][0]=KNIGHT1;
-    blocks.matrix[6][0]=KNIGHT1;
-    blocks.matrix[1][7]=KNIGHT2;
-    blocks.matrix[6][7]=KNIGHT2;
-    blocks.matrix[2][0]=BISHOP1;
-    blocks.matrix[5][0]=BISHOP1;
-    blocks.matrix[2][7]=BISHOP2;
-    blocks.matrix[5][7]=BISHOP2;
-    blocks.matrix[3][0]=QUEEN1;
-    blocks.matrix[3][7]=QUEEN2;
-    blocks.matrix[4][0]=KING1;
-    blocks.matrix[4][7]=KING2;
-
-
+    set1.board[0][0]=ROOK1;
+    set1.board[7][0]=ROOK1;
+    board.angle = 0;
+    for (int i = 0; i < R_BLOCKS; i++)
+    {
+        for (int j = 0; j < C_BLOCKS; j++)
+        {
+            if( (i%2 == 0 && j%2 == 0 )|| (i%2 == 1 && j%2==1)){
+                board.board[i][j] = 0;  
+            }else{
+                board.board[i][j] = 1;
+            }
+        }
+        
+        
+    }
+    set2.board[0][7]=ROOK2;
+    set2.board[7][7]=ROOK2;
+    set1.board[1][0]=KNIGHT1;
+    set1.board[6][0]=KNIGHT1;
+    set2.board[1][7]=KNIGHT2;
+    set2.board[6][7]=KNIGHT2;
+    set1.board[2][0]=BISHOP1;
+    set1.board[5][0]=BISHOP1;
+    set2.board[2][7]=BISHOP2;
+    set2.board[5][7]=BISHOP2;
+    set1.board[3][0]=QUEEN1;
+    set2.board[3][7]=QUEEN2;
+    set1.board[4][0]=KING1;
+    set2.board[4][7]=KING2;
 }
 
 
@@ -190,7 +206,7 @@ int startGame(){
         if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
             gameTicks++;
             previusTick = realTicks;
-            if((aux = stopKeyPressed()) || lives==0 || blocks.left == 0 ){
+            if((aux = stopKeyPressed()) || lives==0 || set1.left == 0 || set2.left == 0 ){
                 // Condicion de retorno
                 stopWhile = true;
             }else
@@ -208,7 +224,7 @@ int startGame(){
         return 0;
     }
         
-    if(lives == 0  || blocks.left == 0 ){
+    if(lives == 0  || set1.left == 0 || set2.left == 0 ){
         int x=finishGame(time.tick / 18);
         initialize=0;
         if(x==0)
@@ -225,43 +241,182 @@ int startGame(){
 void handleUsrMov(){
     int key = key_pressed();
     int x,y;
-    if(key == RIGHT_ARROW){
+    if(select == true){
+        if(key == RIGHT_ARROW){
+            print_tile(usr_pos[X],usr_pos[Y]);
+            print_piece( usr_pos[X], usr_pos[Y]);
+            highlight(usr_pos[X], usr_pos[Y]);
+            next_highlight();                     //muevo al usuario a la proxima opcion
+        }
+        if(key == LEFT_ARROW){
+            print_tile(usr_pos[X],usr_pos[Y]);
+            print_piece( usr_pos[X], usr_pos[Y]);
+            // usr_pos = prior_highlight();                     //muevo al usuario a la opcion anterior
+        }
+        if(key == ENTER){
+            select = false;
+            clear_highlight();
+            // print_tile(usr_pos[X],usr_pos[Y]);
+            // print_piece( usr_pos[X], usr_pos[Y]);
+            // usr_pos = prior_highlight();                     //muevo al usuario para la derecha
+        }
+    } else if(key == RIGHT_ARROW){
         if(usr_pos[X] != C_BLOCKS -1){
             print_tile(usr_pos[X],usr_pos[Y]);
             print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[X] += 1;                     //muevo al usuario para la derecha
         }
-    }
-    if(key == LEFT_ARROW){
+    } else if(key == LEFT_ARROW){
         if(usr_pos[X] != 0){
             print_tile(usr_pos[X],usr_pos[Y]);
             print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[X] -= 1;                     //muevo al usuario para la izquierda
         }
-    } 
-    if(key == UP_ARROW){
+    } else if(key == UP_ARROW){
         if(usr_pos[Y] != 0){
             print_tile(usr_pos[X],usr_pos[Y]);
             print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[Y] -= 1;                     //muevo al usuario para arriba
         }
-    }
-    if(key == DOWN_ARROW){
+    } else if(key == DOWN_ARROW){
         if(usr_pos[Y] != R_BLOCKS-1){
             print_tile(usr_pos[X],usr_pos[Y]);
             print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[Y] += 1;                     //muevo al usuario para abajo
         }
-    } 
-    if(key == ENTER){
+    } else if(key == ENTER){
+        
+        if(usr_on_own_piece()){
+            select = true;
+            int piece = get_piece(usr_pos[X], usr_pos[Y]);
+            print_tile_options(usr_pos[X],usr_pos[Y], piece);
+        }
         // si estoy parada sobre una pieza de curr_usr entonces seleccionarla para darle opciones de jugada.
         // activar variable "pieza seleccionada"
-    }
-    if(key == LEAVE_KEY){
+    } else if(key == LEAVE_KEY){
         goToTerminal = true;
     }
 }
+void clear_highlight(){
+    for (int i = 0; i < C_BLOCKS ; i++)
+    {
+        for (int j = 0; j < R_BLOCKS; j++)
+        {
+            highlightBoard.board[i][j]= NO_HIGHLIGHT;
+        }
+        
+    }
+    
+}
+void next_highlight(){
+    for ( int i = usr_pos[Y]; i < R_BLOCKS; i++)
+    {
+        for( int j = usr_pos[X]+1; j<C_BLOCKS; j++){
+            if(highlightBoard.board[i][j] == HIGHLIGHT){
+                print_tile(usr_pos[X],usr_pos[Y]);
+                print_piece( usr_pos[X], usr_pos[Y]);
+                usr_pos[X]=j;
+                usr_pos[Y]=i;
+                return;
+            }
+        }
+    }
+    for ( int i = 0; i < usr_pos[Y]+1; i++)
+    {
+        for( int j = 0; j<usr_pos[X]+1; j++){
+            if(highlightBoard.board[i][j] == HIGHLIGHT){
+                print_tile(usr_pos[X],usr_pos[Y]);
+                print_piece( usr_pos[X], usr_pos[Y]);
+                usr_pos[X]=j;
+                usr_pos[Y]=i;
+                return;
+            }
+        }
+    }
+    
+}
 
+int usr_on_own_piece(){
+    if(curr_usr == 1 && set1.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
+        return true;
+    } else if( curr_usr == 0 && set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE)
+    {
+        return true;
+    }
+    return false;
+}
+
+int get_piece(int x, int y){
+    if(set1.board[y][x] != NO_PIECE){
+        return set1.board[y][x];
+    } else if (set2.board[y][x] != NO_PIECE) {
+        return set2.board[y][x];
+    }
+    return NO_PIECE;
+    
+}
+
+void print_tile_options(int x, int y, int piece){
+    switch (piece)
+    {
+    case PAWN1:
+        print_options_pawn(x,y);
+        break;
+    case PAWN2:
+        // print_options_pawn(x,y);
+        break;
+    case KING1:
+        // print_options_king(x,y);
+        break;
+    case KING2:
+        // print_options_king(x,y);
+        break;
+    case KNIGHT1:
+        // print_options_king(x,y);
+        break;
+    case KNIGHT2:
+        // print_options_king(x,y);
+        break;
+    case BISHOP1:
+        // print_options_king(x,y);
+        break;
+    case BISHOP2:
+        // print_options_king(x,y);
+        break;
+    case QUEEN1:
+        // print_options_king(x,y);
+        break;
+    case QUEEN2:
+        // print_options_king(x,y);
+        break;
+    case ROOK1:
+        // print_options_king(x,y);
+        break;
+    case ROOK2:
+        // print_options_king(x,y);
+        break;
+        
+    
+    default:
+        break;
+    }
+}
+void print_options_pawn(int x, int y){
+    highlightBoard.board[y][x] = HIGHLIGHT;
+    if (curr_usr == 1 && board.angle == 0){
+        if(set1.board[y][x+1] == NO_PIECE && set2.board[y][x+1] == NO_PIECE){
+            highlight(x+1, y);
+            highlightBoard.board[y][x+1] = HIGHLIGHT;
+        }
+        if(set2.board[y-1][x+1] != NO_PIECE){
+            highlight(x+1, y-1);
+            highlightBoard.board[y-1][x+1] = HIGHLIGHT;
+        }   
+        if(set2.board[y+1][x+1] != NO_PIECE)
+            highlight(x+1, y+1);
+            highlightBoard.board[y+1][x+1] = HIGHLIGHT;
+    }
+}
 void print_usr(){
     int usr[2];
     usr[X]=usr_pos[X]*BLOCK_WIDTH;
@@ -273,6 +428,13 @@ void print_usr(){
     }
 }
 
+//Le paso la posicion en la matriz, no de la pantalla
+void highlight(int x, int y){
+    int pos[2];
+    pos[X]=x*BLOCK_WIDTH;
+    pos[Y]=y*BLOCK_HEIGHT;
+    highlightTile(pos, BLOCK_WIDTH, BLOCK_HEIGHT, YELLOW);
+}
 //juega recursivamente
 void startGameRec(void){
     tableData(); 
@@ -284,6 +446,9 @@ void startGameRec(void){
 }
 
 void printObjects(int * block){
+    if(select == true)
+        highlight(usr_pos[X], usr_pos[Y]);
+    
     print_usr(); 
 }
 
@@ -313,7 +478,7 @@ void print_tile(int i, int j){
     int x=i;
     int y=j;
     matrixToXY(&x, &y);
-    if( (i%2 == 0 && j%2 == 0 )|| (i%2 == 1 && j%2==1)){
+    if( board.board[j][i] == 1){
         print_block( x ,y,WHITE);
                 
     }else{
@@ -325,31 +490,31 @@ void print_piece(int i, int j){
     int x=i;
     int y=j;
     matrixToXY(&x, &y);
-    if( blocks.matrix[j][i] == PAWN1){
-                print_block( x ,y,AQUA);
-            } else if( blocks.matrix[j][i] == PAWN2){
-                print_block( x ,y,BLUE);
-            } else if( blocks.matrix[j][i] == BISHOP1){
-                print_block( x ,y,GREEN);
-            } else if( blocks.matrix[j][i] == BISHOP2){
-                print_block( x ,y,RED);
-            } else if( blocks.matrix[j][i] == ROOK1){
-                print_block( x ,y,PURPLE);
-            } else if( blocks.matrix[j][i] == ROOK2){
-                print_block( x ,y,YELLOW);
-            } else if( blocks.matrix[j][i] == KNIGHT1){
-                print_block( x ,y,LightBlue);
-            } else if( blocks.matrix[j][i] == KNIGHT2){
-                print_block( x ,y,LightGreen);
-            } else if( blocks.matrix[j][i] == KING1){
-                print_block( x ,y,LightPurple);
-            } else if( blocks.matrix[j][i] == KING2){
-                print_block( x ,y,LightPurple);
-            } else if( blocks.matrix[j][i] == QUEEN1){
-                print_block( x ,y,LightRed);
-            } else if( blocks.matrix[j][i] == QUEEN2){
-                print_block( x ,y,LightRed);
-            }
+    if( set1.board[j][i] == PAWN1){
+        print_piece1( x ,y,AQUA);
+    } else if( set2.board[j][i] == PAWN2){
+        print_piece1( x ,y,BLUE);
+    } else if( set1.board[j][i] == BISHOP1){
+        print_piece1( x ,y,GREEN);
+    } else if( set2.board[j][i] == BISHOP2){
+        print_piece1( x ,y,RED);
+    } else if( set1.board[j][i] == ROOK1){
+        print_piece1( x ,y,PURPLE);
+    } else if( set2.board[j][i] == ROOK2){
+        print_piece1( x ,y,YELLOW);
+    } else if( set1.board[j][i] == KNIGHT1){
+        print_piece1( x ,y,LightBlue);
+    } else if( set2.board[j][i] == KNIGHT2){
+        print_piece1( x ,y,LightGreen);
+    } else if( set1.board[j][i] == KING1){
+        print_piece1( x ,y,LightPurple);
+    } else if( set2.board[j][i] == KING2){
+        print_piece1( x ,y,LightPurple);
+    } else if( set1.board[j][i] == QUEEN1){
+        print_piece1( x ,y,LightRed);
+    } else if( set2.board[j][i] == QUEEN2){
+        print_piece1( x ,y,LightRed);
+}
             
 }
 
@@ -358,11 +523,15 @@ int finishGame(int time_past){
         int init;
         getBpp(&init);
         setSize(init*3);
-    if(blocks.left == 0){
-        printfColorAt("Congratulations you've won!!",RED,BLACK,90,100);
+    if(set1.left == 0){
+        printfColorAt("Congratulations player 2 won!!",RED,BLACK,90,100);
         printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
            
-    }else{
+    } else if(set2.left == 0){
+        printfColorAt("Congratulations player 1 won!!",RED,BLACK,90,100);
+        printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
+    }
+    else{
 
         printfColorAt("Better luck next time!",RED,BLACK,90,100);
         printfColorAt("Time: %d seconds",RED,BLACK,115,120,time_past);
@@ -384,6 +553,11 @@ void print_block(int x,int y,int color){
 
 }
 
+void print_piece1(int x, int y, int color){
+    int pos[]= {x, y};
+
+    printOnScreen(pos,BLOCK_WIDTH/2,BLOCK_HEIGHT/2,color);
+}
 int stopKeyPressed(){
 
     return goToTerminal;
@@ -410,7 +584,7 @@ void parseKeyboard(){
         keyBufferBack++;
         
     int temp = readKey();
-    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY || temp == UP_ARROW || temp == DOWN_ARROW) && !limitInput(temp))
+    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY || temp == UP_ARROW || temp == DOWN_ARROW || temp == ENTER) && !limitInput(temp))
         KeyBuffer[keyBufferFront++ % 200] = temp;
 
 }
@@ -427,18 +601,15 @@ int key_pressed(){
 }
 void table(){
     // printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-10000,YELLOW);
-    printfColorAt("Blocks left :",YELLOW,BLACK,800,info[1]-100);
-    printfColorAt("Lives :",YELLOW,BLACK,800,info[1]-50);
+    printfColorAt("pieces 1 left :",YELLOW,BLACK,800,info[1]-100);
+    printfColorAt("pieces 2 left :",YELLOW,BLACK,800,info[1]-50);
     printfColorAt("Time :",YELLOW,BLACK,800,info[1],time.tick/18);
     tableData();
 }
 
 void tableData(){
-    if(blocks.left==9)
-        printfColorAt(" ",YELLOW,YELLOW,268,info[1]);    
-
-    printfColorAt("%d",YELLOW,BLACK,950,info[1]-100,blocks.left);
-    printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,lives);
+    printfColorAt("%d",YELLOW,BLACK,950,info[1]-100,set1.left);
+    printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,set2.left);
     printfColorAt("%d",YELLOW,BLACK,850,info[1],time.tick/18);
 }
 

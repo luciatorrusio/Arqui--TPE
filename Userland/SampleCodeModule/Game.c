@@ -84,7 +84,7 @@ static uint64_t gameTicks = -1;
 
 static int initialize= -1;
 //DECLARACION DE FUNCIONES
-    void printObjects(int * block);
+    void printObjects();
     void printLeftover(int * curr_BarPos);
     int key_pressed();
     void parseKeyboard();
@@ -186,13 +186,10 @@ void initializePositions(){
 }
 
 
-
 //cuando quiero retomar el juego
 int startGame(){
     int aux;
-    print_blocks();
-    table();
-    print_usr();
+    print_game();
 
     bool stopWhile = false;
     goToTerminal = false;
@@ -206,7 +203,7 @@ int startGame(){
         if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
             gameTicks++;
             previusTick = realTicks;
-            if((aux = stopKeyPressed()) || lives==0 || set1.left == 0 || set2.left == 0 ){
+            if((aux = stopKeyPressed()) ||  set1.left == 0 || set2.left == 0 ){
                 // Condicion de retorno
                 stopWhile = true;
             }else
@@ -224,7 +221,7 @@ int startGame(){
         return 0;
     }
         
-    if(lives == 0  || set1.left == 0 || set2.left == 0 ){
+    if(set1.left == 0 || set2.left == 0 ){
         int x=finishGame(time.tick / 18);
         initialize=0;
         if(x==0)
@@ -237,20 +234,27 @@ int startGame(){
     return 0;
 }
 
+//juega recursivamente
+void startGameRec(void){
+    tableData(); 
+    time.tick ++;
+     
+    /*MOVIMIENTO DEL USUARIO*/
+    handleUsrMov();
+    printObjects();
+}
+
 //Esta funcion mueve al usuario y reacciona dependiendo que tecla presiona el usuario
 void handleUsrMov(){
     int key = key_pressed();
     int x,y;
     if(select == true){
         if(key == RIGHT_ARROW){
-            print_tile(usr_pos[X],usr_pos[Y]);
-            print_piece( usr_pos[X], usr_pos[Y]);
-            highlight(usr_pos[X], usr_pos[Y]);
-            next_highlight();                     //muevo al usuario a la proxima opcion
+            next_highlight();                                   //muevo al usuario a la proxima opcion
         }
-        if(key == LEFT_ARROW){
-            print_tile(usr_pos[X],usr_pos[Y]);
-            print_piece( usr_pos[X], usr_pos[Y]);
+        else if(key == LEFT_ARROW){
+            // print_tile(usr_pos[X],usr_pos[Y]);
+            // print_piece( usr_pos[X], usr_pos[Y]);
             // usr_pos = prior_highlight();                     //muevo al usuario a la opcion anterior
         }
         if(key == ENTER){
@@ -297,6 +301,7 @@ void handleUsrMov(){
         goToTerminal = true;
     }
 }
+
 void clear_highlight(){
     for (int i = 0; i < C_BLOCKS ; i++)
     {
@@ -308,12 +313,14 @@ void clear_highlight(){
     }
     
 }
+
 void next_highlight(){
     for ( int i = usr_pos[Y]; i < R_BLOCKS; i++)
     {
         for( int j = usr_pos[X]+1; j<C_BLOCKS; j++){
             if(highlightBoard.board[i][j] == HIGHLIGHT){
                 print_tile(usr_pos[X],usr_pos[Y]);
+                highlight(usr_pos[X],usr_pos[Y]);
                 print_piece( usr_pos[X], usr_pos[Y]);
                 usr_pos[X]=j;
                 usr_pos[Y]=i;
@@ -401,6 +408,7 @@ void print_tile_options(int x, int y, int piece){
         break;
     }
 }
+
 void print_options_pawn(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
     if (curr_usr == 1 && board.angle == 0){
@@ -417,6 +425,8 @@ void print_options_pawn(int x, int y){
             highlightBoard.board[y+1][x+1] = HIGHLIGHT;
     }
 }
+
+//Prints a border that indicates where the user is standing
 void print_usr(){
     int usr[2];
     usr[X]=usr_pos[X]*BLOCK_WIDTH;
@@ -435,20 +445,9 @@ void highlight(int x, int y){
     pos[Y]=y*BLOCK_HEIGHT;
     highlightTile(pos, BLOCK_WIDTH, BLOCK_HEIGHT, YELLOW);
 }
-//juega recursivamente
-void startGameRec(void){
-    tableData(); 
-    time.tick ++;
-     
-    /*MOVIMIENTO DE LA BARRA*/
-    handleUsrMov();
-    printObjects(block);
-}
 
-void printObjects(int * block){
-    if(select == true)
-        highlight(usr_pos[X], usr_pos[Y]);
-    
+
+void printObjects(){
     print_usr(); 
 }
 
@@ -464,7 +463,7 @@ void makeSquare(int * square, int x, int y){
     return;
 }
 
-void print_blocks(){
+void print_game(){
     int x;
     int y;
     for(int i = 0; i < C_BLOCKS ; i++){
@@ -473,7 +472,10 @@ void print_blocks(){
             print_piece(i, j);
         }
     }
+    table();
+    print_usr();
 }
+
 void print_tile(int i, int j){
     int x=i;
     int y=j;
@@ -599,14 +601,16 @@ int key_pressed(){
 
 
 }
+
 void table(){
     // printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-10000,YELLOW);
-    printfColorAt("pieces 1 left :",YELLOW,BLACK,800,info[1]-100);
-    printfColorAt("pieces 2 left :",YELLOW,BLACK,800,info[1]-50);
+    printfColorAt("Pieces of player 1 left :",YELLOW,BLACK,800,info[1]-100);
+    printfColorAt("Pieces of player 2 left :",YELLOW,BLACK,800,info[1]-50);
     printfColorAt("Time :",YELLOW,BLACK,800,info[1],time.tick/18);
     tableData();
 }
 
+//Data de cuantas piezas siguen en juego y cuanto tiempo paso
 void tableData(){
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-100,set1.left);
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,set2.left);

@@ -48,7 +48,7 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 #define RIGHT_ARROW                'l' 
 #define UP_ARROW                   'i'
 #define DOWN_ARROW                 'k'
-#define ENTER                      's'
+#define ENTER                      '\n'
 #define LEAVE_KEY                  'q'
 
 
@@ -303,11 +303,16 @@ void handleUsrMov(){
 }
 
 void clear_highlight(){
-    for (int i = 0; i < C_BLOCKS ; i++)
+    for (int j = 0; j < C_BLOCKS ; j++)
     {
-        for (int j = 0; j < R_BLOCKS; j++)
+        for (int i = 0; i < R_BLOCKS; i++)
         {
-            highlightBoard.board[i][j]= NO_HIGHLIGHT;
+            if(highlightBoard.board[j][i] == HIGHLIGHT){
+                highlightBoard.board[j][i]= NO_HIGHLIGHT;
+                print_tile(i, j);
+                print_piece(i,j);
+            }
+                
         }
         
     }
@@ -333,6 +338,7 @@ void next_highlight(){
         for( int j = 0; j<usr_pos[X]+1; j++){
             if(highlightBoard.board[i][j] == HIGHLIGHT){
                 print_tile(usr_pos[X],usr_pos[Y]);
+                highlight(usr_pos[X],usr_pos[Y]);
                 print_piece( usr_pos[X], usr_pos[Y]);
                 usr_pos[X]=j;
                 usr_pos[Y]=i;
@@ -411,6 +417,7 @@ void print_tile_options(int x, int y, int piece){
 
 void print_options_pawn(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
+    highlight(x, y);
     if (curr_usr == 1 && board.angle == 0){
         if(set1.board[y][x+1] == NO_PIECE && set2.board[y][x+1] == NO_PIECE){
             highlight(x+1, y);

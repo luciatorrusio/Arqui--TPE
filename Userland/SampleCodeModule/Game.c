@@ -49,14 +49,16 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 #define UP_ARROW                   'i'
 #define DOWN_ARROW                 'k'
 #define ENTER                      '\n'
+#define ROTATE                     'r'
 #define LEAVE_KEY                  'q'
 
 
 static int lives = -1;                    //cantidad de vidas que tiene
-
+static int used= false;                     // esta variable es un fix RANCIO, creo que me toma dos veces la funcion print_options_pawn
 
 static int usr_pos[2] = {-1,-1};
 static int curr_usr = 0;
+static int piece_selected[2];
 static bool select=false;
 
 static struct Board board = {-1,-1};
@@ -137,6 +139,7 @@ int runGame(void){
 
 // Inicializo las posiciones de cada pieza
 void initializePositions(){
+    // inicializo todo como si no hubieran piezas en el tablerp
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j < R_BLOCKS; j++){
             set1.board[j][i]= NO_PIECE;
@@ -144,18 +147,9 @@ void initializePositions(){
             highlightBoard.board[j][i] = NO_HIGHLIGHT;
         }
     }
-    
-    for (int i = 0; i < R_BLOCKS; i++)
-    {
-        set1.board[i][1]=PAWN1;
-    }
-    for (int i = 0; i < R_BLOCKS; i++)
-    {
-        set2.board[i][6]=PAWN2;
-    }
-    set1.board[0][0]=ROOK1;
-    set1.board[7][0]=ROOK1;
+    // inicializo de que forma esta el tablero
     board.angle = 0;
+    // marco en el tablero donde va a ser negro y donde blanco
     for (int i = 0; i < R_BLOCKS; i++)
     {
         for (int j = 0; j < C_BLOCKS; j++)
@@ -166,27 +160,51 @@ void initializePositions(){
                 board.board[i][j] = 1;
             }
         }
-        
-        
     }
+
+    // al jugador uno le pongo todos los pawns
+    for (int i = 0; i < R_BLOCKS; i++)
+    {
+        set1.board[i][1]=PAWN1;
+    }
+    // al jugador 2 le pongo todos los pawns
+    for (int i = 0; i < R_BLOCKS; i++)
+    {
+        set2.board[i][6]=PAWN2;
+    }
+    
+    // pongo las torres al jugador 1
+    set1.board[0][0]=ROOK1;
+    set1.board[7][0]=ROOK1;
+    
+    // pongo las torres al jugador 2
     set2.board[0][7]=ROOK2;
     set2.board[7][7]=ROOK2;
+
+    // pongo los caballeros al jugador 1
     set1.board[1][0]=KNIGHT1;
     set1.board[6][0]=KNIGHT1;
+    // pongo los caballeros al jugador 2
     set2.board[1][7]=KNIGHT2;
     set2.board[6][7]=KNIGHT2;
+
+    // Pongo los alfiles al jugador 1
     set1.board[2][0]=BISHOP1;
     set1.board[5][0]=BISHOP1;
+
+    // Pongo los alfiles al jugador 2
     set2.board[2][7]=BISHOP2;
     set2.board[5][7]=BISHOP2;
+    // Pongo las reinas 
     set1.board[3][0]=QUEEN1;
     set2.board[3][7]=QUEEN2;
+    // Pongo los reyes
     set1.board[4][0]=KING1;
     set2.board[4][7]=KING2;
 }
 
 
-//cuando quiero retomar el juego
+//cuando quiero retomar el juego me lleva directo a esta funcion
 int startGame(){
     int aux;
     print_game();
@@ -194,7 +212,6 @@ int startGame(){
     bool stopWhile = false;
     goToTerminal = false;
 	uint64_t baseTicks = 0,realTicks = 0, previusTick = 0;
-    // int re = 0;
     baseTicks = getTicks();
     do{
         realTicks = getTicks() - baseTicks;
@@ -253,16 +270,58 @@ void handleUsrMov(){
             next_highlight();                                   //muevo al usuario a la proxima opcion
         }
         else if(key == LEFT_ARROW){
-            // print_tile(usr_pos[X],usr_pos[Y]);
-            // print_piece( usr_pos[X], usr_pos[Y]);
-            // usr_pos = prior_highlight();                     //muevo al usuario a la opcion anterior
-        }
-        if(key == ENTER){
+            next_highlight();               
+        }else if(key == ROTATE){
+            rotate_chess();               
+        } else if(key == ENTER){
             select = false;
+            used = false;
             clear_highlight();
-            // print_tile(usr_pos[X],usr_pos[Y]);
-            // print_piece( usr_pos[X], usr_pos[Y]);
-            // usr_pos = prior_highlight();                     //muevo al usuario para la derecha
+            if(curr_usr == 1){
+                //aca se come la pieza del otro 
+                if(set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
+                    set2.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
+                    set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
+                    set1.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    print_tile(piece_selected[X],piece_selected[Y]);
+                    print_piece( piece_selected[X], piece_selected[Y]);
+                    set2.left--;
+                    curr_usr = 2;
+                }// aca se mueve a un lugar sin nadie 
+                else if(set1.board[usr_pos[Y]][usr_pos[X]] == NO_PIECE){
+                    set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    set1.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
+                    print_tile(piece_selected[X],piece_selected[Y]);
+                    print_piece( piece_selected[X], piece_selected[Y]);
+                    curr_usr = 2;
+                }
+            }else if(curr_usr == 2){
+                // aca come a la ficha del otro
+                if(set1.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
+                    set1.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
+                    set2.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
+                    set2.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    print_tile(piece_selected[X],piece_selected[Y]);
+                    print_piece( piece_selected[X], piece_selected[Y]);
+                    set1.left--;
+                    curr_usr = 1;
+                } // aca mueve su ficha a un espacio vacio
+                else if(set2.board[usr_pos[Y]][usr_pos[X]] == NO_PIECE){
+                    set2.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    set2.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
+                    print_tile(piece_selected[X],piece_selected[Y]);
+                    print_piece( piece_selected[X], piece_selected[Y]);
+                    curr_usr = 1;
+                }
+            }
         }
     } else if(key == RIGHT_ARROW){
         if(usr_pos[X] != C_BLOCKS -1){
@@ -288,10 +347,14 @@ void handleUsrMov(){
             print_piece( usr_pos[X], usr_pos[Y]);
             usr_pos[Y] += 1;                     //muevo al usuario para abajo
         }
-    } else if(key == ENTER){
-        
+    }else if(key == ROTATE){
+        rotate_chess();               
+    }
+    else if(key == ENTER){ 
         if(usr_on_own_piece()){
             select = true;
+            piece_selected[X]=usr_pos[X];
+            piece_selected[Y]= usr_pos[Y];
             int piece = get_piece(usr_pos[X], usr_pos[Y]);
             print_tile_options(usr_pos[X],usr_pos[Y], piece);
         }
@@ -302,10 +365,11 @@ void handleUsrMov(){
     }
 }
 
+// pone la matriz de highlight todas en NO_HIGHLIGHT
 void clear_highlight(){
-    for (int j = 0; j < C_BLOCKS ; j++)
+    for (int j = 0; j < R_BLOCKS ; j++)
     {
-        for (int i = 0; i < R_BLOCKS; i++)
+        for (int i = 0; i < C_BLOCKS; i++)
         {
             if(highlightBoard.board[j][i] == HIGHLIGHT){
                 highlightBoard.board[j][i]= NO_HIGHLIGHT;
@@ -319,46 +383,83 @@ void clear_highlight(){
     
 }
 
+// mueve al usuario a la proxima opcion de moverse
 void next_highlight(){
+    int x;
+    // primero se fija entre los proximos en el board
     for ( int i = usr_pos[Y]; i < R_BLOCKS; i++)
     {
-        for( int j = usr_pos[X]+1; j<C_BLOCKS; j++){
-            if(highlightBoard.board[i][j] == HIGHLIGHT){
-                print_tile(usr_pos[X],usr_pos[Y]);
-                highlight(usr_pos[X],usr_pos[Y]);
-                print_piece( usr_pos[X], usr_pos[Y]);
-                usr_pos[X]=j;
-                usr_pos[Y]=i;
-                return;
+        if(x==0){
+            for( int j = usr_pos[X]+1; j<C_BLOCKS; j++){
+                if(highlightBoard.board[i][j] == HIGHLIGHT){
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    if(highlightBoard.board[usr_pos[Y]][usr_pos[X]] == HIGHLIGHT)
+                        highlight(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    usr_pos[X]=j;
+                    usr_pos[Y]=i;
+                    return;
+                }
+            }
+            x++;
+        }else {
+            for( int j = 0; j<C_BLOCKS; j++){
+                if(highlightBoard.board[i][j] == HIGHLIGHT){
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    if(highlightBoard.board[usr_pos[Y]][usr_pos[X]] == HIGHLIGHT)
+                        highlight(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    usr_pos[X]=j;
+                    usr_pos[Y]=i;
+                    return;
+                }
             }
         }
+        
     }
+    // si no encuentra se fija entre los anteriores a el
     for ( int i = 0; i < usr_pos[Y]+1; i++)
     {
-        for( int j = 0; j<usr_pos[X]+1; j++){
-            if(highlightBoard.board[i][j] == HIGHLIGHT){
-                print_tile(usr_pos[X],usr_pos[Y]);
-                highlight(usr_pos[X],usr_pos[Y]);
-                print_piece( usr_pos[X], usr_pos[Y]);
-                usr_pos[X]=j;
-                usr_pos[Y]=i;
-                return;
+        if(i == usr_pos[Y]){
+            for( int j = 0; j<usr_pos[X]; j++){
+                if(highlightBoard.board[i][j] == HIGHLIGHT){
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    highlight(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    usr_pos[X]=j;
+                    usr_pos[Y]=i;
+                    return;
+                }
+            }
+        } else {
+            for( int j = 0; j<C_BLOCKS; j++){
+                if(highlightBoard.board[i][j] == HIGHLIGHT){
+                    print_tile(usr_pos[X],usr_pos[Y]);
+                    highlight(usr_pos[X],usr_pos[Y]);
+                    print_piece( usr_pos[X], usr_pos[Y]);
+                    usr_pos[X]=j;
+                    usr_pos[Y]=i;
+                    return;
+                }
             }
         }
+        
     }
     
 }
 
+// devuelve si el user esta situado en su propia pieza
 int usr_on_own_piece(){
     if(curr_usr == 1 && set1.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
         return true;
-    } else if( curr_usr == 0 && set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE)
+    } else if( curr_usr == 2 && set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE)
     {
         return true;
     }
     return false;
 }
 
+// retorna la pieza en el lugar especificado
 int get_piece(int x, int y){
     if(set1.board[y][x] != NO_PIECE){
         return set1.board[y][x];
@@ -369,44 +470,33 @@ int get_piece(int x, int y){
     
 }
 
+// me highlitea en el tablero los lugares donde me puedo mover (incluyendo el lugar donde estoy parado)
 void print_tile_options(int x, int y, int piece){
     switch (piece)
     {
     case PAWN1:
+    case PAWN2:
         print_options_pawn(x,y);
         break;
-    case PAWN2:
-        // print_options_pawn(x,y);
-        break;
     case KING1:
-        // print_options_king(x,y);
-        break;
     case KING2:
-        // print_options_king(x,y);
+        print_options_king(x,y);
         break;
     case KNIGHT1:
-        // print_options_king(x,y);
-        break;
     case KNIGHT2:
-        // print_options_king(x,y);
+        print_options_knight(x,y);
         break;
     case BISHOP1:
-        // print_options_king(x,y);
-        break;
     case BISHOP2:
-        // print_options_king(x,y);
+        print_options_bishop(x,y);
         break;
     case QUEEN1:
-        // print_options_king(x,y);
-        break;
     case QUEEN2:
-        // print_options_king(x,y);
+        print_options_queen(x,y);
         break;
     case ROOK1:
-        // print_options_king(x,y);
-        break;
     case ROOK2:
-        // print_options_king(x,y);
+        print_options_rook(x,y);
         break;
         
     
@@ -415,23 +505,593 @@ void print_tile_options(int x, int y, int piece){
     }
 }
 
+// resalta en el tablero donde se puede mover un pawn en especifico
 void print_options_pawn(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
     highlight(x, y);
     if (curr_usr == 1 && board.angle == 0){
-        if(set1.board[y][x+1] == NO_PIECE && set2.board[y][x+1] == NO_PIECE){
+        if(x==1 && set1.board[y][x+2] == NO_PIECE && set2.board[y][x+2] == NO_PIECE){
+            highlight(x+2, y);
+            highlightBoard.board[y][x+2] = HIGHLIGHT;
+        }
+        if(set1.board[y][x+1] == NO_PIECE && set2.board[y][x+1] == NO_PIECE && x<C_BLOCKS-1){
             highlight(x+1, y);
             highlightBoard.board[y][x+1] = HIGHLIGHT;
         }
-        if(set2.board[y-1][x+1] != NO_PIECE){
-            highlight(x+1, y-1);
-            highlightBoard.board[y-1][x+1] = HIGHLIGHT;
+        if(set2.board[y-1][x+1] != NO_PIECE && set1.board[y-1][x+1]==NO_PIECE && x<C_BLOCKS-1 && y>0){
+            if(used == false){
+                used == true;
+                highlight(x+1, y-1);
+                highlightBoard.board[y-1][x+1] = HIGHLIGHT;
+            } 
         }   
-        if(set2.board[y+1][x+1] != NO_PIECE)
-            highlight(x+1, y+1);
-            highlightBoard.board[y+1][x+1] = HIGHLIGHT;
+        if(set2.board[y+1][x+1] != NO_PIECE  && x<C_BLOCKS-1 && y<R_BLOCKS-1)
+            if(used == false){
+                used == true;
+                highlight(x+1, y+1);
+                highlightBoard.board[y+1][x+1] = HIGHLIGHT;
+            }
+            
+    }
+    else if (curr_usr == 2 && board.angle == 0){
+        if(x==C_BLOCKS-2 && set1.board[y][x-2] == NO_PIECE && set2.board[y][x-2] == NO_PIECE){
+            highlight(x-2, y);
+            highlightBoard.board[y][x-2] = HIGHLIGHT;
+        }
+        if(set2.board[y][x-1] == NO_PIECE && set1.board[y][x-1] == NO_PIECE && x<C_BLOCKS-1){
+            highlight(x-1, y);
+            highlightBoard.board[y][x-1] = HIGHLIGHT;
+        }
+        if(set1.board[y-1][x-1] != NO_PIECE && x<C_BLOCKS-1 && y>0){
+            if(used == false){
+                used == true;
+                highlight(x-1, y-1);
+                highlightBoard.board[y-1][x-1] = HIGHLIGHT;
+            }
+        }   
+        if(set1.board[y+1][x-1] != NO_PIECE  && x<C_BLOCKS-1 && y<R_BLOCKS-1)
+            if(used == false){
+                used == true;
+                highlight(x-1, y+1);
+                highlightBoard.board[y+1][x-1] = HIGHLIGHT;
+            }
+            
+    }
+    // ahora si el tablero esta en angle == 1
+    if (curr_usr == 1 && board.angle == 1){
+        if(y==1 && set1.board[y+2][x] == NO_PIECE && set2.board[y+2][x] == NO_PIECE){
+            highlight(x, y+2);
+            highlightBoard.board[y+2][x] = HIGHLIGHT;
+        }
+        if(set1.board[y+1][x] == NO_PIECE && set2.board[y+1][x] == NO_PIECE && y<R_BLOCKS-1){
+            highlight(x, y+1);
+            highlightBoard.board[y+1][x] = HIGHLIGHT;
+        }
+        if(set2.board[y+1][x-1] != NO_PIECE && set1.board[y+1][x-1]==NO_PIECE && x>0 && y<R_BLOCKS-1){
+            if(used == false){
+                used == true;
+                highlight(x-1, y+1);
+                highlightBoard.board[y+1][x-1] = HIGHLIGHT;
+            } 
+        }   
+        if(set2.board[y+1][x+1] != NO_PIECE  && x<C_BLOCKS-1 && y<R_BLOCKS-1)
+            if(used == false){
+                used == true;
+                highlight(x+1, y+1);
+                highlightBoard.board[y+1][x+1] = HIGHLIGHT;
+            }
+            
+    } 
+    else if (curr_usr == 2 && board.angle == 1){
+        if(y==R_BLOCKS-2 && set1.board[y-2][x] == NO_PIECE && set2.board[y-2][x] == NO_PIECE){
+            highlight(x, y-2);
+            highlightBoard.board[y-2][x] = HIGHLIGHT;
+        }
+        if(set2.board[y-1][x] == NO_PIECE && set1.board[y-1][x] == NO_PIECE && y>0){
+            highlight(x, y-1);
+            highlightBoard.board[y-1][x] = HIGHLIGHT;
+        }
+        if(set1.board[y-1][x-1] != NO_PIECE && x<C_BLOCKS-1 && y>0){
+            if(used == false){
+                used == true;
+                highlight(x-1, y-1);
+                highlightBoard.board[y-1][x-1] = HIGHLIGHT;
+            }
+        }   
+        if(set1.board[y-1][x+1] != NO_PIECE  && x<C_BLOCKS-1 && y>0)
+            if(used == false){
+                used == true;
+                highlight(x+1, y-1);
+                highlightBoard.board[y-1][x+1] = HIGHLIGHT;
+            }
+            
     }
 }
+
+void print_options_king(int x, int y){
+    highlightBoard.board[y][x] = HIGHLIGHT;
+    highlight(x, y);
+    if(curr_set(x+1, y) == NO_PIECE && x<C_BLOCKS-1){
+        highlight(x+1, y);
+        highlightBoard.board[y][x+1] = HIGHLIGHT;
+    }
+    if(curr_set(x-1, y) == NO_PIECE && x>0 ){
+        highlight(x-1, y);
+        highlightBoard.board[y][x-1] = HIGHLIGHT;
+    }
+    if(curr_set(x, y-1) == NO_PIECE &&  y>0){
+        highlight(x, y-1);
+        highlightBoard.board[y-1][x] = HIGHLIGHT;
+    }
+    if(curr_set(x, y+1) == NO_PIECE && y<R_BLOCKS-1){
+        highlight(x, y+1);
+        highlightBoard.board[y+1][x] = HIGHLIGHT;
+    }
+    if(curr_set(x-1, y+1) == NO_PIECE && x>0 && y<R_BLOCKS-1){
+        highlight(x-1, y-1);
+        highlightBoard.board[y-1][x-1] = HIGHLIGHT;
+    }
+    if(curr_set(x+1, y+1) == NO_PIECE && x<C_BLOCKS-1 && y<R_BLOCKS-1){
+        highlight(x+1, y+1);
+        highlightBoard.board[y+1][x+1] = HIGHLIGHT;
+    }
+    if(curr_set(x+1, y-1) == NO_PIECE && x<C_BLOCKS-1 &&  y>0){
+        highlight(x+1, y-1);
+        highlightBoard.board[y-1][x+1] = HIGHLIGHT;
+    }
+    if(curr_set(x-1, y-1) == NO_PIECE && x>0 && y>0){
+        highlight(x-1, y-1);
+        highlightBoard.board[y-1][x-1] = HIGHLIGHT;
+    }
+}
+
+void print_options_bishop(int x,int y){
+    highlightBoard.board[y][x] = HIGHLIGHT;
+    highlight(x, y);
+    int i=x+1;
+    int j=y-1;
+    int stop=false;
+    // se extiende para arriba y la derecha
+    while( i<C_BLOCKS && j>=0 && stop==false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        
+        i++;
+        j--;
+    }
+    i=x-1;
+    j=y-1;
+    stop = false;
+    // se extiende para arriba y la izquierda
+    while(i>=0 && j>=0 && stop == false){
+        if(curr_set(i,j) != NO_PIECE ){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i--;
+        j--;
+    }
+    i=x-1;
+    j=y+1;
+    stop = false;
+    // se extiende para abajo y la izquierda
+    while(i>=0 && j<R_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE ){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i--;
+        j++;
+    }
+    i=x+1;
+    j=y+1;
+    stop = false;
+    // se extiende para abajo y la derecha
+    while(i<C_BLOCKS && j<R_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i++;
+        j++;
+    }
+}
+
+void print_options_queen(int x,int y){
+    highlightBoard.board[y][x] = HIGHLIGHT;
+    highlight(x, y);
+    int i=x+1;
+    int j=y-1;
+    int stop=false;
+    // se extiende para arriba y la derecha
+    while( i<C_BLOCKS && j>=0 && stop==false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        
+        i++;
+        j--;
+    }
+    i=x-1;
+    j=y-1;
+    stop = false;
+    // se extiende para arriba y la izquierda
+    while(i>=0 && j>=0 && stop == false){
+        if(curr_set(i,j) != NO_PIECE ){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i--;
+        j--;
+    }
+    i=x-1;
+    j=y+1;
+    stop = false;
+    // se extiende para abajo y la izquierda
+    while(i>=0 && j<R_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE ){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i--;
+        j++;
+    }
+    i=x+1;
+    j=y+1;
+    stop = false;
+    // se extiende para abajo y la derecha
+    while(i<C_BLOCKS && j<R_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i++;
+        j++;
+    }
+    i=x;
+    j=y+1;
+    stop = false;
+    // se extiende para la derecha
+    while(i<C_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i++;
+    }
+    i=x-1;
+    j=y;
+    stop = false;
+    // se extiende para la izquierda
+    while(i>=0 && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i--;
+    }
+    i=x+1;
+    j=y+1;
+    stop = false;
+    // se extiende para abajo 
+    while( j<R_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        j++;
+    }
+    i=x;
+    j=y-1;
+    stop = false;
+    // se extiende para arriba
+    while( j>=0 && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        j--;
+    }
+}
+
+void print_options_rook(int x, int y){
+  highlightBoard.board[y][x] = HIGHLIGHT;
+    highlight(x, y);
+    int i=x+1;
+    int j=y;
+    int stop=false;
+    // se extiende para la derecha
+    while(i<C_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i++;
+    }
+    i=x-1;
+    j=y;
+    stop = false;
+    // se extiende para la izquierda
+    while(i>=0 && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        i--;
+    }
+    i=x;
+    j=y+1;
+    stop = false;
+    // se extiende para abajo 
+    while( j<R_BLOCKS && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        j++;
+    }
+    i=x;
+    j=y-1;
+    stop = false;
+    // se extiende para arriba
+    while( j>=0 && stop == false){
+        if(curr_set(i,j) != NO_PIECE){
+            stop=true;
+        } else if(opponent_set(i, j) != NO_PIECE){
+            stop=true;
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        } else {
+            highlight(i, j);
+            highlightBoard.board[j][i] = HIGHLIGHT;
+        }
+        j--;
+    }
+      
+}
+
+// resalta en el tablero donde se puede mover un peon en especifico
+void print_options_knight(int x, int y){
+    highlightBoard.board[y][x] = HIGHLIGHT;
+    highlight(x, y);
+    if(curr_set(x+2, y+1) == NO_PIECE && y<R_BLOCKS-1 && x<C_BLOCKS-2){
+        highlight(x+2, y+1);
+        highlightBoard.board[y+1][x+2] = HIGHLIGHT;
+    }
+    if(curr_set(x+2, y-1) == NO_PIECE && y>0  && x<C_BLOCKS-2){
+        highlight(x+2, y-1);
+        highlightBoard.board[y-1][x+2] = HIGHLIGHT;
+    }
+    if(curr_set(x-2, y+1) == NO_PIECE && y<R_BLOCKS-1 && x>2){
+        highlight(x-2, y+1);
+        highlightBoard.board[y+1][x-2] = HIGHLIGHT;
+    }
+    if(curr_set(x-2, y-1) == NO_PIECE && y>0  && x>2){
+        highlight(x-2, y-1);
+        highlightBoard.board[y-1][x-2] = HIGHLIGHT;
+    }
+    if(curr_set(x+1, y-2) == NO_PIECE && x<C_BLOCKS-1 && y<R_BLOCKS-2){
+        highlight(x+1, y-2);
+        highlightBoard.board[y-2][x+1] = HIGHLIGHT;
+    }
+    if(curr_set(x-1, y-2) == NO_PIECE && y<R_BLOCKS-2 && x>0){
+        highlight(x-1, y-2);
+        highlightBoard.board[y-2][x-1] = HIGHLIGHT;
+    }
+    if(curr_set(x-1, y+2) == NO_PIECE && x>0 && y<C_BLOCKS-2){
+        highlight(x-1, y+2);
+        highlightBoard.board[y+2][x-1] = HIGHLIGHT;
+    }
+    if(curr_set(x+1, y+2) == NO_PIECE && x<C_BLOCKS-1 && y<C_BLOCKS-2){
+        highlight(x+1, y+2);
+        highlightBoard.board[y+2][x+1] = HIGHLIGHT;
+    }
+    
+}
+
+// devuelve la pieza del jugador en juego en el lugar especifico
+int curr_set(int x, int y){
+    if (curr_usr == 1){
+        return set1.board[y][x];
+    }
+    return set2.board[y][x];
+}
+
+// devuelve la pieza del jugador que no esta en juego en el lugar especifico
+int opponent_set(int x, int y){
+    if (curr_usr == 1){
+        return set2.board[y][x];
+    }
+    return set1.board[y][x];
+}
+
+void rotate_chess(){
+    if(board.angle == 3){
+        board.angle =0;
+    }else {
+        board.angle++;
+    }
+    rotate_highlight();
+    rotate_set1();
+    rotate_set2();
+    rotate_board();
+    print_game();
+}
+void rotate_highlight(){
+    int k=0;
+    int piece;
+    for (int j = 0 ; j<R_BLOCKS ; j++){
+        for(int i=0+k; i<C_BLOCKS ; i++){
+            piece = highlightBoard.board[j][i];
+            highlightBoard.board[j][i] = highlightBoard.board[i][j];
+            highlightBoard.board[i][j] =piece;
+        }
+        k++;
+    }
+    for (int j = 0 ; j<R_BLOCKS; j++){
+        for(int i= 0; i<(C_BLOCKS/2); i++){
+            piece = highlightBoard.board[j][i];
+            highlightBoard.board[j][i] = highlightBoard.board[j][R_BLOCKS-1-i];
+            highlightBoard.board[j][R_BLOCKS-1-i] = piece;
+        }
+    }
+    
+}
+void rotate_set1(){
+    int k=0;
+    int piece;
+    for (int j = 0 ; j<R_BLOCKS ; j++){
+        for(int i=0+k; i<C_BLOCKS ; i++){
+            piece = set1.board[j][i];
+            set1.board[j][i] = set1.board[i][j];
+            set1.board[i][j] =piece;
+        }
+        k++;
+    }
+    for (int j = 0 ; j<R_BLOCKS ; j++){
+        for(int i= 0; i<(C_BLOCKS/2 ); i++){
+            piece = set1.board[j][i];
+            set1.board[j][i] = set1.board[j][R_BLOCKS-1-i];
+            set1.board[j][R_BLOCKS-1-i] =piece;
+        }
+    }
+}
+void rotate_set2(){
+    int k=0;
+    int piece;
+    // primero hacemos la transpuesta
+    for (int j = 0 ; j<R_BLOCKS ; j++){
+        for(int i=0+k; i<C_BLOCKS ; i++){
+            piece = set2.board[j][i];
+            set2.board[j][i] = set2.board[i][j];
+            set2.board[i][j] =piece;
+        }
+        k++;
+    }
+    // despues espejo sobre el eje x
+    for (int j = 0 ; j<R_BLOCKS; j++){
+        for(int i=0; i<(C_BLOCKS/2 ); i++){
+            piece = set2.board[j][i];
+            set2.board[j][i] = set2.board[j][R_BLOCKS-1-i];
+            set2.board[j][R_BLOCKS-1-i] = piece;
+        }
+    }
+}
+void rotate_board(){
+    int k=0;
+    int piece;
+    // primero hacemos la transpuesta
+    for (int j = 0 ; j<R_BLOCKS; j++){
+        for(int i=0+k; i<C_BLOCKS ; i++){
+            piece = board.board[j][i];
+            board.board[j][i] = board.board[i][j];
+            board.board[i][j] = piece;
+        }
+        k++;
+    }
+    //despues espejo sobre el eje x
+    for (int j = 0 ; j<R_BLOCKS; j++){
+        for(int i=0; i<(C_BLOCKS/2) ; i++){
+            piece = board.board[j][i];
+            board.board[j][i] = board.board[j][R_BLOCKS-1-i];
+            board.board[j][R_BLOCKS-1-i] = piece;
+        }
+    }
+}
+
 
 //Prints a border that indicates where the user is standing
 void print_usr(){
@@ -453,6 +1113,22 @@ void highlight(int x, int y){
     highlightTile(pos, BLOCK_WIDTH, BLOCK_HEIGHT, YELLOW);
 }
 
+void print_highlight(){
+    int pos[2];
+    for(int j=0; j<C_BLOCKS; j++){
+        for (int i = 0; i < R_BLOCKS; i++)
+        {
+            if(highlightBoard.board[j][i] == HIGHLIGHT ){
+                pos[X]=i*BLOCK_WIDTH;
+                pos[Y]=j*BLOCK_HEIGHT;
+                highlightTile(pos, BLOCK_WIDTH, BLOCK_HEIGHT, YELLOW);
+            }
+        }
+        
+
+    }
+}
+
 
 void printObjects(){
     print_usr(); 
@@ -470,6 +1146,7 @@ void makeSquare(int * square, int x, int y){
     return;
 }
 
+// printea todo retomando como estaba antes
 void print_game(){
     int x;
     int y;
@@ -479,6 +1156,7 @@ void print_game(){
             print_piece(i, j);
         }
     }
+    print_highlight();
     table();
     print_usr();
 }
@@ -593,7 +1271,7 @@ void parseKeyboard(){
         keyBufferBack++;
         
     int temp = readKey();
-    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY || temp == UP_ARROW || temp == DOWN_ARROW || temp == ENTER) && !limitInput(temp))
+    if((temp == LEFT_ARROW || temp == RIGHT_ARROW || temp == LEAVE_KEY || temp == UP_ARROW || temp == DOWN_ARROW || temp == ENTER ||temp == ROTATE) && !limitInput(temp))
         KeyBuffer[keyBufferFront++ % 200] = temp;
 
 }
@@ -610,10 +1288,11 @@ int key_pressed(){
 }
 
 void table(){
-    // printOnScreen(info,SCREEN_WIDTH,SCREEN_HEIGHT-10000,YELLOW);
-    printfColorAt("Pieces of player 1 left :",YELLOW,BLACK,800,info[1]-100);
-    printfColorAt("Pieces of player 2 left :",YELLOW,BLACK,800,info[1]-50);
-    printfColorAt("Time :",YELLOW,BLACK,800,info[1],time.tick/18);
+    printfColorAt("To return to terminal press q",YELLOW,BLACK,700,info[1]-200);
+    printfColorAt("To rotate board press r",YELLOW,BLACK,700,info[1]-150);
+    printfColorAt("Pieces of player 1 left :",YELLOW,BLACK,700,info[1]-100);
+    printfColorAt("Pieces of player 2 left :",YELLOW,BLACK,700,info[1]-50);
+    printfColorAt("Time :",YELLOW,BLACK,700,info[1],time.tick/18);
     tableData();
 }
 
@@ -621,6 +1300,6 @@ void table(){
 void tableData(){
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-100,set1.left);
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,set2.left);
-    printfColorAt("%d",YELLOW,BLACK,850,info[1],time.tick/18);
+    printfColorAt("%d",YELLOW,BLACK,750,info[1],time.tick/18);
 }
 

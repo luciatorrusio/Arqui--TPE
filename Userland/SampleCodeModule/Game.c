@@ -44,10 +44,10 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 #define NO_HIGHLIGHT               -1
 #define HIGHLIGHT                   1
 
-#define LEFT_ARROW                 'j'
-#define RIGHT_ARROW                'l' 
-#define UP_ARROW                   'i'
-#define DOWN_ARROW                 'k'
+#define LEFT_ARROW                 'a'
+#define RIGHT_ARROW                'd' 
+#define UP_ARROW                   'w'
+#define DOWN_ARROW                 's'
 #define ENTER                      '\n'
 #define ROTATE                     'r'
 #define LEAVE_KEY                  'q'

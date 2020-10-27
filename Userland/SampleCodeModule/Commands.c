@@ -18,7 +18,8 @@ int quotient(int a, int b){
 }
 
 int man(){
-    printf("\ngame\nexit\ntime\nman\ninvalidOpcode\ninfoReg\nquotient\nprintMem\nclear\n");
+    printf("\ngame\nexit\ntime\nman\nman \'function name\'\ninvalidOpcode\ninfoReg\nquotient\nprintMem \'memory pos\'\nclear\n");
+    
     return 0;
 }
 
@@ -43,7 +44,7 @@ int explainCommand(char * command){
     }
     else if(strcmp(command,"game")){
         printf("Command:\n        game\n");
-        printf("It unpauses/starts the game arachnoid.\n");
+        printf("It unpauses/starts the chess game.\n");
     }
     else if(strcmp(command,"exit")){
         printf("Command:\n        exit\n");

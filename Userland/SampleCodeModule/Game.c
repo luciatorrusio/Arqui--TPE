@@ -119,7 +119,7 @@ int runGame(void){
     gameTicks = 0;
     
     info[X]=SCREEN_WIDTH/2;
-    info[Y]=SCREEN_HEIGHT-(SCREEN_HEIGHT-BAR_YPOS)/2;
+    info[Y]=SCREEN_HEIGHT-300;
     initializePositions();
     
 

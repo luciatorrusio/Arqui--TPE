@@ -7,13 +7,12 @@
 
 extern void __UD2__();
 
-int quotient(int a, int b){
+int quotient(){
 
-    printf("I'm going to calculate the quotient of %d divided by %d\n",a,b);
+    printf("I'm going to calculate the quotient of 2 divided by 0\n");
 
-    int result =  (a)/ (b);
-    
-    printf("The result is %d\n",result);
+    int result =  (2)/ (0);
+
     return 0;
 }
 
@@ -58,8 +57,8 @@ int explainCommand(char * command){
         printf("It clears the screen.\n");
     }
     else if(strcmp(command,"quotient")){
-        printf("Command:\n        quotient [Argument_1] [Argument_2]\n");
-        printf("It calculates the quotient of the division of [Argument_1] by [Argument_2]. This can be used to test the DIVISION BY ZERO exception.\n");
+        printf("Command:\n        quotient\n");
+        printf("It calculates the quotient of the division of 2 by 0. This can be used to test the DIVISION BY ZERO exception.\n");
     }else{
         printf("That command does not exist!\n");
     }

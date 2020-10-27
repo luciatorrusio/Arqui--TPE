@@ -13,6 +13,7 @@
 /***************************************************************/
 
 #define MAXBUFFER (600)
+#define BACKSPACE 8
 
 /***************************************************************/
 /*                         Variables                           */
@@ -46,7 +47,7 @@ int runTerminal(){
 		int key = readKey();
 
 		if(key >0){     
-            if(key == 8 ){
+            if(key == BACKSPACE ){
                 if(TypeIndex>0){
                     TerminalType[--TypeIndex] = 0;
                     RemoveLastCharFromDisplay();
@@ -124,10 +125,10 @@ int interpretCommand(){
         clearConsole();
     else if(strcmp(command,"quotient") && hasParam1 && hasParam2){
         int a = stringToInt(param1), b = stringToInt(param2);
-        quotient(a,b);
+        quotient(a,b); //CAMI
     }
     else
-        printfError("%s%s%s%s: command not found \n",command,param1,param2,param3);    
+        printfError("%s %s %s %s: command not found \n",command,param1,param2,param3);    
     
     return  0;
 }

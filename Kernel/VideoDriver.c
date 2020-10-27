@@ -149,6 +149,7 @@ void print_highlight(int *pos,int lenght,int height,int fontColor){
      
 }
 
+// void print_pawn
 
 void setSize(unsigned int s){
 	SCREEN_bPP=s;

@@ -6,12 +6,6 @@
 #include <stdbool.h>
 #include "./include/Speaker.h"
 
-#define LIVESi                      3//cantidad de vidas al iniciar el juego    
-
-#define BAR_LENGTH                  (17*SCREEN_WIDTH/100)
-#define BAR_HEIGHT                  (4*SCREEN_HEIGHT/200)                
-#define BAR_YPOS                    (78*SCREEN_HEIGHT/100)
-
 #define BLOCK_WIDTH                 (SCREEN_HEIGHT/9)
 #define BLOCK_XSEPARATION           (0)
 #define BLOCK_HEIGHT                (SCREEN_HEIGHT/9)
@@ -52,8 +46,6 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK2, QUEEN2, KING2};
 #define ROTATE                     'r'
 #define LEAVE_KEY                  'q'
 
-
-static int lives = -1;                    //cantidad de vidas que tiene
 static int used= false;                     // esta variable es un fix RANCIO, creo que me toma dos veces la funcion print_options_pawn
 
 static int usr_pos[2] = {-1,-1};
@@ -61,8 +53,8 @@ static int curr_usr = 0;
 static int piece_selected[2];
 static bool select=false;
 
-static struct Board board = {-1,-1};
-static struct PieceSet set1 = {-1,-1};
+static struct Board board = {-1,-1};            //cambiar para que no tire warning
+static struct PieceSet set1 = {-1,-1};          //cambiar para que no tire warning    
 static struct PieceSet set2 = {-1,-1};
 static struct Board highlightBoard = {-1,-1};
 
@@ -270,7 +262,7 @@ void handleUsrMov(){
             next_highlight();                                   //muevo al usuario a la proxima opcion
         }
         else if(key == LEFT_ARROW){
-            next_highlight();               
+            next_highlight();      // hacerlo si hay tiempo         
         }else if(key == ROTATE){
             rotate_chess();               
         } else if(key == ENTER){
@@ -278,7 +270,7 @@ void handleUsrMov(){
             used = false;
             clear_highlight();
             if(curr_usr == 1){
-                //aca se come la pieza del otro 
+                //aca se come la pieza del otro  eficientizar
                 if(set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
                     set2.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
                     set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
@@ -1000,7 +992,7 @@ int opponent_set(int x, int y){
 
 void rotate_chess(){
     if(board.angle == 3){
-        board.angle =0;
+        board.angle = 0;
     }else {
         board.angle++;
     }
@@ -1140,12 +1132,6 @@ void matrixToXY(int * c, int * r){
 }
 
 
-void makeSquare(int * square, int x, int y){
-    square[X] = x;
-    square[Y] = y;
-    return;
-}
-
 // printea todo retomando como estaba antes
 void print_game(){
     int x;
@@ -1178,6 +1164,7 @@ void print_piece(int i, int j){
     int y=j;
     matrixToXY(&x, &y);
     if( set1.board[j][i] == PAWN1){
+        // print _pawn(jaqdv, w)
         print_piece1( x ,y,AQUA);
     } else if( set2.board[j][i] == PAWN2){
         print_piece1( x ,y,BLUE);

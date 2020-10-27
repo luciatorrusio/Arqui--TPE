@@ -52,6 +52,7 @@ static int usr_pos[2] = {-1,-1};
 static int curr_usr = 0;
 static int piece_selected[2];
 static bool select=false;
+static int win = 0;
 
 static struct Board board = {-1,-1};            //cambiar para que no tire warning
 static struct PieceSet set1 = {-1,-1};          //cambiar para que no tire warning    
@@ -118,6 +119,7 @@ int runGame(void){
     set2.left = 16;       
     gameTicks = 0;
     
+    win = 0;
     info[X]=SCREEN_WIDTH/2;
     info[Y]=SCREEN_HEIGHT-300;
     initializePositions();
@@ -212,7 +214,7 @@ int startGame(){
         if(realTicks % REAL_TO_GAME_TICKS == 0 && realTicks != previusTick){
             gameTicks++;
             previusTick = realTicks;
-            if((aux = stopKeyPressed()) ||  set1.left == 0 || set2.left == 0 ){
+            if((aux = stopKeyPressed()) ||  win != 0 ){
                 // Condicion de retorno
                 stopWhile = true;
             }else
@@ -230,7 +232,7 @@ int startGame(){
         return 0;
     }
         
-    if(set1.left == 0 || set2.left == 0 ){
+    if(win != 0){
         int x=finishGame(time.tick / 18);
         initialize=0;
         if(x==0)
@@ -272,6 +274,10 @@ void handleUsrMov(){
             if(curr_usr == 1){
                 //aca se come la pieza del otro  eficientizar
                 if(set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
+                    if(get_piece(usr_pos[X], usr_pos[Y])== KING2){
+                        win = 1;
+                        return;
+                    }
                     set2.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
                     set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
                     set1.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
@@ -281,6 +287,7 @@ void handleUsrMov(){
                     print_piece( piece_selected[X], piece_selected[Y]);
                     set2.left--;
                     curr_usr = 2;
+                    
                 }// aca se mueve a un lugar sin nadie 
                 else if(set1.board[usr_pos[Y]][usr_pos[X]] == NO_PIECE){
                     set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
@@ -294,6 +301,10 @@ void handleUsrMov(){
             }else if(curr_usr == 2){
                 // aca come a la ficha del otro
                 if(set1.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
+                    if(get_piece(usr_pos[X], usr_pos[Y])== KING1){
+                        win = 2;
+                        return;
+                    }
                     set1.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
                     set2.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
                     set2.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
@@ -303,6 +314,7 @@ void handleUsrMov(){
                     print_piece( piece_selected[X], piece_selected[Y]);
                     set1.left--;
                     curr_usr = 1;
+                    
                 } // aca mueve su ficha a un espacio vacio
                 else if(set2.board[usr_pos[Y]][usr_pos[X]] == NO_PIECE){
                     set2.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
@@ -356,6 +368,7 @@ void handleUsrMov(){
         goToTerminal = true;
     }
 }
+
 
 // pone la matriz de highlight todas en NO_HIGHLIGHT
 void clear_highlight(){
@@ -1197,19 +1210,8 @@ int finishGame(int time_past){
         int init;
         getBpp(&init);
         setSize(init*3);
-    if(set1.left == 0){
-        printfColorAt("Congratulations player 2 won!!",RED,BLACK,90,100);
+        printfColorAt("Congratulations player %d won!!",RED,BLACK,90,100, win);
         printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
-           
-    } else if(set2.left == 0){
-        printfColorAt("Congratulations player 1 won!!",RED,BLACK,90,100);
-        printfColorAt("It took you %d seconds",RED,BLACK,115,120,time_past);
-    }
-    else{
-
-        printfColorAt("Better luck next time!",RED,BLACK,90,100);
-        printfColorAt("Time: %d seconds",RED,BLACK,115,120,time_past);
-    }
         printfColorAt("Press x to restart or q to quit",BLUE,BLACK,50,140,time_past);
         setSize(init);
         char c;

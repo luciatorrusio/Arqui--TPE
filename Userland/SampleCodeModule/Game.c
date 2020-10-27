@@ -791,8 +791,8 @@ void print_options_queen(int x,int y){
         i++;
         j++;
     }
-    i=x;
-    j=y+1;
+    i=x+1;
+    j=y;
     stop = false;
     // se extiende para la derecha
     while(i<C_BLOCKS && stop == false){

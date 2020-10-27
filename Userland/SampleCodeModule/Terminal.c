@@ -123,9 +123,8 @@ int interpretCommand(){
         }
     else if(strcmp(command,"clear") && !hasParam1 && !hasParam2)
         clearConsole();
-    else if(strcmp(command,"quotient") && hasParam1 && hasParam2){
-        int a = stringToInt(param1), b = stringToInt(param2);
-        quotient(a,b); //CAMI
+    else if(strcmp(command,"quotient")){
+        quotient();
     }
     else
         printfError("%s %s %s %s: command not found \n",command,param1,param2,param3);    

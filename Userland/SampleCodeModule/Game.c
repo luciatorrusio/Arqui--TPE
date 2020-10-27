@@ -825,7 +825,7 @@ void print_options_queen(int x,int y){
         }
         i--;
     }
-    i=x+1;
+    i=x;
     j=y+1;
     stop = false;
     // se extiende para abajo 

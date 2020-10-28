@@ -271,6 +271,9 @@ void startGameRec(void){
 void handleUsrMov(){
     int key = key_pressed();
     int x,y;
+    uint64_t elapsedTime = 0;
+    uint64_t realTicks = 0;
+
     if(select == true){
         if(key == RIGHT_ARROW){
             next_highlight();                                   //muevo al usuario a la proxima opcion
@@ -288,6 +291,20 @@ void handleUsrMov(){
             select = false;
             used = false;
             clear_highlight();
+
+            realTicks=getTicks()-elapsedTime;
+            elapsedTime+=realTicks;
+            if (realTicks/18 >= 60){
+                int x=finishGame(time.tick / 18);
+                initialize=0;
+                if(x==0)
+                    goToTerminal=true;
+                else
+                {   
+                    runGame();
+                }   
+            }
+
             if(curr_usr == 1){
                 if(select_enroque == true){
                     // printfColorAt("entre al enroque",YELLOW,BLACK,700,info[1]+x);

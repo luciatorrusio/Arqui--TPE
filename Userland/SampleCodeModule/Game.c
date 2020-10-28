@@ -1193,35 +1193,35 @@ void print_options_rook(int x, int y){
 void print_options_knight(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
     highlight(x, y);
-    if(curr_set(x+2, y+1) == NO_PIECE && y<R_BLOCKS-1 && x<C_BLOCKS-2){
+    if(curr_set(x+2, y+1) == NO_PIECE && y+1<R_BLOCKS && x+2<C_BLOCKS){
         highlight(x+2, y+1);
         highlightBoard.board[y+1][x+2] = HIGHLIGHT;
     }
-    if(curr_set(x+2, y-1) == NO_PIECE && y>0  && x<C_BLOCKS-2){
+    if(curr_set(x+2, y-1) == NO_PIECE && y-1>=0  && x+2<C_BLOCKS){
         highlight(x+2, y-1);
         highlightBoard.board[y-1][x+2] = HIGHLIGHT;
     }
-    if(curr_set(x-2, y+1) == NO_PIECE && y<R_BLOCKS-1 && x>2){
+    if(curr_set(x-2, y+1) == NO_PIECE && y+1<R_BLOCKS && x-2>=0){
         highlight(x-2, y+1);
         highlightBoard.board[y+1][x-2] = HIGHLIGHT;
     }
-    if(curr_set(x-2, y-1) == NO_PIECE && y>0  && x>2){
+    if(curr_set(x-2, y-1) == NO_PIECE && y-1>=0  && x-2>=0){
         highlight(x-2, y-1);
         highlightBoard.board[y-1][x-2] = HIGHLIGHT;
     }
-    if(curr_set(x+1, y-2) == NO_PIECE && x<C_BLOCKS-1 && y<R_BLOCKS-2){
+    if(curr_set(x+1, y-2) == NO_PIECE && x+1<C_BLOCKS && y-2>=0){
         highlight(x+1, y-2);
         highlightBoard.board[y-2][x+1] = HIGHLIGHT;
     }
-    if(curr_set(x-1, y-2) == NO_PIECE && y<R_BLOCKS-2 && x>0){
+    if(curr_set(x-1, y-2) == NO_PIECE && y-2>=0 && x-1>=0){
         highlight(x-1, y-2);
         highlightBoard.board[y-2][x-1] = HIGHLIGHT;
     }
-    if(curr_set(x-1, y+2) == NO_PIECE && x>0 && y<C_BLOCKS-2){
+    if(curr_set(x-1, y+2) == NO_PIECE && x-1>=0 && y+2<R_BLOCKS){
         highlight(x-1, y+2);
         highlightBoard.board[y+2][x-1] = HIGHLIGHT;
     }
-    if(curr_set(x+1, y+2) == NO_PIECE && x<C_BLOCKS-1 && y<C_BLOCKS-2){
+    if(curr_set(x+1, y+2) == NO_PIECE && x+1<C_BLOCKS && y+2<R_BLOCKS){
         highlight(x+1, y+2);
         highlightBoard.board[y+2][x+1] = HIGHLIGHT;
     }

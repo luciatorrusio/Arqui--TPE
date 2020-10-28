@@ -795,13 +795,13 @@ void print_options_pawn(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
     highlight(x, y);
     if (curr_usr == 1 && board.angle == 0){
-        if(x==1 && set1.board[y][x+2] == NO_PIECE && set2.board[y][x+2] == NO_PIECE){
-            highlight(x+2, y);
-            highlightBoard.board[y][x+2] = HIGHLIGHT;
-        }
         if(set1.board[y][x+1] == NO_PIECE && set2.board[y][x+1] == NO_PIECE && x<C_BLOCKS-1){
             highlight(x+1, y);
             highlightBoard.board[y][x+1] = HIGHLIGHT;
+            if(x==1 && set1.board[y][x+2] == NO_PIECE && set2.board[y][x+2] == NO_PIECE){
+                highlight(x+2, y);
+                highlightBoard.board[y][x+2] = HIGHLIGHT;
+            }
         }
         if(set2.board[y-1][x+1] != NO_PIECE && set1.board[y-1][x+1]==NO_PIECE && x<C_BLOCKS-1 && y>0){
             if(used == false){
@@ -819,13 +819,14 @@ void print_options_pawn(int x, int y){
             
     }
     else if (curr_usr == 2 && board.angle == 0){
-        if(x==C_BLOCKS-2 && set1.board[y][x-2] == NO_PIECE && set2.board[y][x-2] == NO_PIECE){
-            highlight(x-2, y);
-            highlightBoard.board[y][x-2] = HIGHLIGHT;
-        }
+        
         if(set2.board[y][x-1] == NO_PIECE && set1.board[y][x-1] == NO_PIECE && x<C_BLOCKS-1){
             highlight(x-1, y);
             highlightBoard.board[y][x-1] = HIGHLIGHT;
+            if(x==C_BLOCKS-2 && set1.board[y][x-2] == NO_PIECE && set2.board[y][x-2] == NO_PIECE){
+                highlight(x-2, y);
+                highlightBoard.board[y][x-2] = HIGHLIGHT;
+            }
         }
         if(set1.board[y-1][x-1] != NO_PIECE && x<C_BLOCKS-1 && y>0){
             if(used == false){
@@ -842,15 +843,15 @@ void print_options_pawn(int x, int y){
             }
             
     }
-    // ahora si el tablero esta en angle == 1
-    if (curr_usr == 1 && board.angle == 1){
-        if(y==1 && set1.board[y+2][x] == NO_PIECE && set2.board[y+2][x] == NO_PIECE){
-            highlight(x, y+2);
-            highlightBoard.board[y+2][x] = HIGHLIGHT;
-        }
+    else if (curr_usr == 1 && board.angle == 1){
+        
         if(set1.board[y+1][x] == NO_PIECE && set2.board[y+1][x] == NO_PIECE && y<R_BLOCKS-1){
             highlight(x, y+1);
             highlightBoard.board[y+1][x] = HIGHLIGHT;
+            if(y==1 && set1.board[y+2][x] == NO_PIECE && set2.board[y+2][x] == NO_PIECE){
+                highlight(x, y+2);
+                highlightBoard.board[y+2][x] = HIGHLIGHT;
+            }
         }
         if(set2.board[y+1][x-1] != NO_PIECE && set1.board[y+1][x-1]==NO_PIECE && x>0 && y<R_BLOCKS-1){
             if(used == false){
@@ -867,14 +868,14 @@ void print_options_pawn(int x, int y){
             }
             
     } 
-    else if (curr_usr == 2 && board.angle == 1){
-        if(y==R_BLOCKS-2 && set1.board[y-2][x] == NO_PIECE && set2.board[y-2][x] == NO_PIECE){
-            highlight(x, y-2);
-            highlightBoard.board[y-2][x] = HIGHLIGHT;
-        }
+    else if (curr_usr == 2 && board.angle == 1){   
         if(set2.board[y-1][x] == NO_PIECE && set1.board[y-1][x] == NO_PIECE && y>0){
             highlight(x, y-1);
             highlightBoard.board[y-1][x] = HIGHLIGHT;
+            if(y==R_BLOCKS-2 && set1.board[y-2][x] == NO_PIECE && set2.board[y-2][x] == NO_PIECE){
+                highlight(x, y-2);
+                highlightBoard.board[y-2][x] = HIGHLIGHT;
+            }
         }
         if(set1.board[y-1][x-1] != NO_PIECE && x<C_BLOCKS-1 && y>0){
             if(used == false){

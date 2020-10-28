@@ -70,7 +70,7 @@ int block[3]={-1,-1,-1};
 static char KeyBuffer[200];
 static int keyBufferFront = 0;
 static int keyBufferBack = 0;
-int x=-400;
+static int x=-400;
 static bool goToTerminal = false;
 
 static int SCREEN_HEIGHT= -1;
@@ -279,7 +279,12 @@ void handleUsrMov(){
             next_highlight();      // hacerlo si hay tiempo         
         }else if(key == ROTATE){
             rotate_chess();               
-        } else if(key == ENTER){
+        }else if(key == ENROQUE && select_enroque){
+            select = false;
+            select_enroque = false; 
+            clear_highlight();             
+        } 
+        else if(key == ENTER){
             select = false;
             used = false;
             clear_highlight();
@@ -381,7 +386,7 @@ void handleUsrMov(){
         rotate_chess();               
     }
     else if(key == ENROQUE){
-        highlight_enroque();
+        try_enroque();
         
     }
     else if(key == ENTER){ 
@@ -400,142 +405,154 @@ void handleUsrMov(){
 }
 
 // Esta funcion se fija si puede hacer enroque y highlightea con las torres que se puede hacer
-void highlight_enroque(){
+void try_enroque(){
     if(curr_usr == 1 && !set1.king_moved && !set1.rook1_moved && !set1.rook2_moved){
        printfColorAt("NOTHING MOVED",YELLOW,BLACK,700,info[1]-400);
         nothing_in_middle(ROOK11);
-        //nothing_in_middle(ROOK12);
+        nothing_in_middle(ROOK12);
     } 
-    // else if(curr_usr == 2 && !set2.king_moved && !set2.rook1_moved && !set2.rook2_moved){
-    //     nothing_in_middle(ROOK21);
-    //     nothing_in_middle(ROOK22);
-    // }
+    else if(curr_usr == 2 && !set2.king_moved && !set2.rook1_moved && !set2.rook2_moved){
+        nothing_in_middle(ROOK21);
+        nothing_in_middle(ROOK22);
+    }
 }
 
+// Esta funcion hace el movimiento del enroque dado de donde a donde va el king de donde a donde va el rook y sus nombres especificos
+void move_enroque2(int yRook, int xRook, int yKing, int xKing, int y2Rook, int x2Rook , int y2King, int x2King, int ROOK, int KING ){
+    set1.board[yRook][xRook] = NO_PIECE;
+    set1.board[yKing][xKing] = NO_PIECE;
+    set1.board[y2Rook][x2Rook] = ROOK;
+    print_tile(x2Rook,y2Rook);
+    print_piece(x2Rook,y2Rook);
+    set1.board[y2King][x2King]= KING;
+    print_tile(x2King,y2King);
+    print_piece(x2King,y2King);
+    print_tile(xRook,yRook);
+    print_piece(xRook,yRook);
+    print_tile(xKing,yKing);
+    print_piece(x2King,y2King);
+}
+
+// Esta funcioin le da el contexto de las posiciones para poder moverse COMPLETAR   
 void move_enroque(){
     int rook = get_piece(usr_pos[X], usr_pos[Y]);
-    if(board.angle == 0 && rook == ROOK11){
-        set1.board[0][0] = NO_PIECE;
-        set1.board[4][0] = NO_PIECE;
-        set1.board[3][0] = ROOK11;
-        print_tile(0,3);
-        print_piece( 0, 3);
-        set1.board[2][0]= KING1;
-        print_tile(0,2);
-        print_piece( 0, 2);
-        print_tile(0,0);
-        print_piece( 0, 0);
-        print_tile(0,4);
-        print_piece( 0, 4);
+    if(rook == ROOK11){
+        if(board.angle == 0){
+            move_enroque2(0,0,4,0,3,0,2,0, ROOK11, KING1);    
+        }
+        else if(board.angle == 1){
+            move_enroque2(0,7,0,3,0,4,0,5, ROOK11, KING1);
+        }
+        else if(board.angle == 2){
+            move_enroque2(7,7,3,7,4,7,5,7, ROOK11, KING1);
+        }
+        else if(board.angle == 3){
+            move_enroque2(7,0,7,3,7,4,7,5, ROOK11, KING1);
+        }
     }
-    // else if(board.angle == 1 && rook == ROOK11){
-    //     set1.board[0][4] = ROOK11;
-    //     print_tile(4,0);
-    //     print_piece( 4, 0);
-    //     set1.board[0][5]= KING1;
-    //     print_tile(5,4);
-    //     print_piece( 5, 4);
-    // }
-    // FALTA ELN RESTO DE LOS ANGLES Y PARA EL JUGADOR 2
+    else if(rook == ROOK22){
+        if(board.angle == 2){
+            move_enroque2(0,0,3,0,2,0,1,0, ROOK22, KING2);    
+        }
+        else if(board.angle == 3){
+            move_enroque2(0,7,0,4,0,5,0,6, ROOK22, KING2);
+        }
+        else if(board.angle == 0){
+            move_enroque2(7,7,4,7,5,7,6,7, ROOK22, KING2);
+        }
+        else if(board.angle == 1){
+            move_enroque2(7,0,7,3,7,2,7,1, ROOK22, KING2);
+        }
+    }
+    else if(rook == ROOK21){
+        if(board.angle == 3){
+            move_enroque2(0,0,0,4,0,3,0,2, ROOK21, KING2);    
+        }
+        else if(board.angle == 0){
+            move_enroque2(0,7,4,7,3,7,2,7, ROOK21, KING2);
+        }
+        else if(board.angle == 1){
+            move_enroque2(7,7,7,3,7,4,7,5, ROOK21, KING2);
+        }
+        else if(board.angle == 2){
+            move_enroque2(7,0,3,0,4,0,5,0, ROOK21, KING2);
+        }
+    }
+    else if(rook == ROOK12){
+        if(board.angle == 1){
+            move_enroque2(0,0,0,3,0,2,0,1, ROOK12, KING1);    
+        }
+        else if(board.angle == 2){
+            move_enroque2(0,7,3,7,2,7,1,7, ROOK12, KING1);
+        }
+        else if(board.angle == 3){
+            move_enroque2(7,7,7,4,7,5,7,6, ROOK12, KING1);
+        }
+        else if(board.angle == 0){
+            move_enroque2(7,0,4,0,5,0,6,0, ROOK12, KING1);
+        }
+    }
+    
+    
+}
+
+void highlight_enroque(int fRook, int cRook){
+    highlightBoard.board[fRook][cRook] = HIGHLIGHT;
+            highlight(cRook,fRook);
+            print_tile(usr_pos[X], usr_pos[Y]);
+            print_piece(usr_pos[X], usr_pos[Y]);
+            usr_pos[X] = cRook;
+            usr_pos[Y] = fRook;
+            select_enroque = true;
+            select = true;
 }
 
 void nothing_in_middle(int rook){
     if(rook == ROOK11){
-        if(board.angle == 0 && argument(0,0, 1, 0 , true)==true){
-            highlightBoard.board[0][0] = HIGHLIGHT;
-            highlight(0,0);
-            print_tile(usr_pos[X], usr_pos[Y]);
-            print_piece(usr_pos[X], usr_pos[Y]);
-            usr_pos[X] = 0;
-            usr_pos[Y] = 0;
-            select_enroque = true;
-            select = true;
+        if(board.angle == 0 && argument(0,0, 1, 0 , true)){
+            highlight_enroque(0,0);
         }
-        // else if(board.angle == 1 && argument(0,7, 0, -1 , true)==true ){
-        //     highlightBoard.board[0][7] = HIGHLIGHT;
-        //     highlight(0,7);
-        //     select_enroque = true;
-        //     select = true;
-        // }else if(board.angle == 2 && argument(7,7, -1, 0 , true)==true){
-        //     highlightBoard.board[7][7] = HIGHLIGHT;
-        //     highlight(7,7);
-        //     select_enroque = true;
-        //     select = true;
-        // }else if(board.angle == 3 && argument(7,0, 0, 1 , true)==true){
-        //     highlightBoard.board[7][0] = HIGHLIGHT;
-        //     highlight(7,0);
-        //     select_enroque = true;
-        //     select = true;
-        // }
+        else if(board.angle == 1 && argument(0,7, 0, -1 , true)==true ){
+            highlight_enroque(0,7);
+        }else if(board.angle == 2 && argument(7,7, -1, 0 , true)==true){
+            highlight_enroque(7,7);
+        }else if(board.angle == 3 && argument(7,0, 0, 1 , true)==true){
+            highlight_enroque(7,0);
+        }
     }
-    // else if(rook == ROOK22){
-    //     if(board.angle == 2 && argument(0,0, 1, 0 , true)==true){
-    //         highlightBoard.board[0][0] = HIGHLIGHT;
-    //         highlight(0,0);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 3 && argument(0,7, 0, -1 , true)==true ){
-    //         highlightBoard.board[0][7] = HIGHLIGHT;
-    //         highlight(0,7);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 0 && argument(7,7, -1, 0 , true)==true){
-    //         highlightBoard.board[7][7] = HIGHLIGHT;
-    //         highlight(7,7);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 1 && argument(7,0, 0, 1 , true)==true){
-    //         highlightBoard.board[7][0] = HIGHLIGHT;
-    //         highlight(7,0);
-    //         select_enroque = true;
-    //         select = true;
-    //     }
-    // }
-    // else if(rook == ROOK12){
-    //     if(board.angle == 1 && argument(0,0, -1, 0 , false)==true){
-    //         highlightBoard.board[0][0] = HIGHLIGHT;
-    //         highlight(0,0);
-    //         select_enroque = true;
-    //     }else if(board.angle == 2 && argument(0,7, 0, 1 , false)==true ){
-    //         highlightBoard.board[0][7] = HIGHLIGHT;
-    //         highlight(0,7);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 3 && argument(7,7, 1, 0, false)==true){
-    //         highlightBoard.board[7][7] = HIGHLIGHT;
-    //         highlight(7,7);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 0 && argument(7,0, 0, -1 , false)==true){
-    //         highlightBoard.board[7][0] = HIGHLIGHT;
-    //         highlight(7,0);
-    //         select_enroque = true;
-    //         select = true;
-    //     }
-    // }
-    // else if(rook == ROOK21){
-    //     if(board.angle == 3 && argument(0,0, -1, 0 , false)==true){
-    //         highlightBoard.board[0][0] = HIGHLIGHT;
-    //         highlight(0,0);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 0 && argument(0,7, 0, 1 , false)==true ){
-    //         highlightBoard.board[0][7] = HIGHLIGHT;
-    //         highlight(0,7);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 1 && argument(7,7, 1, 0, false)==true){
-    //         highlightBoard.board[7][7] = HIGHLIGHT;
-    //         highlight(7,7);
-    //         select_enroque = true;
-    //         select = true;
-    //     }else if(board.angle == 2 && argument(7,0, 0, -1 , false)==true){
-    //         highlightBoard.board[7][0] = HIGHLIGHT;
-    //         highlight(7,0);
-    //         select_enroque = true;
-    //         select = true;
-    //     }
-    // }
+    else if(rook == ROOK22){
+        if(board.angle == 2 && argument(0,0, 1, 0 , true)==true){
+            highlight_enroque(0,0);
+        }else if(board.angle == 3 && argument(0,7, 0, -1 , true)==true ){
+            highlight_enroque(0,7);
+        }else if(board.angle == 0 && argument(7,7, -1, 0 , true)==true){
+            highlight_enroque(7,7);
+        }else if(board.angle == 1 && argument(7,0, 0, 1 , true)==true){
+            highlight_enroque(7,0);
+        }
+    }
+    else if(rook == ROOK12){
+        if(board.angle == 1 && argument(0,0, -1, 0 , false)==true){
+            highlight_enroque(0,0);
+        }else if(board.angle == 2 && argument(0,7, 0, 1 , false)==true ){
+            highlight_enroque(0,7);
+        }else if(board.angle == 3 && argument(7,7, 1, 0, false)==true){
+            highlight_enroque(7,7);
+        }else if(board.angle == 0 && argument(7,0, 0, -1 , false)==true){
+            highlight_enroque(7,0);
+        }
+    }
+    else if(rook == ROOK21){
+        if(board.angle == 3 && argument(0,0, -1, 0 , false)==true){
+            highlight_enroque(0,0);
+        }else if(board.angle == 0 && argument(0,7, 0, 1 , false)==true ){
+            highlight_enroque(0,7);
+        }else if(board.angle == 1 && argument(7,7, 1, 0, false)==true){
+            highlight_enroque(7,7);
+        }else if(board.angle == 2 && argument(7,0, 0, -1 , false)==true){
+            highlight_enroque(7,0);
+        }
+    }
     
 }
 

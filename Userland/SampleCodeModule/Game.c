@@ -70,7 +70,6 @@ int block[3]={-1,-1,-1};
 static char KeyBuffer[200];
 static int keyBufferFront = 0;
 static int keyBufferBack = 0;
-static int x=-400;
 static bool goToTerminal = false;
 
 static int SCREEN_HEIGHT= -1;
@@ -124,6 +123,8 @@ int runGame(void){
     set1.left = 16;
     set2.left = 16;       
     gameTicks = 0;
+    elapsedTime = 0;
+    turnTicks = 0;
     // inicializa que nadie gano
     win = 0;
     // Inicializa la posicion de la tabla de informacion
@@ -292,18 +293,17 @@ void handleUsrMov(){
             select = false;
             used = false;
             clear_highlight();
-
-            turnTicks=time.tick-elapsedTime;
+            //time.tick/18 cunatos segundo en el juego
+            //segundos en juego el jugador especifico en el turno
+            turnTicks=(time.tick/18)-elapsedTime;
             elapsedTime+=turnTicks;
-            if (turnTicks/18 >= 20){
-                int x=finishGame(time.tick / 18);
-                initialize=0;
-                if(x==0)
-                    goToTerminal=true;
-                else
-                {   
-                    runGame();
-                }   
+            if (turnTicks >= 20){
+                if(curr_usr == 1){
+                    win = 2;
+                }else {
+                    win = 1;
+                }
+                return;
             }
 
             if(select_enroque == true){

@@ -791,107 +791,66 @@ void print_tile_options(int x, int y, int piece){
     }
 }
 
+void highlight_pawn_forward(int x, int y, int sum_x,  int sum_y, bool init_pos){
+    if(curr_set(x+sum_x, y+sum_y)== NO_PIECE && opponent_set(x+sum_x, y+sum_y) == NO_PIECE && x+sum_x<C_BLOCKS && x+sum_x>=0 && y+sum_y<R_BLOCKS && y+sum_y>=0 ){
+        highlight(x+sum_x, y+sum_y);
+        highlightBoard.board[y+sum_y][x+sum_x] = HIGHLIGHT;
+        if(init_pos && set1.board[y+sum_y+sum_y][x+sum_x+sum_x] == NO_PIECE && set2.board[y+sum_y+sum_y][x+sum_x+sum_x] == NO_PIECE)
+        {
+            highlight(x+sum_x+sum_x, y+sum_y+sum_y);
+            highlightBoard.board[y+sum_y+sum_y][x+sum_x+sum_x] = HIGHLIGHT;
+        }
+    }
+}
+void highlight_pawn_diagonal(int x, int y){
+    if(curr_set(x, y) == NO_PIECE && opponent_set(x,y)!=NO_PIECE && x<C_BLOCKS && y>=0 && x>=0 && y<R_BLOCKS){
+        if(used == false){
+            used == true;
+            highlight(x, y);
+            highlightBoard.board[y][x] = HIGHLIGHT;
+        } 
+    }  
+}
+void highlight_pawn(int x, int y, int sum_xf, int sum_yf, char change, bool init_pos){
+    highlight_pawn_forward(x, y, sum_xf,  sum_yf, init_pos);
+    if(change == 'y'){
+        highlight_pawn_diagonal(x+sum_xf, y-1);
+        highlight_pawn_diagonal(x+sum_xf, y+1);
+    }
+    else if(change == 'x'){
+        highlight_pawn_diagonal(x-1, y+sum_xf);
+        highlight_pawn_diagonal(x+1, y+sum_yf);
+    }
+    
+}
+
 // resalta en el tablero donde se puede mover un pawn en especifico
 void print_options_pawn(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
     highlight(x, y);
     if (curr_usr == 1 && board.angle == 0){
-        if(set1.board[y][x+1] == NO_PIECE && set2.board[y][x+1] == NO_PIECE && x<C_BLOCKS-1){
-            highlight(x+1, y);
-            highlightBoard.board[y][x+1] = HIGHLIGHT;
-            if(x==1 && set1.board[y][x+2] == NO_PIECE && set2.board[y][x+2] == NO_PIECE){
-                highlight(x+2, y);
-                highlightBoard.board[y][x+2] = HIGHLIGHT;
-            }
-        }
-        if(set2.board[y-1][x+1] != NO_PIECE && set1.board[y-1][x+1]==NO_PIECE && x<C_BLOCKS-1 && y>0){
-            if(used == false){
-                used == true;
-                highlight(x+1, y-1);
-                highlightBoard.board[y-1][x+1] = HIGHLIGHT;
-            } 
-        }   
-        if(set2.board[y+1][x+1] != NO_PIECE  && x<C_BLOCKS-1 && y<R_BLOCKS-1)
-            if(used == false){
-                used == true;
-                highlight(x+1, y+1);
-                highlightBoard.board[y+1][x+1] = HIGHLIGHT;
-            }
-            
+        highlight_pawn(x,y,1,0,'y',x==1);      
     }
     else if (curr_usr == 2 && board.angle == 0){
-        
-        if(set2.board[y][x-1] == NO_PIECE && set1.board[y][x-1] == NO_PIECE && x<C_BLOCKS-1){
-            highlight(x-1, y);
-            highlightBoard.board[y][x-1] = HIGHLIGHT;
-            if(x==C_BLOCKS-2 && set1.board[y][x-2] == NO_PIECE && set2.board[y][x-2] == NO_PIECE){
-                highlight(x-2, y);
-                highlightBoard.board[y][x-2] = HIGHLIGHT;
-            }
-        }
-        if(set1.board[y-1][x-1] != NO_PIECE && x<C_BLOCKS-1 && y>0){
-            if(used == false){
-                used == true;
-                highlight(x-1, y-1);
-                highlightBoard.board[y-1][x-1] = HIGHLIGHT;
-            }
-        }   
-        if(set1.board[y+1][x-1] != NO_PIECE  && x<C_BLOCKS-1 && y<R_BLOCKS-1)
-            if(used == false){
-                used == true;
-                highlight(x-1, y+1);
-                highlightBoard.board[y+1][x-1] = HIGHLIGHT;
-            }
-            
+        highlight_pawn(x,y,-1,0,'y',x==C_BLOCKS-2);    
     }
     else if (curr_usr == 1 && board.angle == 1){
-        
-        if(set1.board[y+1][x] == NO_PIECE && set2.board[y+1][x] == NO_PIECE && y<R_BLOCKS-1){
-            highlight(x, y+1);
-            highlightBoard.board[y+1][x] = HIGHLIGHT;
-            if(y==1 && set1.board[y+2][x] == NO_PIECE && set2.board[y+2][x] == NO_PIECE){
-                highlight(x, y+2);
-                highlightBoard.board[y+2][x] = HIGHLIGHT;
-            }
-        }
-        if(set2.board[y+1][x-1] != NO_PIECE && set1.board[y+1][x-1]==NO_PIECE && x>0 && y<R_BLOCKS-1){
-            if(used == false){
-                used == true;
-                highlight(x-1, y+1);
-                highlightBoard.board[y+1][x-1] = HIGHLIGHT;
-            } 
-        }   
-        if(set2.board[y+1][x+1] != NO_PIECE  && x<C_BLOCKS-1 && y<R_BLOCKS-1)
-            if(used == false){
-                used == true;
-                highlight(x+1, y+1);
-                highlightBoard.board[y+1][x+1] = HIGHLIGHT;
-            }
-            
+        highlight_pawn(x,y,0,1,'x',y==1);
     } 
-    else if (curr_usr == 2 && board.angle == 1){   
-        if(set2.board[y-1][x] == NO_PIECE && set1.board[y-1][x] == NO_PIECE && y>0){
-            highlight(x, y-1);
-            highlightBoard.board[y-1][x] = HIGHLIGHT;
-            if(y==R_BLOCKS-2 && set1.board[y-2][x] == NO_PIECE && set2.board[y-2][x] == NO_PIECE){
-                highlight(x, y-2);
-                highlightBoard.board[y-2][x] = HIGHLIGHT;
-            }
-        }
-        if(set1.board[y-1][x-1] != NO_PIECE && x<C_BLOCKS-1 && y>0){
-            if(used == false){
-                used == true;
-                highlight(x-1, y-1);
-                highlightBoard.board[y-1][x-1] = HIGHLIGHT;
-            }
-        }   
-        if(set1.board[y-1][x+1] != NO_PIECE  && x<C_BLOCKS-1 && y>0)
-            if(used == false){
-                used == true;
-                highlight(x+1, y-1);
-                highlightBoard.board[y-1][x+1] = HIGHLIGHT;
-            }
-            
+    else if (curr_usr == 2 && board.angle == 1){  
+        highlight_pawn(x,y,0,-1,'x',y==R_BLOCKS-2);     
+    }
+    else if (curr_usr == 2 && board.angle == 2){
+        highlight_pawn(x,y,1,0,'y',x==1);      
+    }
+    else if (curr_usr == 1 && board.angle == 2){
+        highlight_pawn(x,y,-1,0,'y',x==C_BLOCKS-2);    
+    }
+    else if (curr_usr == 2 && board.angle == 3){
+        highlight_pawn(x,y,0,1,'x',y==1);
+    } 
+    else if (curr_usr == 1 && board.angle == 3){  
+        highlight_pawn(x,y,0,-1,'x',y==R_BLOCKS-2);     
     }
 }
 

@@ -79,6 +79,9 @@ static int info[2]={-1,-1};
 
 static uint64_t gameTicks = -1;
 
+uint64_t elapsedTime = 0;
+uint64_t turnTicks = 0;
+
 static int initialize= -1;
 //DECLARACION DE FUNCIONES
     void printObjects();
@@ -271,8 +274,6 @@ void startGameRec(void){
 void handleUsrMov(){
     int key = key_pressed();
     int x,y;
-    uint64_t elapsedTime = 0;
-    uint64_t realTicks = 0;
 
     if(select == true){
         if(key == RIGHT_ARROW){
@@ -292,9 +293,9 @@ void handleUsrMov(){
             used = false;
             clear_highlight();
 
-            realTicks=getTicks()-elapsedTime;
-            elapsedTime+=realTicks;
-            if (realTicks/18 >= 60){
+            turnTicks=time.tick-elapsedTime;
+            elapsedTime+=turnTicks;
+            if (turnTicks/18 >= 20){
                 int x=finishGame(time.tick / 18);
                 initialize=0;
                 if(x==0)

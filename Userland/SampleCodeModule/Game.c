@@ -294,16 +294,16 @@ void handleUsrMov(){
             
             realTicks=getTicks()-elapsedTime;
             elapsedTime+=realTicks;
-            if (realTicks/18 >= 60){
-                int x=finishGame(time.tick / 18);
-                initialize=0;
-                if(x==0)
-                    goToTerminal=true;
-                else
-                {   
-                    runGame();
-                }   
-            }
+            // if (realTicks/18 >= 60){
+            //     int x=finishGame(time.tick / 18);
+            //     initialize=0;
+            //     if(x==0)
+            //         goToTerminal=true;
+            //     else
+            //     {   
+            //         runGame();
+            //     }   
+            // }
 
             if(select_enroque == true){
                 move_enroque();

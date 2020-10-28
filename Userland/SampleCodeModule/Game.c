@@ -291,6 +291,20 @@ void handleUsrMov(){
             select = false;
             used = false;
             clear_highlight();
+            
+            realTicks=getTicks()-elapsedTime;
+            elapsedTime+=realTicks;
+            // if (realTicks/18 >= 60){
+            //     int x=finishGame(time.tick / 18);
+            //     initialize=0;
+            //     if(x==0)
+            //         goToTerminal=true;
+            //     else
+            //     {   
+            //         runGame();
+            //     }   
+            // }
+
             if(select_enroque == true){
                 move_enroque();
                 select_enroque = false;
@@ -299,35 +313,7 @@ void handleUsrMov(){
                 }else {
                     curr_usr = 1;
                 }
-            }
-            realTicks=getTicks()-elapsedTime;
-            elapsedTime+=realTicks;
-            if (realTicks/18 >= 60){
-                int x=finishGame(time.tick / 18);
-                initialize=0;
-                if(x==0)
-                    goToTerminal=true;
-                else
-                {   
-                    runGame();
-                }   
-            }
-
-            if(curr_usr == 1){
-                if(select_enroque == true){
-                    // printfColorAt("entre al enroque",YELLOW,BLACK,700,info[1]+x);
-                    move_enroque();
-                    select_enroque = false;
-                    if(curr_usr == 1){
-                        curr_usr = 2;
-                    }else {
-                        curr_usr = 1;
-                    }
-                    return;
-                }
-                return;
-            }
-            else if(curr_usr == 1){
+            } else if(curr_usr == 1){
                 
                 //aca se come la pieza del otro  eficientizar
                 if(set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){

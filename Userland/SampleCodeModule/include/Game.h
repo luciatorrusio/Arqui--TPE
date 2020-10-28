@@ -8,6 +8,9 @@
 struct PieceSet {
     int board[R_BLOCKS][C_BLOCKS];                                    //pelota en el medio de ls pantalla
     int left;
+    int king_moved;
+    int rook1_moved;
+    int rook2_moved;
 };
 struct Board{
     int board[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques

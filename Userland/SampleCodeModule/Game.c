@@ -269,6 +269,15 @@ void startGameRec(void){
     /*MOVIMIENTO DEL USUARIO*/
     handleUsrMov();
     printObjects();
+    turnTicks=(time.tick/18)-elapsedTime;
+    if (turnTicks >= 20){
+        if(curr_usr == 1){
+            win = 2;
+        }else {
+            win = 1;
+        }
+        return;
+    }
 }
 
 //Esta funcion mueve al usuario y reacciona dependiendo que tecla presiona el usuario
@@ -295,17 +304,8 @@ void handleUsrMov(){
             clear_highlight();
             //time.tick/18 cunatos segundo en el juego
             //segundos en juego el jugador especifico en el turno
-            turnTicks=(time.tick/18)-elapsedTime;
             elapsedTime+=turnTicks;
-            if (turnTicks >= 20){
-                if(curr_usr == 1){
-                    win = 2;
-                }else {
-                    win = 1;
-                }
-                return;
-            }
-
+        
             if(select_enroque == true){
                 move_enroque();
                 select_enroque = false;

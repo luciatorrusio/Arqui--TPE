@@ -21,7 +21,7 @@ typedef struct{
 
 void clearConsole()
 {
-    delete(FD_STDOUT,DELETE_ALL_DISPLAY,NULL,NULL,NULL);
+    delete(FD_STDOUT,(void*)DELETE_ALL_DISPLAY,NULL,NULL,NULL);
 }
 
 
@@ -34,7 +34,7 @@ void printf(const char * format, ...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    write(FD_STDOUT,string,0,0,0);
+    write(FD_STDOUT,(void*)string,0,0,0);
 }
 
 void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,int y,...){
@@ -62,7 +62,7 @@ void printfColorAt(const char * format,int fontColor, int backgroundColor,int x,
     }
         colorString[i].ch = 0;
 
-        write(FD_STDOUT_COLOR,colorString,0,0,0);
+        write(FD_STDOUT_COLOR,(void*)colorString,0,0,0);
 
 }
 
@@ -76,14 +76,14 @@ void printfError(const char * format,...){
     snprintf(string,MAXBUFFER,(char*)format,args);
     va_end(args);
 
-    write(FD_STDERR,string,0,0,0);
+    write(FD_STDERR,(void*)string,0,0,0);
 
 }
 
 
 
 void RemoveLastCharFromDisplay(){
-    delete(FD_STDOUT,DELETE_CURRENT_CHAR,NULL,NULL,NULL);
+    delete(FD_STDOUT,(void*)DELETE_CURRENT_CHAR,NULL,NULL,NULL);
 }
 
 
@@ -91,7 +91,7 @@ void putChar( char ch)
 {
     char buff[2]={0,0};
     buff[0]=ch;
-    write(FD_STDOUT,buff,0,0,0);
+    write(FD_STDOUT,(void*)buff,0,0,0);
 
 }
 
@@ -99,7 +99,7 @@ void putChar( char ch)
 int readKey()
 {
     static char buff[2];
-    read(FD_STDIN,buff,2,0,0);
+    read(FD_STDIN,buff,(void*)2,0,0);
     char retValue = buff[0];
     buff[0] = 0;
     return retValue;

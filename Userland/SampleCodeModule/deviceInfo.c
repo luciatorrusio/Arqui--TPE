@@ -30,7 +30,7 @@ void getBpp(unsigned int * bpp){
 }
 
 void setSize(unsigned int bpp){
-    write(FD_DEVICE_INFO,bpp,0,0,0);
+    write(FD_DEVICE_INFO,(void*)bpp,0,0,0);
 }
 
 void getCharHeight(unsigned int * c){

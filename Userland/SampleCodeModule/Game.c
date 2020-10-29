@@ -49,21 +49,21 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK21, ROOK22, QUEEN2, KING2};
 
 static int used= false;                     // esta variable es un fix RANCIO, creo que me toma dos veces la funcion print_options_pawn
 
-static int usr_pos[2] = {-1,-1};
+static int usr_pos[2];
 static int curr_usr = 0;
 static int piece_selected[2];
 static bool select=false;
 static bool select_enroque = false;
 static int win = 0;
 
-static struct Board board = {-1,-1};            //cambiar para que no tire warning
-static struct PieceSet set1 = {-1,-1};          //cambiar para que no tire warning    
-static struct PieceSet set2 = {-1,-1};
-static struct Board highlightBoard = {-1,-1};
+static struct Board board;            
+static struct PieceSet set1;              
+static struct PieceSet set2;
+static struct Board highlightBoard;
 
 
 
-static struct Time time={-1,-1};
+static struct Time time;
 
 int block[3]={-1,-1,-1};
 
@@ -90,12 +90,46 @@ static int initialize= -1;
     bool limitInput(char ch);
     void table();
     void tableData();
-    void changeVel();
-    void manageSound(uint64_t realTick);
+    int curr_set(int x, int y);
     void initializePositions();
     void print_usr();
     void next_highlight();
     int argument(int f,int c, int sum_f, int sum_c, bool is_long);
+    void print_piece1(int x, int y, int color);
+    void print_piece(int i, int j);
+    void print_tile(int i, int j);
+    void print_game();
+    void matrixToXY(int * c, int * r);
+    void print_highlight();
+    void highlight(int x, int y);
+    void rotate_board(void);
+    void rotate_set2(void);
+    void rotate_set1(void);
+    void rotate_highlight(void);
+    int stopKeyPressed(void);
+    void print_block(int x,int y,int color);
+    void rotate_chess(void);
+    void print_options_knight(int x, int y);
+    void print_options_rook(int x, int y);
+    void print_options_queen(int x,int y);
+    void highlight_pawn(int x, int y, int sum_xf, int sum_yf, char change, bool init_pos);
+    void print_options_bishop(int x,int y);
+    void print_options_king(int x, int y);
+    void print_options_pawn(int x, int y);
+    void print_tile_options(int x, int y, int piece);
+    void clear_highlight(void);
+    int opponent_set(int x, int y);
+    void nothing_in_middle(int rook);
+    void highlight_pawn_diagonal(int x, int y);
+    void try_enroque(void);
+    void highlight_enroque(int fRook, int cRook);
+    void handleUsrMov(void);
+    void move_enroque(void);
+    void highlight_pawn_forward(int x, int y, int sum_x,  int sum_y, bool init_pos);
+    int get_piece(int x, int y);
+    int usr_on_own_piece(void);
+    void move_enroque2(int yRook, int xRook, int yKing, int xKing, int y2Rook, int x2Rook , int y2King, int x2King, int ROOK, int KING );
+
 //
 
 static bool startOver = true;
@@ -283,7 +317,6 @@ void startGameRec(void){
 //Esta funcion mueve al usuario y reacciona dependiendo que tecla presiona el usuario
 void handleUsrMov(){
     int key = key_pressed();
-    int x,y;
 
     if(select == true){
         if(key == RIGHT_ARROW){
@@ -1388,8 +1421,6 @@ void matrixToXY(int * c, int * r){
 
 // printea todo retomando como estaba antes
 void print_game(){
-    int x;
-    int y;
     for(int i = 0; i < C_BLOCKS ; i++){
         for(int j = 0; j <R_BLOCKS ; j++){
             print_tile(i,j);

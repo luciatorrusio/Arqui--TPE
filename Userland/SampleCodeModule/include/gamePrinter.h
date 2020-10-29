@@ -6,5 +6,7 @@
 
 
 void printOnScreen(int *pos,int lenght,int height,int fontColor);
+void print_border(int *pos,int lenght,int height,int color);
+void highlightTile(int *pos,int lenght,int height,int color);
 
 #endif

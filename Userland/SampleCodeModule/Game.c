@@ -54,6 +54,7 @@ static int curr_usr = 0;
 static int piece_selected[2];
 static bool select=false;
 static bool select_enroque = false;
+static int renglones_ocupados;
 static int win = 0;
 
 static struct Board board;            
@@ -75,7 +76,7 @@ static bool goToTerminal = false;
 static int SCREEN_HEIGHT;
 static int SCREEN_WIDTH;
 static int info[2];
-static int logInfo[20][4];
+static int logInfo[18][4];
 static int logCount = 0;
 static int logIdx = 0;
 
@@ -86,6 +87,7 @@ uint64_t turnTicks = 0;
 
 static int initialize= -1;
 //DECLARACION DE FUNCIONES
+    void scroll(void);
     void printObjects();
     void printLeftover(int * curr_BarPos);
     int key_pressed();
@@ -98,7 +100,6 @@ static int initialize= -1;
     void print_usr();
     void next_highlight();
     int argument(int f,int c, int sum_f, int sum_c, bool is_long);
-    void print_piece1(int x, int y, int color);
     void print_piece(int i, int j);
     void print_tile(int i, int j);
     void print_game();
@@ -132,6 +133,7 @@ static int initialize= -1;
     int get_piece(int x, int y);
     int usr_on_own_piece(void);
     void move_enroque2(int yRook, int xRook, int yKing, int xKing, int y2Rook, int x2Rook , int y2King, int x2King, int ROOK, int KING );
+    int printInfoLog(int i, int renglon);
 
     void log();
     void clearLog();
@@ -222,7 +224,7 @@ void initializePositions(){
     {
         set2.board[i][6]=PAWN2;
     }
-    
+    renglones_ocupados=0;
     // pongo las torres al jugador 1
     set1.board[0][0]=ROOK11;
     set1.board[7][0]=ROOK12;
@@ -1459,40 +1461,28 @@ void print_piece(int i, int j){
     int pos[2] = {x, y};
     if( set1.board[j][i] == PAWN1){
         printPiece(pos,P_PAWN,BLUE);
-        // print_piece1( x ,y,AQUA);
     } else if( set2.board[j][i] == PAWN2){
         printPiece(pos,P_PAWN,RED);
-        // print_piece1( x ,y,BLUE);
     } else if( set1.board[j][i] == BISHOP1){
         printPiece(pos,P_BISHOP,BLUE);
-        // print_piece1( x ,y,GREEN);
     } else if( set2.board[j][i] == BISHOP2){
         printPiece(pos,P_BISHOP,RED);
-        // print_piece1( x ,y,RED);
     } else if( set1.board[j][i] == ROOK11 || set1.board[j][i] == ROOK12 ){
         printPiece(pos,P_ROOK,BLUE);
-        // print_piece1( x ,y,PURPLE);
     } else if( set2.board[j][i] == ROOK22 || set2.board[j][i] == ROOK21){
         printPiece(pos,P_ROOK,RED);
-        // print_piece1( x ,y,YELLOW);
     } else if( set1.board[j][i] == KNIGHT1){
         printPiece(pos,P_KNIGHT,BLUE);
-        // print_piece1( x ,y,LightBlue);
     } else if( set2.board[j][i] == KNIGHT2){
         printPiece(pos,P_KNIGHT,RED);
-        // print_piece1( x ,y,LightGreen);
     } else if( set1.board[j][i] == KING1){
         printPiece(pos,P_KING,BLUE);
-        // print_piece1( x ,y,LightPurple);
     } else if( set2.board[j][i] == KING2){
         printPiece(pos,P_KING,RED);
-        // print_piece1( x ,y,LightPurple);
     } else if( set1.board[j][i] == QUEEN1){
         printPiece(pos,P_QUEEN,BLUE);
-        // print_piece1( x ,y,LightRed);
     } else if( set2.board[j][i] == QUEEN2){
         printPiece(pos,P_QUEEN,RED);
-        // print_piece1( x ,y,LightRed);
 }
             
 }
@@ -1522,11 +1512,6 @@ void print_block(int x,int y,int color){
 
 }
 
-void print_piece1(int x, int y, int color){
-    int pos[]= {x, y};
-
-    printOnScreen(pos,BLOCK_WIDTH/2,BLOCK_HEIGHT/2,color);
-}
 int stopKeyPressed(){
 
     return goToTerminal;
@@ -1628,37 +1613,57 @@ char * pieceString(int piece) {
     }
 }
 
-void updateLog(int usr, int x, int y) {
-    if(logIdx>=19) {
-        int idx = 0;
-        for (int i = 0; i < logIdx; i++, idx++) {
-            for (int j = 0; j < 4; j++) {
-                logInfo[i][j]=logInfo[i+1][j];
-            }
-            printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
-            if(logInfo[i][3]!=0) {
-                idx++;
-                printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
-            }
-        }
-        logIdx = idx;        
-    }
+// void updateLog(int usr, int x, int y) {
+//     if(logIdx>=18) {
 
-    printfColorAt("Player %d moves to row %d, column %d", usr==1 ? BLUE:RED,BLACK,700,20*(2+logIdx),usr,y+1,x+1);
-    logInfo[logCount][0] = usr;
-    logInfo[logCount][1] = x+1;
-    logInfo[logCount][2] = y+1;
+//         //limpio log
+//         for(int i=0; i<logIdx; i++) {
+//             printfColorAt("                                    ",BLACK,BLACK,700,20*(2+i));
+//         }
+        
+//         // relleno
+//         int idx = 0;
+//         for(int i=0; i<logCount; i++, idx++) {
+//             printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
+//             if(logInfo[i][3]!=0) {
+//                 idx++;
+//                 printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
+//             }
+//         }
 
-    if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE) {
-        logInfo[logCount][3] = get_piece(usr_pos[X], usr_pos[Y]);
-        printfColorAt("Player %d captures %s",logInfo[logCount][0]==1 ? BLUE:RED,BLACK,700,20*(3+logIdx),logInfo[logCount][0],pieceString(logInfo[logCount][3]));
-        logIdx++;
-    }
+//         logCount--;
+//         logIdx = idx;
 
-    logCount++;
-    logIdx++;
-    printfColorAt("LOG IDX: %d",BLACK,GREEN,700,430,logIdx);
-}
+//         // idx = 0;
+//         // for (int i = 0; i < logCount - 2; i++, idx++) {
+//         //     for (int j = 0; j < 4; j++) {
+//         //         logInfo[i][j]=logInfo[i+2][j];
+//         //     }
+//         //     printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
+//         //     if(logInfo[i][3]!=0) {
+//         //         idx++;
+//         //         printfColorAt("Player %d captures %s      ",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
+//         //     }
+//         // }
+//         // logIdx = idx;
+//         // logCount--;       
+//     }
+
+//     printfColorAt("Player %d moves to row %d, column %d", usr==1 ? BLUE:RED,BLACK,700,20*(2+logIdx),usr,y+1,x+1);
+//     logInfo[logCount][0] = usr;
+//     logInfo[logCount][1] = x+1;
+//     logInfo[logCount][2] = y+1;
+
+//     if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE) {
+//         logInfo[logCount][3] = get_piece(usr_pos[X], usr_pos[Y]);
+//         printfColorAt("Player %d captures %s",logInfo[logCount][0]==1 ? BLUE:RED,BLACK,700,20*(3+logIdx),logInfo[logCount][0],pieceString(logInfo[logCount][3]));
+//         logIdx++;
+//     }
+
+//     logCount++;
+//     logIdx++;
+//     // printfColorAt("LOG IDX: %d",BLACK,GREEN,700,430,logIdx);
+// }
 
 void table(){
     printfColorAt("To return to terminal press q",YELLOW,BLACK,700,info[1]-200);
@@ -1675,4 +1680,69 @@ void tableData(){
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-100,set1.left);
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,set2.left);
     printfColorAt("%d",YELLOW,BLACK,750,info[1],time.tick/18);
+}
+
+
+void updateLog(int usr, int x, int y) {
+   
+    if(renglones_ocupados ==18)  {
+        scroll();
+        logInfo[renglones_ocupados-1][0] = usr;
+        logInfo[renglones_ocupados-1][1] = x+1;
+        logInfo[renglones_ocupados-1][2] = y+1;
+        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados-1][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados-1][0],logInfo[renglones_ocupados-1][2],logInfo[renglones_ocupados-1][1]);
+        if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE){
+            scroll();
+            logInfo[renglones_ocupados-1][3] = get_piece(usr_pos[X], usr_pos[Y]);
+            printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1][0],pieceString(logInfo[renglones_ocupados-1][3]));;
+
+        }
+            
+    }else{
+        logInfo[renglones_ocupados][0] = usr;
+        logInfo[renglones_ocupados][1] = x+1;
+        logInfo[renglones_ocupados][2] = y+1;
+        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados][0],logInfo[renglones_ocupados][2],logInfo[renglones_ocupados][1]);
+        renglones_ocupados++;
+
+        if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE){
+            if(renglones_ocupados== 18){
+                scroll();
+                logInfo[renglones_ocupados-1][3] = get_piece(usr_pos[X], usr_pos[Y]);
+                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1][0],pieceString(logInfo[renglones_ocupados-1][3]));;
+
+            }else{
+                logInfo[renglones_ocupados][3] = get_piece(usr_pos[X], usr_pos[Y]);
+                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados][0],pieceString(logInfo[renglones_ocupados][3]));;
+
+                renglones_ocupados++;
+            }  
+
+        }
+        
+    }
+
+}
+
+
+void scroll(){
+    int cant_argumentos = 4;
+    int renglon= 0;
+    for(int i=0; i<18; i++){
+        for(int j=0; j<cant_argumentos; j++){
+            logInfo[i][j]=logInfo[i+1][j];
+        }
+    }
+     for(int i=0; i<18; i++){
+        renglon += printInfoLog(i, renglon);
+    }
+}
+int printInfoLog(int i, int renglon){
+    printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglon),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
+            if(logInfo[i][3]!=0) {
+                printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglon),logInfo[i][0],pieceString(logInfo[i][3]));
+                return 2;
+            }
+            return 1;
+
 }

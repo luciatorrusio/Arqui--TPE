@@ -149,7 +149,24 @@ void print_highlight(int *pos,int lenght,int height,int fontColor){
      
 }
 
-// void print_pawn
+void print_piece(int * pos, int piece, int fontColor) {
+	int aux_x = pos[0];
+	int aux_y = pos[1];
+	unsigned char * toDraw = pieceBitmap(piece);
+
+	char bitIsPresent ;
+
+	for(int i = 0; i < CHAR_HEIGHT; i++){
+		for(int j = 0 ; j < CHAR_WIDTH ; j++){
+			bitIsPresent = (1<< (CHAR_WIDTH-j)) & toDraw[i];
+			if(bitIsPresent)
+				drawPixel(aux_x,aux_y,fontColor);			
+			aux_x++;
+		}
+		aux_x = pos[0];
+		aux_y++;
+	}
+}
 
 void setSize(unsigned int s){
 	SCREEN_bPP=s;

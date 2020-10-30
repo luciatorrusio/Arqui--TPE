@@ -1454,9 +1454,8 @@ void print_tile(int i, int j){
 }
 
 void print_piece(int i, int j){
-    int x=i;
-    int y=j;
-    matrixToXY(&x, &y);
+    int x=i*BLOCK_HEIGHT+20;
+    int y=j*BLOCK_WIDTH+5;
     int pos[2] = {x, y};
     if( set1.board[j][i] == PAWN1){
         printPiece(pos,P_PAWN,BLUE);

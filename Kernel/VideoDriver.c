@@ -152,6 +152,7 @@ void print_highlight(int *pos,int lenght,int height,int fontColor){
 void print_piece(int * pos, int piece, int fontColor) {
 	int aux_x = pos[0];
 	int aux_y = pos[1];
+	int charSize = 4;
 	unsigned char * toDraw = pieceBitmap(piece);
 
 	char bitIsPresent ;
@@ -159,12 +160,32 @@ void print_piece(int * pos, int piece, int fontColor) {
 	for(int i = 0; i < CHAR_HEIGHT; i++){
 		for(int j = 0 ; j < CHAR_WIDTH ; j++){
 			bitIsPresent = (1<< (CHAR_WIDTH-j)) & toDraw[i];
-			if(bitIsPresent)
-				drawPixel(aux_x,aux_y,fontColor);			
-			aux_x++;
+			if(bitIsPresent){
+				for (int z = 0; z < charSize ; z++){
+					for(int s = 0; s < charSize ; s++){
+						drawPixel(aux_x, aux_y, fontColor);
+						aux_y++;
+					}
+					aux_x++;
+					aux_y = aux_y - charSize;
+				}
+			}else {
+				for (int z = 0; z < charSize ; z++){
+					for (int s = 0; s < charSize ; s++){
+						//drawPixel(aux_x, aux_y, backgroundColor);
+						aux_y++;
+					}
+					aux_x++;
+					aux_y = aux_y - charSize;
+				}
+				
+			}
+				// drawPixel(aux_x,aux_y,fontColor);			
+			
 		}
+		aux_y += charSize;
 		aux_x = pos[0];
-		aux_y++;
+		// aux_y++;
 	}
 }
 

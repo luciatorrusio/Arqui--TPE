@@ -11,9 +11,9 @@
 #define BLOCK_HEIGHT                (SCREEN_HEIGHT/9)
 #define BLOCK_YSEPARATION           (0)
 
-#define REAL_TO_GAME_TICKS              (1)
+#define REAL_TO_GAME_TICKS          (1)
 
-enum pieces1 {PAWN1, BISHOP1, KNIGHT1, ROOK11, ROOK12, QUEEN1, KING1};
+enum pieces1 {PAWN1=100, BISHOP1, KNIGHT1, ROOK11, ROOK12, QUEEN1, KING1};
 enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK21, ROOK22, QUEEN2, KING2};
 //COLORES
     #define BLACK                       0x000000
@@ -72,9 +72,12 @@ static int keyBufferFront = 0;
 static int keyBufferBack = 0;
 static bool goToTerminal = false;
 
-static int SCREEN_HEIGHT= -1;
-static int SCREEN_WIDTH= -1;
-static int info[2]={-1,-1};
+static int SCREEN_HEIGHT;
+static int SCREEN_WIDTH;
+static int info[2];
+static int logInfo[20][4];
+static int logCount = 0;
+static int logIdx = 0;
 
 static uint64_t gameTicks = -1;
 
@@ -130,6 +133,10 @@ static int initialize= -1;
     int usr_on_own_piece(void);
     void move_enroque2(int yRook, int xRook, int yKing, int xKing, int y2Rook, int x2Rook , int y2King, int x2King, int ROOK, int KING );
 
+    void log();
+    void clearLog();
+    void updateLog(int usr, int x, int y);
+    char * pieceString(int piece);
 //
 
 static bool startOver = true;
@@ -161,9 +168,8 @@ int runGame(void){
     turnTicks = 0;
     // inicializa que nadie gano
     win = 0;
-    // Inicializa la posicion de la tabla de informacion
-    info[X]=SCREEN_WIDTH/2;
-    info[Y]=SCREEN_HEIGHT-300;
+    info[X]=SCREEN_WIDTH;
+    info[Y]=SCREEN_HEIGHT-110;
     initializePositions();
     
 
@@ -338,7 +344,10 @@ void handleUsrMov(){
             //time.tick/18 cunatos segundo en el juego
             //segundos en juego el jugador especifico en el turno
             elapsedTime+=turnTicks;
-        
+
+            if(!usr_on_own_piece())
+                updateLog(curr_usr,usr_pos[X],usr_pos[Y]);
+
             if(select_enroque == true){
                 move_enroque();
                 select_enroque = false;
@@ -348,7 +357,6 @@ void handleUsrMov(){
                     curr_usr = 1;
                 }
             } else if(curr_usr == 1){
-                
                 //aca se come la pieza del otro  eficientizar
                 if(set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
                     if(get_piece(usr_pos[X], usr_pos[Y])== KING2){
@@ -1429,6 +1437,7 @@ void print_game(){
     }
     print_highlight();
     table();
+    log();
     print_usr();
 }
 
@@ -1448,37 +1457,50 @@ void print_piece(int i, int j){
     int x=i;
     int y=j;
     matrixToXY(&x, &y);
+    int pos[2] = {x, y};
     if( set1.board[j][i] == PAWN1){
-        // print _pawn(jaqdv, w)
-        print_piece1( x ,y,AQUA);
+        printPiece(pos,P_PAWN,BLUE);
+        // print_piece1( x ,y,AQUA);
     } else if( set2.board[j][i] == PAWN2){
-        print_piece1( x ,y,BLUE);
+        printPiece(pos,P_PAWN,RED);
+        // print_piece1( x ,y,BLUE);
     } else if( set1.board[j][i] == BISHOP1){
-        print_piece1( x ,y,GREEN);
+        printPiece(pos,P_BISHOP,BLUE);
+        // print_piece1( x ,y,GREEN);
     } else if( set2.board[j][i] == BISHOP2){
-        print_piece1( x ,y,RED);
-    } else if( set1.board[j][i] == ROOK11 || set1.board[j][i] == ROOK12){
-        print_piece1( x ,y,PURPLE);
-    } else if( set2.board[j][i] == ROOK21 || set2.board[j][i] == ROOK22){
-        print_piece1( x ,y,YELLOW);
+        printPiece(pos,P_BISHOP,RED);
+        // print_piece1( x ,y,RED);
+    } else if( set1.board[j][i] == ROOK11 || set1.board[j][i] == ROOK12 ){
+        printPiece(pos,P_ROOK,BLUE);
+        // print_piece1( x ,y,PURPLE);
+    } else if( set2.board[j][i] == ROOK22 || set2.board[j][i] == ROOK21){
+        printPiece(pos,P_ROOK,RED);
+        // print_piece1( x ,y,YELLOW);
     } else if( set1.board[j][i] == KNIGHT1){
-        print_piece1( x ,y,LightBlue);
+        printPiece(pos,P_KNIGHT,BLUE);
+        // print_piece1( x ,y,LightBlue);
     } else if( set2.board[j][i] == KNIGHT2){
-        print_piece1( x ,y,LightGreen);
+        printPiece(pos,P_KNIGHT,RED);
+        // print_piece1( x ,y,LightGreen);
     } else if( set1.board[j][i] == KING1){
-        print_piece1( x ,y,LightPurple);
+        printPiece(pos,P_KING,BLUE);
+        // print_piece1( x ,y,LightPurple);
     } else if( set2.board[j][i] == KING2){
-        print_piece1( x ,y,LightPurple);
+        printPiece(pos,P_KING,RED);
+        // print_piece1( x ,y,LightPurple);
     } else if( set1.board[j][i] == QUEEN1){
-        print_piece1( x ,y,LightRed);
+        printPiece(pos,P_QUEEN,BLUE);
+        // print_piece1( x ,y,LightRed);
     } else if( set2.board[j][i] == QUEEN2){
-        print_piece1( x ,y,LightRed);
+        printPiece(pos,P_QUEEN,RED);
+        // print_piece1( x ,y,LightRed);
 }
             
 }
 
 int finishGame(int time_past){
         clearConsole();
+        clearLog();
         int init;
         getBpp(&init);
         setSize(init*3);
@@ -1548,6 +1570,97 @@ int key_pressed(){
 
 }
 
+void log() {
+    printfColorAt("-- LOG -------------------------------",WHITE,BLACK,700,15);
+    if(logCount!=0) {
+        int idx = 0;
+        for(int i=0; i<logCount; i++, idx++) {
+            printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
+            if(logInfo[i][3]!=0) {
+                idx++;
+                printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
+            }
+        }
+    }
+    printfColorAt("--------------------------------------",WHITE,BLACK,700,420);
+}
+
+void clearLog() {
+    for(int i=0; i<logCount; i++) {
+        for(int j=0; j<4; j++) {
+            logInfo[i][j] = 0;
+        }
+    }
+    logCount = 0;
+    logIdx = 0;
+}
+
+char * pieceString(int piece) {
+    switch (piece) {
+        case PAWN1:
+        case PAWN2:
+            return "pawn";
+            break;
+        case KING1:
+        case KING2:
+            return "king";
+            break;
+        case KNIGHT1:
+        case KNIGHT2:
+            return "knight";
+            break;
+        case BISHOP1:
+        case BISHOP2:
+            return "bishop";
+            break;
+        case QUEEN1:
+        case QUEEN2:
+            return "queen";
+            break;
+        case ROOK12:
+        case ROOK11:
+        case ROOK22:
+        case ROOK21:
+            return "rook";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
+
+void updateLog(int usr, int x, int y) {
+    if(logIdx>=19) {
+        int idx = 0;
+        for (int i = 0; i < logIdx; i++, idx++) {
+            for (int j = 0; j < 4; j++) {
+                logInfo[i][j]=logInfo[i+1][j];
+            }
+            printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
+            if(logInfo[i][3]!=0) {
+                idx++;
+                printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
+            }
+        }
+        logIdx = idx;        
+    }
+
+    printfColorAt("Player %d moves to row %d, column %d", usr==1 ? BLUE:RED,BLACK,700,20*(2+logIdx),usr,y+1,x+1);
+    logInfo[logCount][0] = usr;
+    logInfo[logCount][1] = x+1;
+    logInfo[logCount][2] = y+1;
+
+    if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE) {
+        logInfo[logCount][3] = get_piece(usr_pos[X], usr_pos[Y]);
+        printfColorAt("Player %d captures %s",logInfo[logCount][0]==1 ? BLUE:RED,BLACK,700,20*(3+logIdx),logInfo[logCount][0],pieceString(logInfo[logCount][3]));
+        logIdx++;
+    }
+
+    logCount++;
+    logIdx++;
+    printfColorAt("LOG IDX: %d",BLACK,GREEN,700,430,logIdx);
+}
+
 void table(){
     printfColorAt("To return to terminal press q",YELLOW,BLACK,700,info[1]-200);
     printfColorAt("To rotate board press r",YELLOW,BLACK,700,info[1]-150);
@@ -1564,4 +1677,3 @@ void tableData(){
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,set2.left);
     printfColorAt("%d",YELLOW,BLACK,750,info[1],time.tick/18);
 }
-

@@ -7,7 +7,6 @@ static unsigned int SCREEN_HEIGHT = 768;
 
 void startVideoDriver();
 
-
 void drawChar(int x, int y, char character, int fontColor, int background);
 
 void setSize(unsigned int s);
@@ -22,6 +21,6 @@ void print_border(int *pos,int lenght,int height,int fontColor);
 
 void print_highlight(int *pos,int lenght,int height,int fontColor);
 
-// void pawn(int *pos,int lenght,int height,int fontColor);
+void print_piece(int * pos, int piece, int fontColor);
 
 #endif

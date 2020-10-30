@@ -27,6 +27,7 @@
 #define FD_STDOUT_COLOR			(0x0B)
 #define FD_BORDER 				(0x0C)
 #define FD_HIGHLIGHT 			(0x0D)
+#define FD_PIECE                (0x0E)
 
 #define DELETE_CURRENT_CHAR 1
 #define DELETE_ALL_DISPLAY 3
@@ -247,6 +248,13 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_STDOUT_COLOR:{
 			 printLineColorAt(firstParam);
 
+			break;
+		}
+		case FD_PIECE: {
+			int * pos = firstParam;
+			int piece = secondParam;
+			int fontColor = thirdParam;
+			print_piece(pos,piece,fontColor);
 			break;
 		}
 	}

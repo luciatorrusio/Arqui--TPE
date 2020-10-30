@@ -310,7 +310,7 @@ void startGameRec(void){
     handleUsrMov();
     printObjects();
     turnTicks=(time.tick/18)-elapsedTime;
-    if (turnTicks >= 20){
+    if (turnTicks >= 60){
         if(curr_usr == 1){
             win = 2;
         }else {

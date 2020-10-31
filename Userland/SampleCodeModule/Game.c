@@ -346,9 +346,10 @@ void handleUsrMov(){
             clear_highlight();
             //time.tick/18 cunatos segundo en el juego
             //segundos en juego el jugador especifico en el turno
-            elapsedTime+=turnTicks;
+            
 
             if(!usr_on_own_piece()){
+                elapsedTime+=turnTicks;
                 updateLog(curr_usr,usr_pos[X],usr_pos[Y]); 
             }
                 
@@ -903,11 +904,11 @@ void print_options_pawn(int x, int y){
 void print_options_king(int x, int y){
     highlightBoard.board[y][x] = HIGHLIGHT;
     highlight(x, y);
-    if(curr_set(x+1, y) == NO_PIECE && x<C_BLOCKS-1){
+    if(curr_set(x+1, y) == NO_PIECE && x+1<C_BLOCKS){
         highlight(x+1, y);
         highlightBoard.board[y][x+1] = HIGHLIGHT;
     }
-    if(curr_set(x-1, y) == NO_PIECE && x>0 ){
+    if(curr_set(x-1, y) == NO_PIECE && x>0 && x-1<C_BLOCKS){
         highlight(x-1, y);
         highlightBoard.board[y][x-1] = HIGHLIGHT;
     }
@@ -920,8 +921,8 @@ void print_options_king(int x, int y){
         highlightBoard.board[y+1][x] = HIGHLIGHT;
     }
     if(curr_set(x-1, y+1) == NO_PIECE && x>0 && y<R_BLOCKS-1){
-        highlight(x-1, y-1);
-        highlightBoard.board[y-1][x-1] = HIGHLIGHT;
+        highlight(x-1, y+1);
+        highlightBoard.board[y+1][x-1] = HIGHLIGHT;
     }
     if(curr_set(x+1, y+1) == NO_PIECE && x<C_BLOCKS-1 && y<R_BLOCKS-1){
         highlight(x+1, y+1);
@@ -1615,19 +1616,19 @@ char * pieceString(int piece) {
 
 void table(){
     printfColorAt("To return to terminal press q",YELLOW,BLACK,700,info[1]-200);
-    printfColorAt("To rotate board press r",YELLOW,BLACK,700,info[1]-150);
-    printfColorAt("To make enroque press e",YELLOW,BLACK,700,info[1]-150);
-    printfColorAt("Pieces of player 1 left :",YELLOW,BLACK,700,info[1]-100);
-    printfColorAt("Pieces of player 2 left :",YELLOW,BLACK,700,info[1]-50);
-    printfColorAt("Time :",YELLOW,BLACK,700,info[1],time.tick/18);
+    printfColorAt("To rotate board press r",YELLOW,BLACK,700,info[1]-160);
+    printfColorAt("To make enroque press e",YELLOW,BLACK,700,info[1]-120);
+    printfColorAt("Pieces of player 1 left :",YELLOW,BLACK,700,info[1]-80);
+    printfColorAt("Pieces of player 2 left :",YELLOW,BLACK,700,info[1]-40);
+    printfColorAt("Time :",YELLOW,BLACK,700,info[1]);
     tableData();
 }
 
 //Data de cuantas piezas siguen en juego y cuanto tiempo paso
 void tableData(){
-    printfColorAt("%d",YELLOW,BLACK,950,info[1]-100,set1.left);
-    printfColorAt("%d",YELLOW,BLACK,950,info[1]-50,set2.left);
-    printfColorAt("%d",YELLOW,BLACK,750,info[1],time.tick/18);
+    printfColorAt("%d",YELLOW,BLACK,950,info[1]-80,set1.left);
+    printfColorAt("%d",YELLOW,BLACK,950,info[1]-40,set2.left);
+    printfColorAt("%d  ",YELLOW,BLACK,750,info[1],60 - turnTicks);
 }
 
 

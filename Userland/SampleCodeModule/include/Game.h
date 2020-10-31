@@ -20,6 +20,13 @@ struct Time{
     int past;                   //tiempo en el juego time_past
     int tick;
 };
+struct Log{
+    int capture;
+    int usr;
+    int pos[2];
+    int piece_moved;
+    int piece_eaten;
+};
 
 
 

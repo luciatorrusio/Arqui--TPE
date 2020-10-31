@@ -48,7 +48,6 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK21, ROOK22, QUEEN2, KING2};
 #define LEAVE_KEY                  'q'
 
 static int used= false;                     // esta variable es un fix RANCIO, creo que me toma dos veces la funcion print_options_pawn
-
 static int usr_pos[2];
 static int curr_usr = 0;
 static int piece_selected[2];
@@ -76,7 +75,9 @@ static bool goToTerminal = false;
 static int SCREEN_HEIGHT;
 static int SCREEN_WIDTH;
 static int info[2];
-static int logInfo[18][4];
+static struct Log logInfo[18];
+//static int logInfo[18][4];
+
 static int logCount = 0;
 static int logIdx = 0;
 
@@ -133,7 +134,7 @@ static int initialize= -1;
     int get_piece(int x, int y);
     int usr_on_own_piece(void);
     void move_enroque2(int yRook, int xRook, int yKing, int xKing, int y2Rook, int x2Rook , int y2King, int x2King, int ROOK, int KING );
-    int printInfoLog(int i, int renglon);
+    void printInfoLog(int renglon);
 
     void log();
     void clearLog();
@@ -347,8 +348,10 @@ void handleUsrMov(){
             //segundos en juego el jugador especifico en el turno
             elapsedTime+=turnTicks;
 
-            if(!usr_on_own_piece())
-                updateLog(curr_usr,usr_pos[X],usr_pos[Y]);
+            if(!usr_on_own_piece()){
+                updateLog(curr_usr,usr_pos[X],usr_pos[Y]); 
+            }
+                
 
             if(select_enroque == true){
                 move_enroque();
@@ -1556,27 +1559,23 @@ int key_pressed(){
 
 void log() {
     printfColorAt("-- LOG -------------------------------",WHITE,BLACK,700,15);
-    if(logCount!=0) {
-        int idx = 0;
-        for(int i=0; i<logCount; i++, idx++) {
-            printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
-            if(logInfo[i][3]!=0) {
-                idx++;
-                printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
-            }
+    if(renglones_ocupados!=0) {
+        for(int i=0; i<renglones_ocupados; i++) {
+            printInfoLog(i);
         }
     }
     printfColorAt("--------------------------------------",WHITE,BLACK,700,420);
 }
 
 void clearLog() {
-    for(int i=0; i<logCount; i++) {
-        for(int j=0; j<4; j++) {
-            logInfo[i][j] = 0;
-        }
+    for(int i=0; i<18; i++) {
+        logInfo[i].usr=0;
+        logInfo[i].capture =false;
+        logInfo[i].piece_eaten=0;
+        logInfo[i].piece_moved=0;
+        logInfo[i].pos[X]=0;
+        logInfo[i].pos[Y]=0;  
     }
-    logCount = 0;
-    logIdx = 0;
 }
 
 char * pieceString(int piece) {
@@ -1613,57 +1612,6 @@ char * pieceString(int piece) {
     }
 }
 
-// void updateLog(int usr, int x, int y) {
-//     if(logIdx>=18) {
-
-//         //limpio log
-//         for(int i=0; i<logIdx; i++) {
-//             printfColorAt("                                    ",BLACK,BLACK,700,20*(2+i));
-//         }
-        
-//         // relleno
-//         int idx = 0;
-//         for(int i=0; i<logCount; i++, idx++) {
-//             printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
-//             if(logInfo[i][3]!=0) {
-//                 idx++;
-//                 printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
-//             }
-//         }
-
-//         logCount--;
-//         logIdx = idx;
-
-//         // idx = 0;
-//         // for (int i = 0; i < logCount - 2; i++, idx++) {
-//         //     for (int j = 0; j < 4; j++) {
-//         //         logInfo[i][j]=logInfo[i+2][j];
-//         //     }
-//         //     printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
-//         //     if(logInfo[i][3]!=0) {
-//         //         idx++;
-//         //         printfColorAt("Player %d captures %s      ",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+idx),logInfo[i][0],pieceString(logInfo[i][3]));
-//         //     }
-//         // }
-//         // logIdx = idx;
-//         // logCount--;       
-//     }
-
-//     printfColorAt("Player %d moves to row %d, column %d", usr==1 ? BLUE:RED,BLACK,700,20*(2+logIdx),usr,y+1,x+1);
-//     logInfo[logCount][0] = usr;
-//     logInfo[logCount][1] = x+1;
-//     logInfo[logCount][2] = y+1;
-
-//     if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE) {
-//         logInfo[logCount][3] = get_piece(usr_pos[X], usr_pos[Y]);
-//         printfColorAt("Player %d captures %s",logInfo[logCount][0]==1 ? BLUE:RED,BLACK,700,20*(3+logIdx),logInfo[logCount][0],pieceString(logInfo[logCount][3]));
-//         logIdx++;
-//     }
-
-//     logCount++;
-//     logIdx++;
-//     // printfColorAt("LOG IDX: %d",BLACK,GREEN,700,430,logIdx);
-// }
 
 void table(){
     printfColorAt("To return to terminal press q",YELLOW,BLACK,700,info[1]-200);
@@ -1685,36 +1633,51 @@ void tableData(){
 
 void updateLog(int usr, int x, int y) {
    
-    if(renglones_ocupados ==18)  {
+    if(renglones_ocupados == 18)  {
         scroll();
-        logInfo[renglones_ocupados-1][0] = usr;
-        logInfo[renglones_ocupados-1][1] = x+1;
-        logInfo[renglones_ocupados-1][2] = y+1;
-        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados-1][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados-1][0],logInfo[renglones_ocupados-1][2],logInfo[renglones_ocupados-1][1]);
+        logInfo[renglones_ocupados-1].usr = usr;
+        logInfo[renglones_ocupados-1].pos[X] = x+1;
+        logInfo[renglones_ocupados-1].pos[Y] = y+1;
+        logInfo[renglones_ocupados-1].capture = false;
+        printfColorAt("                                     ",RED,BLACK,700,20*(2+renglones_ocupados-1));
+        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados-1].usr ==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,logInfo[renglones_ocupados-1].pos[Y],logInfo[renglones_ocupados-1].pos[X]);
         if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE){
             scroll();
-            logInfo[renglones_ocupados-1][3] = get_piece(usr_pos[X], usr_pos[Y]);
-            printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1][0],pieceString(logInfo[renglones_ocupados-1][3]));;
-
+            logInfo[renglones_ocupados-1].usr = usr;
+            logInfo[renglones_ocupados-1].pos[X] = x+1;
+            logInfo[renglones_ocupados-1].pos[Y] = y+1;
+            logInfo[renglones_ocupados-1].capture = true;
+            logInfo[renglones_ocupados-1].piece_eaten = get_piece(usr_pos[X], usr_pos[Y]);
+            printfColorAt("                                 ",BLUE,BLACK,700,20*(2+renglones_ocupados-1));
+            printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,pieceString(logInfo[renglones_ocupados-1].piece_eaten));
         }
             
     }else{
-        logInfo[renglones_ocupados][0] = usr;
-        logInfo[renglones_ocupados][1] = x+1;
-        logInfo[renglones_ocupados][2] = y+1;
-        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados][0],logInfo[renglones_ocupados][2],logInfo[renglones_ocupados][1]);
+        logInfo[renglones_ocupados].usr = usr;
+        logInfo[renglones_ocupados].pos[X] = x+1;
+        logInfo[renglones_ocupados].pos[Y] = y+1;
+        logInfo[renglones_ocupados].capture = false;
+        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,logInfo[renglones_ocupados].pos[Y],logInfo[renglones_ocupados].pos[X]);
         renglones_ocupados++;
 
         if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE){
             if(renglones_ocupados== 18){
                 scroll();
-                logInfo[renglones_ocupados-1][3] = get_piece(usr_pos[X], usr_pos[Y]);
-                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1][0],pieceString(logInfo[renglones_ocupados-1][3]));;
+                logInfo[renglones_ocupados-1].usr = usr;
+                logInfo[renglones_ocupados-1].pos[X] = x+1;
+                logInfo[renglones_ocupados-1].pos[Y] = y+1;
+                logInfo[renglones_ocupados-1].capture = true;
+                logInfo[renglones_ocupados-1].piece_eaten = get_piece(usr_pos[X], usr_pos[Y]);
+                printfColorAt("                             ",RED,BLACK,700,20*(2+renglones_ocupados-1));
+                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,pieceString(logInfo[renglones_ocupados-1].piece_eaten));
 
             }else{
-                logInfo[renglones_ocupados][3] = get_piece(usr_pos[X], usr_pos[Y]);
-                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados][0],pieceString(logInfo[renglones_ocupados][3]));;
-
+                logInfo[renglones_ocupados].usr = usr;
+                logInfo[renglones_ocupados].pos[X] = x+1;
+                logInfo[renglones_ocupados].pos[Y] = y+1;
+                logInfo[renglones_ocupados].capture = true;
+                logInfo[renglones_ocupados].piece_eaten = get_piece(usr_pos[X], usr_pos[Y]);
+                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,pieceString(logInfo[renglones_ocupados].piece_eaten));;
                 renglones_ocupados++;
             }  
 
@@ -1723,26 +1686,34 @@ void updateLog(int usr, int x, int y) {
     }
 
 }
+void printInfoLog(int renglon){
+    int x=700;
+    int y=20*(2+renglon);
+    if(logInfo[renglon].capture==true) {
+        printfColorAt("                                     ", RED,BLACK,x,y);
+        printfColorAt("Player %d captures %s",logInfo[renglon].usr==1 ? BLUE:RED,BLACK,x,y,logInfo[renglon].usr,pieceString(logInfo[renglon].piece_eaten));
+    }
+    else {
+        printfColorAt("                                     ", RED,BLACK,x,y);
+        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglon].usr==1 ? BLUE:RED,BLACK,x,y,logInfo[renglon].usr,logInfo[renglon].pos[Y],logInfo[renglon].pos[X]);    
+    }
 
+}
 
 void scroll(){
-    int cant_argumentos = 4;
     int renglon= 0;
-    for(int i=0; i<18; i++){
-        for(int j=0; j<cant_argumentos; j++){
-            logInfo[i][j]=logInfo[i+1][j];
-        }
+    for(int i=0; i+1<18; i++){
+        logInfo[i].usr=logInfo[i+1].usr;
+        logInfo[i].capture =logInfo[i+1].capture;
+        logInfo[i].piece_eaten=logInfo[i+1].piece_eaten;
+        logInfo[i].piece_moved=logInfo[i+1].piece_moved;
+        logInfo[i].pos[X]=logInfo[i+1].pos[X];
+        logInfo[i].pos[Y]=logInfo[i+1].pos[Y];
     }
-     for(int i=0; i<18; i++){
-        renglon += printInfoLog(i, renglon);
+    while(renglon < 17){
+        printInfoLog(renglon);
+        renglon++;
     }
-}
-int printInfoLog(int i, int renglon){
-    printfColorAt("Player %d moves to row %d, column %d", logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglon),logInfo[i][0],logInfo[i][2],logInfo[i][1]);
-            if(logInfo[i][3]!=0) {
-                printfColorAt("Player %d captures %s",logInfo[i][0]==1 ? BLUE:RED,BLACK,700,20*(2+renglon),logInfo[i][0],pieceString(logInfo[i][3]));
-                return 2;
-            }
-            return 1;
+    printfColorAt("                                     ", RED,BLACK,700,20*(2+renglon));
 
 }

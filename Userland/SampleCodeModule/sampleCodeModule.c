@@ -22,7 +22,7 @@ void menu(){
 	
 	int position=67;
 	int y=30;
-	printfColorAt("TPE ARQUITECTURA DE COMPUTADORAS",0xFF44FF,0x00,position,y);
+	printfColorAt("TPE ARQUI",0xFF44FF,0x00,position,y);
     setSize(init*2);
 	getBpp(&aux);
     y+=charHeight*aux+3;

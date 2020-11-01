@@ -1,9 +1,8 @@
 #include "include/Commands.h"
-
-#include "../Include/deviceInfo.h"
-#include "../Include/String.h"
-#include "../Include/Curses.h"
-#include "../Include/Time.h"
+#include "./include/deviceInfo.h"
+#include "./include/String.h"
+#include "./include/Curses.h"
+#include "./include/Time.h"
 
 extern void __UD2__();
 
@@ -11,18 +10,18 @@ int quotient(){
 
     printf("I'm going to calculate the quotient of 2 divided by 0\n");
 
-    int result =  (2)/ (0);
+    //int result =  (2)/ (0);
 
-    return 0;
+    return (2)/ (0);
 }
 
 int man(){
-    printf("\ngame\nexit\ntime\nman\nman \'function name\'\ninvalidOpcode\ninfoReg\nquotient\nprintMem \'memory pos\'\nclear\n");
+    printf("\ngame\nexit\ntime\nman\nman \'function name\'\ninvalidOpcode\ninfoReg\ndivZero\nprintMem \'memory pos\'\nclear\n");
     
     return 0;
 }
 
-int explainCommand(char * command){
+void explainCommand(char * command){
 
     if(strcmp(command,"time")){
         printf("Command:\n        time\n");
@@ -57,8 +56,8 @@ int explainCommand(char * command){
         printf("Command:\n        clear\n");
         printf("It clears the screen.\n");
     }
-    else if(strcmp(command,"quotient")){
-        printf("Command:\n        quotient\n");
+    else if(strcmp(command,"divZero")){
+        printf("Command:\n        divZero\n");
         printf("It calculates the quotient of the division of 2 by 0. This can be used to test the DIVISION BY ZERO exception.\n");
     }else{
         printf("That command does not exist!\n");

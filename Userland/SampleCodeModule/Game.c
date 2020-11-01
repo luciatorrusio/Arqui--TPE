@@ -1,10 +1,9 @@
 #include "./include/Game.h"
-#include "../Include/Time.h"
-#include "../Include/Curses.h"
-#include "../Include/Time.h"
-#include "../Include/deviceInfo.h"
+#include "./include/Time.h"
+#include "./include/Curses.h"
+#include "./include/Time.h"
+#include "./include/deviceInfo.h"
 #include <stdbool.h>
-#include "./include/Speaker.h"
 
 #define BLOCK_WIDTH                 (SCREEN_HEIGHT/9)
 #define BLOCK_XSEPARATION           (0)
@@ -47,7 +46,6 @@ enum pieces2 {PAWN2=200, BISHOP2, KNIGHT2, ROOK21, ROOK22, QUEEN2, KING2};
 #define ENROQUE                    'e'
 #define LEAVE_KEY                  'q'
 
-static int used= false;                     // esta variable es un fix RANCIO, creo que me toma dos veces la funcion print_options_pawn
 static int usr_pos[2];
 static int curr_usr = 0;
 static int piece_selected[2];
@@ -76,10 +74,6 @@ static int SCREEN_HEIGHT;
 static int SCREEN_WIDTH;
 static int info[2];
 static struct Log logInfo[18];
-//static int logInfo[18][4];
-
-static int logCount = 0;
-static int logIdx = 0;
 
 static uint64_t gameTicks = -1;
 
@@ -342,12 +336,9 @@ void handleUsrMov(){
         } 
         else if(key == ENTER){
             select = false;
-            used = false;
             clear_highlight();
-            //time.tick/18 cunatos segundo en el juego
-            //segundos en juego el jugador especifico en el turno
             
-
+            //time.tick/18 = segundos en el juego del jugador en turno
             if(!usr_on_own_piece()){
                 elapsedTime+=turnTicks;
                 updateLog(curr_usr,usr_pos[X],usr_pos[Y]); 
@@ -851,11 +842,8 @@ void highlight_pawn_forward(int x, int y, int sum_x,  int sum_y, bool init_pos){
 }
 void highlight_pawn_diagonal(int x, int y){
     if(curr_set(x, y) == NO_PIECE && opponent_set(x,y)!=NO_PIECE && x<C_BLOCKS && y>=0 && x>=0 && y<R_BLOCKS){
-        if(used == false){
-            used == true;
-            highlight(x, y);
-            highlightBoard.board[y][x] = HIGHLIGHT;
-        } 
+        highlight(x, y);
+        highlightBoard.board[y][x] = HIGHLIGHT;
     }  
 }
 void highlight_pawn(int x, int y, int sum_xf, int sum_yf, char change, bool init_pos){
@@ -1495,7 +1483,7 @@ int finishGame(int time_past){
         clearConsole();
         clearLog();
         int init;
-        getBpp(&init);
+        getBpp((unsigned int *)&init);
         setSize(init*3);
         printfColorAt("Congratulations player %d won!!",RED,BLACK,40,100, win);
         printfColorAt("It took you %d seconds",RED,BLACK,40,120,time_past);

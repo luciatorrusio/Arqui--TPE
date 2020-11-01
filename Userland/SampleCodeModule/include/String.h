@@ -2,7 +2,7 @@
 #define STRINGH
 #include <stdarg.h>
 
-#include <stdint.h>
+#include "stdint.h"
 
 
 int strlen(char * str);

@@ -1,5 +1,5 @@
 #include <VideoDriver.h>
-#include <stdint.h>
+#include "./include/stdint.h"
 #include <font.h>
 
 unsigned int SCREEN_bPP = 3;
@@ -53,7 +53,7 @@ void init_VM_Driver() {
 
 void drawPixel(unsigned int x, unsigned int y, int color)
 {
-    char* screen = screenData->framebuffer; 
+    char * screen = screenData->framebuffer; 
     unsigned where = (x + y*SCREEN_WIDTH) * SCREEN_bPP;
     screen[where] = color & 255;              // BLUE
     screen[where + 1] = (color >> 8) & 255;   // GREEN

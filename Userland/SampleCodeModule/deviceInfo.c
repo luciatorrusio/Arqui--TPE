@@ -1,5 +1,5 @@
-#include "../Include/deviceInfo.h"
-#include "../Include/Syscalls.h"
+#include "./include/deviceInfo.h"
+#include "./include/Syscalls.h"
 
 
 
@@ -49,7 +49,7 @@ void getCharWidth(unsigned int * c){
     *c = temp.charWidht;
 }
 
-void getScreenWidth(unsigned int * s){
+void getScreenWidth(int * s){
 
          DeviceInfo temp;
 
@@ -59,7 +59,7 @@ void getScreenWidth(unsigned int * s){
     
 }
 
-void getScreenHeight(unsigned int * s){
+void getScreenHeight(int * s){
 
          DeviceInfo temp;
 

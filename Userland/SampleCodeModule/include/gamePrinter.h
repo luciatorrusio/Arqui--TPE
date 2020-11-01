@@ -2,7 +2,7 @@
 #define GAMEPRINTER_H
 
 #include <stdarg.h>
-#include <stdint.h>
+#include "stdint.h"
 
 #define P_PAWN 0
 #define P_BISHOP 1

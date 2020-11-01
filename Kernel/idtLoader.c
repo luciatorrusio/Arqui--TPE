@@ -1,7 +1,7 @@
-#include <stdint.h>
-#include "../include/idtLoader.h"
-#include "../include/defs.h"
-#include "../include/interrupts.h"
+#include "./include/stdint.h"
+#include "./include/idtLoader.h"
+#include "./include/defs.h"
+#include "./include/interrupts.h"
 
 #pragma pack(push)		/* Push de la alineación actual */
 #pragma pack (1) 		/* Alinear las siguiente estructuras a 1 byte */
@@ -15,8 +15,6 @@ typedef struct {
 } DESCR_INT;
 
 #pragma pack(pop)		/* Reestablece la alinceación actual */
-
-
 
 DESCR_INT * idt = (DESCR_INT *) 0;	// IDT de 255 entradas
 
@@ -32,12 +30,6 @@ void load_idt() {
   setup_IDT_entry(0x80,(uint64_t)&_irq80Handler);
   setup_IDT_entry(0x81,(uint64_t)&_irq81Handler);
   setup_IDT_entry(0x82,(uint64_t)&_irq82Handler);
-
-  
-
-
-
-
 
 	picMasterMask(0xFC); 
 	picSlaveMask(0xFF);

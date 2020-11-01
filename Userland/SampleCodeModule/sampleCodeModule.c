@@ -1,14 +1,14 @@
 /* sampleCodeModule.c */
-#include "../Include/Time.h"
-#include "../Include/String.h"
-#include "../Include/Syscalls.h"
+#include "./include/Time.h"
+#include "./include/String.h"
+#include "./include/Syscalls.h"
 
 #include "include/Terminal.h"
-#include "../Include/Curses.h"
+#include "./include/Curses.h"
 #include "include/Game.h"
 #include "include/gamePrinter.h"
 #include <stdlib.h>
-#include "../Include/deviceInfo.h"
+#include "./include/deviceInfo.h"
 void menu(){
 	unsigned int init;
 	unsigned int aux;
@@ -22,7 +22,7 @@ void menu(){
 	
 	int position=67;
 	int y=30;
-	printfColorAt("TPE DE PC",0xFF44FF,0x00,position,y);
+	printfColorAt("TPE ARQUITECTURA DE COMPUTADORAS",0xFF44FF,0x00,position,y);
     setSize(init*2);
 	getBpp(&aux);
     y+=charHeight*aux+3;

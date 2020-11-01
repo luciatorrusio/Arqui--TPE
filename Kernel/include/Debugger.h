@@ -1,7 +1,7 @@
 #ifndef DEBUGGER_API_H
 #define DEBUGGER_API_H
 #include <stdbool.h>
-#include <stdint.h>
+#include "stdint.h"
 
 void ThrowCustomException(char * str);
 

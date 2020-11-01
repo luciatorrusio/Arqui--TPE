@@ -1,15 +1,16 @@
-#include <stdint.h>
+#include "./include/stdint.h"
+#include "./include/idtLoader.h"
 #include <string.h>
 #include <lib.h>
 #include <moduleLoader.h>
 #include <idtLoader.h>
 #include <Curses.h>
 #include <VideoDriver.h>
-#include <font.h>
 #include <keyboard.h>
 #include <Debugger.h>
-
 #include <Curses.h>
+#include <ConsoleDriver.h>
+#include <font.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -42,8 +43,6 @@ void * getStackBase()
 
 void * initializeKernelBinary()
 {
-	char buffer[10];
-
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
 		sampleDataModuleAddress
@@ -56,20 +55,13 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-#include <ConsoleDriver.h>
-#include <font.h>
-
-int main()
+int main() 
 {	
 	load_idt();
 	startVideoDriver();
 	initializeConsoleDriver(CHAR_HEIGHT,CHAR_WIDTH, SCREEN_HEIGHT,SCREEN_WIDTH); 
-
-	// printf("SCREEN H: %d, W: %d\n", SCREEN_WIDTH, SCREEN_WIDTH);
-
-			
+		
 	((EntryPoint)sampleCodeModuleAddress)();
-
 
 	return 0;
 }

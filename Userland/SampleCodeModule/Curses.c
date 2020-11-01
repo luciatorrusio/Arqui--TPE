@@ -1,8 +1,8 @@
-#include "../Include/Curses.h"
-#include "../Include/String.h"
-#include "../Include/Syscalls.h"
-#include "../Include/deviceInfo.h"
-#include <stdint.h>
+#include "./include/Curses.h"
+#include "./include/String.h"
+#include "./include/Syscalls.h"
+#include "./include/deviceInfo.h"
+#include "./include/stdint.h"
 #include <stdbool.h>
 
 typedef struct{

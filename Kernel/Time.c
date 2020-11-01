@@ -17,7 +17,6 @@ int GetYear();
 
 
 int handleTimeRequest(int id){
-
     switch (id)
     {
         case SECONDS:   return GetSeconds();
@@ -27,6 +26,7 @@ int handleTimeRequest(int id){
         case DAYOFMONTH:return GetDayOfMonth();
         case MONTH:     return GetMonth();
         case YEAR:      return GetYear();
+        default:        return -1;
     }
 }
 

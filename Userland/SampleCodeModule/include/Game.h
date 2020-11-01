@@ -3,21 +3,21 @@
 
 #include "gamePrinter.h"
 #define R_BLOCKS  8                                  //Cantidad de filas de bloques
-#define C_BLOCKS  8                                   //Cantidad de columnas de bloques
+#define C_BLOCKS  8                                  //Cantidad de columnas de bloques
 
 struct PieceSet {
-    int board[R_BLOCKS][C_BLOCKS];                                    //pelota en el medio de ls pantalla
+    int board[R_BLOCKS][C_BLOCKS];
     int left;
     int king_moved;
     int rook1_moved;
     int rook2_moved;
 };
 struct Board{
-    int board[R_BLOCKS][C_BLOCKS];                     //matriz de los bloques
+    int board[R_BLOCKS][C_BLOCKS];                   //matriz de los bloques
     int angle;
 };
 struct Time{
-    int past;                   //tiempo en el juego time_past
+    int past;                                        //tiempo en el juego time_past
     int tick;
 };
 struct Log{
@@ -42,7 +42,6 @@ void print_block(int x, int y,int color);
 //Inicialiizar el juego desde cero
 int runGame(void);
 
-
 //para volver si fue pausado
 int startGame(void);
 
@@ -50,12 +49,8 @@ void startGameRec(void);
 
 void print_blocks();
 
-void handleBallMov();
-
 void makeSquare(int * square, int x, int y);
 
 int finishGame(int time_past);
-
-void ballNextPos(int * auxPos);
 
 #endif

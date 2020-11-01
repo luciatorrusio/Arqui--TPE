@@ -1,8 +1,8 @@
 #include <stdarg.h>
 #include "include/Terminal.h"
-#include "../Include/Curses.h"
+#include "./include/Curses.h"
 #include "include/Commands.h"
-#include "../Include/String.h"
+#include "./include/String.h"
 #include "include/Game.h"
 #include <stdlib.h>
 #include <stdbool.h>
@@ -123,7 +123,7 @@ int interpretCommand(){
         }
     else if(strcmp(command,"clear") && !hasParam1 && !hasParam2)
         clearConsole();
-    else if(strcmp(command,"quotient")){
+    else if(strcmp(command,"divZero")){
         quotient();
     }
     else

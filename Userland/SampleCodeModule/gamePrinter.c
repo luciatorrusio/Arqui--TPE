@@ -1,5 +1,5 @@
 #include "./include/gamePrinter.h"
-#include "../Include/Syscalls.h"
+#include "./include/Syscalls.h"
 
 void printOnScreen(int *pos,int lenght,int height,int color){
 

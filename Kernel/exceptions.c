@@ -1,5 +1,5 @@
 #include <Curses.h>
-#include <stdint.h>
+#include "./include/stdint.h"
 #include <String.h>
 #include <stdbool.h>
 #include <Debugger.h>

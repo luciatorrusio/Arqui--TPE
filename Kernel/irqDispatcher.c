@@ -1,5 +1,5 @@
-#include "../include/timer.h"
-#include <stdint.h>
+#include "./include/timer.h"
+#include "./include/stdint.h"
 #include <Curses.h>
 #include <String.h>
 #include <keyboard.h>
@@ -7,7 +7,6 @@
 #include <Time.h>
 #include <ReadDispatcher.h>
 #include <Debugger.h>
-#include <SpeakerDriver.h>
 #include <font.h>
 #include <VideoDriver.h>
 #include <ConsoleDriver.h>
@@ -17,7 +16,7 @@
 #define FD_STDOUT 				(0x01)
 #define FD_STDERR 				(0x02)
 #define FD_STDIN 				(0x03)
-#define FD_SPEAKER 				(0x04)
+
 #define FD_SQUARES 				(0x05)
 #define FD_MEMORY 				(0x06)
 #define FD_REGISTERS			(0x07)
@@ -105,7 +104,6 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 			
 			break;
 		}
-		case FD_SPEAKER: { break;}
 		case FD_SQUARES: { break;}
 		case FD_BORDER: { break;}
 		case FD_HIGHLIGHT: { break;}
@@ -163,10 +161,6 @@ void dispatchDelete(int fd,void * firstParam, void * secondParam,void * thirdPar
 		}
 		case FD_STDERR: { break;}
 		case FD_STDIN: { break;}
-		case FD_SPEAKER: { 
-			stopSound();
-			break;
-		}
 		case FD_SQUARES: { break;}
 		case FD_BORDER: { break;}
 		case FD_HIGHLIGHT: { break;}
@@ -206,10 +200,6 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
             break;
         }
 		case FD_STDIN: break;
-        case FD_SPEAKER:{
-            playSound(firstParam);
-            break;
-        }
 		case FD_SQUARES:{ 
 			int * pos = firstParam;
 			int length = secondParam;

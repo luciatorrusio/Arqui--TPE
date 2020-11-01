@@ -4,6 +4,7 @@
 static unsigned int SCREEN_WIDTH = 1024;
 static unsigned int SCREEN_HEIGHT = 768;
 
+#include "pieces.h"
 
 void startVideoDriver();
 

@@ -1,6 +1,6 @@
 #include <stdarg.h>
 #include <stdbool.h>
-#include "../Include/String.h"
+#include "./include/String.h"
 #include <stdarg.h>
 
 int strlen(char * str){
@@ -122,9 +122,6 @@ void HexToString(char * buffer, int buffSize, uint64_t num){
 		p1++;
 		p2--;
 	}
-
-	return digits;
-	
 }
 
 void append(char * src, char * dest, unsigned size){

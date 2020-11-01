@@ -21,7 +21,7 @@
 
 
 void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
-void dispatchDelete(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
+void dispatchDelete(int fd, int firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 
 
@@ -30,7 +30,7 @@ static void int_21();
 
 
 
-void irqDispatcher(uint64_t irq, void * firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam) {
+void irqDispatcher(uint64_t irq, int firstParam,void * secondParam, void * thirdParam,void * fourthParam,void * fifthParam) {
 
 
 	switch (irq) {
@@ -76,7 +76,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_STDIN: { 
 
 			char * buffer = (char *) firstParam;
-            int bufferSize = secondParam;
+            int bufferSize = *((int *)secondParam);
 			int i = 0;		
 			int temp;
 			do{
@@ -96,9 +96,9 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_HIGHLIGHT: { break;}
 		case FD_MEMORY: { 
 			
-			uint64_t position = firstParam;
+			uint64_t position = *((uint64_t*) firstParam);
 			char * buff = secondParam;
-			int size = thirdParam;
+			int size =*((int *)thirdParam);
 
 			readMem(position,buff,size);
 
@@ -124,7 +124,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		}
 		case FD_TIME: { 
 			int * value = secondParam;
-			*value = handleTimeRequest(firstParam);
+			*value = handleTimeRequest(*((int*)firstParam));
 
 			break;
 			}
@@ -135,10 +135,10 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 
 
 
-void dispatchDelete(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
+void dispatchDelete(int fd, int firstParam, void * secondParam,void * thirdParam,void * fourthParam){
 	switch(fd){
 		case FD_STDOUT: { 
-
+			
 			if(firstParam == DELETE_CURRENT_CHAR){
 				removeLastChar();
 			}else if(firstParam == DELETE_ALL_DISPLAY){

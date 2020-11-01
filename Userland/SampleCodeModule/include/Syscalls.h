@@ -27,7 +27,4 @@ extern void read(int fd, void * first, void *second, void * third, void * forth)
 
 extern void delete(int fd, void * first, void *second, void * third, void * forth);
 
-//extern void printAt(int *pos ,int lenght,int height,int fontColor);
-//extern void writeColor(ColorChar * buff );
-
 #endif

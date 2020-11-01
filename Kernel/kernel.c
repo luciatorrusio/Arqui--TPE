@@ -1,6 +1,6 @@
 #include "./include/stdint.h"
 #include "./include/idtLoader.h"
-#include <string.h>
+#include "./include/String.h"
 #include <lib.h>
 #include <moduleLoader.h>
 #include <idtLoader.h>

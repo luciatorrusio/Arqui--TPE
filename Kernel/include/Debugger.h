@@ -2,6 +2,11 @@
 #define DEBUGGER_API_H
 #include <stdbool.h>
 #include "stdint.h"
+#include "deviceInfo.h"
+#include "Curses.h"
+#include "keyboard.h"
+#include "ConsoleDriver.h"
+#include "String.h"
 
 void ThrowCustomException(char * str);
 

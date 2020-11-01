@@ -1,17 +1,4 @@
-#include "./include/timer.h"
-#include "./include/stdint.h"
-#include <Curses.h>
-#include <String.h>
-#include <keyboard.h>
-#include <deviceInfo.h>
-#include <Time.h>
-#include <ReadDispatcher.h>
-#include <Debugger.h>
-#include <font.h>
-#include <VideoDriver.h>
-#include <ConsoleDriver.h>
-
-
+#include "./include/irqDispatcher.h"
 
 #define FD_STDOUT 				(0x01)
 #define FD_STDERR 				(0x02)
@@ -250,6 +237,3 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 	}
 	
 }
-
-
-

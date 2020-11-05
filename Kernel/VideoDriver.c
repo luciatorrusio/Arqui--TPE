@@ -1,5 +1,5 @@
 #include <VideoDriver.h>
-#include "./include/stdint.h"
+#include <stdint.h>
 #include <font.h>
 
 unsigned int SCREEN_bPP = 3;

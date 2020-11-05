@@ -1,8 +1,4 @@
 #include "include/Curses.h"
-#include "include/String.h"
-#include "include/font.h"
-#include "include/ConsoleDriver.h"
-
 #define MAXBUFFER 500
 
 
@@ -19,6 +15,7 @@ void printf(const char * format,...){
     printLine(string);
 
 }
+
 
 void printfColor(const char * format,int fontColor, int backgroundColor,...){
     
@@ -56,9 +53,3 @@ void putCharColor(char ch, int fontColor, int backgroundColor){
     temp.backgroundColor = backgroundColor;
     printCharColor(temp);
 }
-   
-
-
-
-
-

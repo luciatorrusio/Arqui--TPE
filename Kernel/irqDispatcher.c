@@ -75,8 +75,8 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_STDERR: { break;}
 		case FD_STDIN: { 
 
-			char * buffer = (char *) firstParam;
-            int bufferSize = *((int *)secondParam);
+			char * buffer = firstParam;
+            int bufferSize = secondParam;
 			int i = 0;		
 			int temp;
 			do{
@@ -96,9 +96,9 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_HIGHLIGHT: { break;}
 		case FD_MEMORY: { 
 			
-			uint64_t position = *((uint64_t*) firstParam);
+			uint64_t position = firstParam;
 			char * buff = secondParam;
-			int size =*((int *)thirdParam);
+			int size = thirdParam;
 
 			readMem(position,buff,size);
 
@@ -124,7 +124,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		}
 		case FD_TIME: { 
 			int * value = secondParam;
-			*value = handleTimeRequest(*((int*)firstParam));
+			*value = handleTimeRequest(firstParam);
 
 			break;
 			}
@@ -190,8 +190,8 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_SQUARES:{ 
 			int * pos = firstParam;
 			int length = secondParam;
-			int height=thirdParam;
-			int fontColor=fourthParam;
+			int height = thirdParam;
+			int fontColor = fourthParam;
 			
 			print(pos,length,height,fontColor);
 			break;
@@ -199,8 +199,8 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_BORDER:{ 
 			int * pos = firstParam;
 			int length = secondParam;
-			int height=thirdParam;
-			int fontColor=fourthParam;
+			int height = thirdParam;
+			int fontColor = fourthParam;
 			
 			print_border(pos,length,height,fontColor);
 			break;
@@ -208,8 +208,8 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_HIGHLIGHT:{ 
 			int * pos = firstParam;
 			int length = secondParam;
-			int height=thirdParam;
-			int fontColor=fourthParam;
+			int height = thirdParam;
+			int fontColor = fourthParam;
 			
 			print_highlight(pos,length,height,fontColor);
 			break;

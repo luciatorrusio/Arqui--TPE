@@ -1,6 +1,8 @@
 #ifndef STRING_API_H
 #define STRING_API_H
-#include "stdint.h"
+
+#include <stdarg.h>
+#include <stdint.h>
 
 int strlen(char * str);
 
@@ -18,6 +20,6 @@ void append(char * src, char * dest, unsigned size);
 
 void formatString(char * string, int size,char * format,...);
 
-
+void snprintf(char * string, int size, char * format, va_list args);
 
 #endif

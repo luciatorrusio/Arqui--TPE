@@ -1,7 +1,7 @@
 #ifndef DEVICEINFO_H
 #define DEVICEINFO_H
 
-#include "stdint.h"
+#include <stdint.h>
 
 
 

@@ -2,7 +2,7 @@
 #ifndef DEVICEINFO_API_H
 #define DEVICEINFO_API_H
 
-#include "stdint.h"
+#include <stdint.h>
 
 typedef struct 
 {

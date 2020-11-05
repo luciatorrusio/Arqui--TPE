@@ -2,7 +2,7 @@
 #include "./include/String.h"
 #include "./include/Syscalls.h"
 #include "./include/deviceInfo.h"
-#include "./include/stdint.h"
+#include <stdint.h>
 #include <stdbool.h>
 
 typedef struct{

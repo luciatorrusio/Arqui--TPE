@@ -1,6 +1,6 @@
 #ifndef TIMEH
 #define TIMEH
-#include "stdint.h"
+#include <stdint.h>
 
 int GetSeconds();
 

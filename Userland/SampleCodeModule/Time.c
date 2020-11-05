@@ -1,5 +1,5 @@
 #include "./include/Time.h"
-#include "./include/stdint.h"
+#include <stdint.h>
 #include "./include/Syscalls.h"
 enum{
 SECONDS, MINUTES, HOURS, DAYOFWEEK, DAYOFMONTH, MONTH, YEAR
@@ -44,7 +44,7 @@ int GetYear(){
 int getTime(int id){
     int time = 0;
 
-    read(FD_TIME,id,&time,0,0);
+    read(FD_TIME,(void *)id,&time,0,0);
 
     return time;
 }

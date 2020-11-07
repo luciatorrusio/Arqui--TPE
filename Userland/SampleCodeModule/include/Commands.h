@@ -12,7 +12,7 @@ int time();
 
 int help();
 
-int quotient();
+int quotient(int divideby);
 
 int invalidOpcode();
 

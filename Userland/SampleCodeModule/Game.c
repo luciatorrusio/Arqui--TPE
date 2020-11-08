@@ -957,7 +957,7 @@ void highlight_pawn(int x, int y, int sum_xf, int sum_yf, char change, bool init
         highlight_pawn_diagonal(x+sum_xf, y+1);
     }
     else if(change == 'x'){
-        highlight_pawn_diagonal(x-1, y+sum_xf);
+        highlight_pawn_diagonal(x-1, y+sum_yf);
         highlight_pawn_diagonal(x+1, y+sum_yf);
     }
     

@@ -187,10 +187,19 @@ void handleFormat(char type,int * k,char * string,int size,va_list args){
 			break;
 		}
 		case 'd':
-		case 'i':
 		{	int aux1=va_arg(args,int);
 			IntToString(string+(*k),size-1-(*k),aux1);
 			break;}
+		case 'i':
+		{	int aux1=va_arg(args,int);
+			if(aux1<10) {
+				*(string+(*k))='0';
+				IntToString(string+(*k+1),size-1-(*k),aux1);
+			} else {
+				IntToString(string+(*k),size-1-(*k),aux1);
+			}
+			break;
+		}
 		case 's':
 			{char * aux2 =va_arg(args,char *);
 			append(aux2,string+(*k),size-1-(*k));	

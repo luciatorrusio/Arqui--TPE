@@ -140,7 +140,7 @@ int time(){
     int hour = GetHours();
     int minutes = GetMinutes();
     int seconds = GetSeconds();
-    printf("%d/%d/%d %d:%d:%d \n",dayofMonth,month,year,hour, minutes,seconds);   
+    printf("%i/%i/%i %i:%i:%i \n",dayofMonth,month,year,hour, minutes,seconds);   
     return 0;
 
 }

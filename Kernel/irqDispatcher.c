@@ -21,7 +21,7 @@
 
 
 void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
-void dispatchDelete(int fd, int firstParam, void * secondParam,void * thirdParam,void * fourthParam);
+void dispatchDelete(int fd, void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam);
 
 
@@ -68,7 +68,7 @@ void int_21(){
 
 
 
-void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
+void dispatchRead(int fd, void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
 
 	switch(fd){
 		case FD_STDOUT: { break;}
@@ -76,7 +76,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_STDIN: { 
 
 			char * buffer = firstParam;
-            int bufferSize = secondParam;
+            int bufferSize = (uint64_t) secondParam;
 			int i = 0;		
 			int temp;
 			do{
@@ -96,9 +96,9 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		case FD_HIGHLIGHT: { break;}
 		case FD_MEMORY: { 
 			
-			uint64_t position = firstParam;
+			uint64_t position = (uint64_t) firstParam;
 			char * buff = secondParam;
-			int size = thirdParam;
+			int size = (uint64_t) thirdParam;
 
 			readMem(position,buff,size);
 
@@ -124,7 +124,7 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 		}
 		case FD_TIME: { 
 			int * value = secondParam;
-			*value = handleTimeRequest(firstParam);
+			*value = handleTimeRequest((uint64_t)firstParam);
 
 			break;
 			}
@@ -135,13 +135,13 @@ void dispatchRead(int fd,void * firstParam, void * secondParam,void * thirdParam
 
 
 
-void dispatchDelete(int fd, int firstParam, void * secondParam,void * thirdParam,void * fourthParam){
+void dispatchDelete(int fd, void * firstParam, void * secondParam,void * thirdParam,void * fourthParam){
 	switch(fd){
 		case FD_STDOUT: { 
 			
-			if(firstParam == DELETE_CURRENT_CHAR){
+			if((uint64_t)firstParam == DELETE_CURRENT_CHAR){
 				removeLastChar();
-			}else if(firstParam == DELETE_ALL_DISPLAY){
+			}else if((uint64_t)firstParam == DELETE_ALL_DISPLAY){
 				clearConsole();
 			}
 			break;
@@ -189,27 +189,27 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_STDIN: break;
 		case FD_SQUARES:{ 
 			int * pos = firstParam;
-			int length = secondParam;
-			int height = thirdParam;
-			int fontColor = fourthParam;
+			int length = (uint64_t) secondParam;
+			int height = (uint64_t) thirdParam;
+			int fontColor = (uint64_t) fourthParam;
 			
 			print(pos,length,height,fontColor);
 			break;
 			}
 		case FD_BORDER:{ 
 			int * pos = firstParam;
-			int length = secondParam;
-			int height = thirdParam;
-			int fontColor = fourthParam;
+			int length = (uint64_t) secondParam;
+			int height = (uint64_t) thirdParam;
+			int fontColor = (uint64_t) fourthParam;
 			
 			print_border(pos,length,height,fontColor);
 			break;
 			}
 		case FD_HIGHLIGHT:{ 
 			int * pos = firstParam;
-			int length = secondParam;
-			int height = thirdParam;
-			int fontColor = fourthParam;
+			int length = (uint64_t) secondParam;
+			int height = (uint64_t) thirdParam;
+			int fontColor = (uint64_t) fourthParam;
 			
 			print_highlight(pos,length,height,fontColor);
 			break;
@@ -217,7 +217,7 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		case FD_MEMORY: break;
 		case FD_REGISTERS: break;
 		case FD_DEVICE_INFO: {
-			setSize(firstParam);
+			setSize((uint64_t)firstParam);
 			break;
 		}
 		case FD_TIMER: break;
@@ -229,8 +229,8 @@ void dispatchWrite(int fd,void * firstParam, void * secondParam,void * thirdPara
 		}
 		case FD_PIECE: {
 			int * pos = firstParam;
-			int piece = secondParam;
-			int fontColor = thirdParam;
+			int piece = (uint64_t) secondParam;
+			int fontColor = (uint64_t) thirdParam;
 			print_piece(pos,piece,fontColor);
 			break;
 		}

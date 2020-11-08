@@ -135,6 +135,10 @@ static int initialize= -1;
     void clearLog();
     void updateLog(int usr, int x, int y);
     char * pieceString(int piece);
+
+    void boardCoord();
+    void rotateCoord();
+    void getCoord(int x, int y, char * resp);
 //
 
 static bool startOver = true;
@@ -1410,6 +1414,7 @@ void rotate_board(){
             board.board[j][R_BLOCKS-1-i] = piece;
         }
     }
+    rotateCoord();
 }
 
 
@@ -1471,6 +1476,7 @@ void print_game(){
     print_highlight();
     table();
     log();
+    boardCoord();
     print_usr();
 }
 
@@ -1586,13 +1592,13 @@ int key_pressed(){
 }
 
 void log() {
-    printfColorAt("-- LOG -------------------------------",WHITE,BLACK,700,15);
+    printfColorAt("-- LOG -------------------------",WHITE,BLACK,750,15);
     if(renglones_ocupados!=0) {
         for(int i=0; i<renglones_ocupados; i++) {
             printInfoLog(i);
         }
     }
-    printfColorAt("--------------------------------------",WHITE,BLACK,700,420);
+    printfColorAt("--------------------------------",WHITE,BLACK,750,420);
 }
 
 void clearLog() {
@@ -1640,14 +1646,105 @@ char * pieceString(int piece) {
     }
 }
 
+int coord[C_BLOCKS][C_BLOCKS];
+int pos = 0;
+
+void printCoord() {
+
+    switch (pos) {
+    case 0:
+        for(int i=0; i<C_BLOCKS; i++) {
+            printfColorAt("%c",WHITE,BLACK,700,BLOCK_HEIGHT*i+BLOCK_HEIGHT/2,C_BLOCKS-i+'0');
+            printfColorAt("%c",WHITE,BLACK,BLOCK_WIDTH*i+BLOCK_WIDTH/2,700,i+'A');
+        }
+        break;
+    case 1:
+        for(int i=0; i<C_BLOCKS; i++) {
+            printfColorAt("%c",WHITE,BLACK,700,BLOCK_HEIGHT*i+BLOCK_HEIGHT/2,i+'A');
+            printfColorAt("%c",WHITE,BLACK,BLOCK_WIDTH*i+BLOCK_WIDTH/2,700,i+'1');
+        }
+    break;
+    
+    case 2:
+        for(int i=0; i<C_BLOCKS; i++) {
+            printfColorAt("%c",WHITE,BLACK,700,BLOCK_HEIGHT*i+BLOCK_HEIGHT/2,i+'1');
+            printfColorAt("%c",WHITE,BLACK,BLOCK_WIDTH*i+BLOCK_WIDTH/2,700,C_BLOCKS-1-i+'A');
+        }
+    break;
+    
+    case 3:
+        for(int i=0; i<C_BLOCKS; i++) {
+            printfColorAt("%c",WHITE,BLACK,700,BLOCK_HEIGHT*i+BLOCK_HEIGHT/2,C_BLOCKS-1-i+'A');
+            printfColorAt("%c",WHITE,BLACK,BLOCK_WIDTH*i+BLOCK_WIDTH/2,700,C_BLOCKS-i+'0');
+        }
+    break;
+    default:
+        break;
+    }
+}
+
+void boardCoord() {
+    for(int i=0; i<C_BLOCKS; i++) {
+        for(int j=0; j<C_BLOCKS; j++) {
+            coord[i][j] = i*10 + j;
+        }
+    }
+    printCoord();
+}
+
+void getCoord(int i, int j, char * resp) {
+
+    // printfColorAt(" %d ",BLACK,YELLOW,750,info[1]+60,coord[i][j]);    
+
+    switch (pos) {
+    case 0:
+        resp[0] = coord[i][j]%10 + 'A';
+        resp[1] = C_BLOCKS - (coord[i][j]-coord[i][j]%10)/10 + '0';
+        break;
+
+    case 1:
+        resp[0] = (coord[i][j]-coord[i][j]%10)/10 + 'A';
+        resp[1] = coord[i][j]%10 + '1';
+        break;
+
+    case 2:
+        resp[0] = C_BLOCKS - coord[i][j]%10 - 1 + 'A';
+        resp[1] = (coord[i][j]-coord[i][j]%10)/10 + '1';
+        break;
+
+    case 3:
+        resp[0] = C_BLOCKS - (coord[i][j]-coord[i][j]%10)/10 - 1 + 'A';
+        resp[1] = C_BLOCKS - coord[i][j]%10 + '0';
+        break;
+
+    default:
+        break;
+    }
+
+    resp[2] = 0;
+}
+
+void rotateCoord(){
+    if(pos==3)
+        pos = 0;
+    else
+        pos++;
+    // printfColorAt(" %d ",BLACK,YELLOW,750,info[1]+30,pos);
+    printCoord();
+}
 
 void table(){
-    printfColorAt("To return to terminal press q",YELLOW,BLACK,700,info[1]-200);
-    printfColorAt("To rotate board press r",YELLOW,BLACK,700,info[1]-160);
-    printfColorAt("To make enroque press e",YELLOW,BLACK,700,info[1]-120);
-    printfColorAt("Pieces of player 1 left :",YELLOW,BLACK,700,info[1]-80);
-    printfColorAt("Pieces of player 2 left :",YELLOW,BLACK,700,info[1]-40);
-    printfColorAt("Time :",YELLOW,BLACK,700,info[1]);
+    // borde tablero
+    for(int i=0; i<=725; i++) {
+        printfColorAt(" ",WHITE,WHITE,725,i);
+        printfColorAt(" ",WHITE,WHITE,i,725);
+    }
+    printfColorAt("To return to terminal press q",YELLOW,BLACK,750,info[1]-200);
+    printfColorAt("To rotate board press r",YELLOW,BLACK,750,info[1]-160);
+    printfColorAt("To make enroque press e",YELLOW,BLACK,750,info[1]-120);
+    printfColorAt("Pieces of player 1 left:",YELLOW,BLACK,750,info[1]-80);
+    printfColorAt("Pieces of player 2 left:",YELLOW,BLACK,750,info[1]-40);
+    printfColorAt("Time:",YELLOW,BLACK,750,info[1]);
     tableData();
 }
 
@@ -1655,7 +1752,7 @@ void table(){
 void tableData(){
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-80,set1.left);
     printfColorAt("%d",YELLOW,BLACK,950,info[1]-40,set2.left);
-    printfColorAt("%d  ",YELLOW,BLACK,750,info[1],60 - turnTicks);
+    printfColorAt("%d  ",YELLOW,BLACK,800,info[1],60 - turnTicks);
 }
 
 
@@ -1664,48 +1761,52 @@ void updateLog(int usr, int x, int y) {
     if(renglones_ocupados == 18)  {
         scroll();
         logInfo[renglones_ocupados-1].usr = usr;
-        logInfo[renglones_ocupados-1].pos[X] = x+1;
-        logInfo[renglones_ocupados-1].pos[Y] = y+1;
         logInfo[renglones_ocupados-1].capture = false;
-        printfColorAt("                                     ",RED,BLACK,700,20*(2+renglones_ocupados-1));
-        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados-1].usr ==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,logInfo[renglones_ocupados-1].pos[Y],logInfo[renglones_ocupados-1].pos[X]);
+        printfColorAt("                                 ",RED,BLACK,750,20*(2+renglones_ocupados-1));
+        char resp[2];
+        getCoord(y,x,&resp);
+        logInfo[renglones_ocupados-1].pos[X] = resp[0];
+        logInfo[renglones_ocupados-1].pos[Y] = resp[1];
+        printfColorAt("Player %d moves to %s", logInfo[renglones_ocupados-1].usr ==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,resp);
         if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE){
             scroll();
             logInfo[renglones_ocupados-1].usr = usr;
-            logInfo[renglones_ocupados-1].pos[X] = x+1;
-            logInfo[renglones_ocupados-1].pos[Y] = y+1;
+            logInfo[renglones_ocupados-1].pos[X] = resp[0];
+            logInfo[renglones_ocupados-1].pos[Y] = resp[1];
             logInfo[renglones_ocupados-1].capture = true;
             logInfo[renglones_ocupados-1].piece_eaten = get_piece(usr_pos[X], usr_pos[Y]);
-            printfColorAt("                                 ",BLUE,BLACK,700,20*(2+renglones_ocupados-1));
-            printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,pieceString(logInfo[renglones_ocupados-1].piece_eaten));
+            printfColorAt("                                 ",BLUE,BLACK,750,20*(2+renglones_ocupados-1));
+            printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1].usr==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,pieceString(logInfo[renglones_ocupados-1].piece_eaten));
         }
             
     }else{
         logInfo[renglones_ocupados].usr = usr;
-        logInfo[renglones_ocupados].pos[X] = x+1;
-        logInfo[renglones_ocupados].pos[Y] = y+1;
         logInfo[renglones_ocupados].capture = false;
-        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,logInfo[renglones_ocupados].pos[Y],logInfo[renglones_ocupados].pos[X]);
+        char resp[2];
+        getCoord(y,x,&resp);
+        logInfo[renglones_ocupados].pos[X] = resp[0];
+        logInfo[renglones_ocupados].pos[Y] = resp[1];
+        printfColorAt("Player %d moves to %s", logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,resp);
         renglones_ocupados++;
 
         if(get_piece(usr_pos[X], usr_pos[Y]) != NO_PIECE){
             if(renglones_ocupados== 18){
                 scroll();
                 logInfo[renglones_ocupados-1].usr = usr;
-                logInfo[renglones_ocupados-1].pos[X] = x+1;
-                logInfo[renglones_ocupados-1].pos[Y] = y+1;
+                logInfo[renglones_ocupados-1].pos[X] = resp[0];
+                logInfo[renglones_ocupados-1].pos[Y] = resp[1];
                 logInfo[renglones_ocupados-1].capture = true;
                 logInfo[renglones_ocupados-1].piece_eaten = get_piece(usr_pos[X], usr_pos[Y]);
-                printfColorAt("                             ",RED,BLACK,700,20*(2+renglones_ocupados-1));
-                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,pieceString(logInfo[renglones_ocupados-1].piece_eaten));
+                printfColorAt("                             ",RED,BLACK,750,20*(2+renglones_ocupados-1));
+                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados-1].usr==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,pieceString(logInfo[renglones_ocupados-1].piece_eaten));
 
             }else{
                 logInfo[renglones_ocupados].usr = usr;
-                logInfo[renglones_ocupados].pos[X] = x+1;
-                logInfo[renglones_ocupados].pos[Y] = y+1;
+                logInfo[renglones_ocupados].pos[X] = resp[0];
+                logInfo[renglones_ocupados].pos[Y] = resp[1];
                 logInfo[renglones_ocupados].capture = true;
                 logInfo[renglones_ocupados].piece_eaten = get_piece(usr_pos[X], usr_pos[Y]);
-                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,700,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,pieceString(logInfo[renglones_ocupados].piece_eaten));;
+                printfColorAt("Player %d captures %s",logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,pieceString(logInfo[renglones_ocupados].piece_eaten));;
                 renglones_ocupados++;
             }  
 
@@ -1715,15 +1816,17 @@ void updateLog(int usr, int x, int y) {
 
 }
 void printInfoLog(int renglon){
-    int x=700;
+    int x=750;
     int y=20*(2+renglon);
     if(logInfo[renglon].capture==true) {
-        printfColorAt("                                     ", RED,BLACK,x,y);
+        printfColorAt("                                 ", RED,BLACK,x,y);
         printfColorAt("Player %d captures %s",logInfo[renglon].usr==1 ? BLUE:RED,BLACK,x,y,logInfo[renglon].usr,pieceString(logInfo[renglon].piece_eaten));
     }
     else {
-        printfColorAt("                                     ", RED,BLACK,x,y);
-        printfColorAt("Player %d moves to row %d, column %d", logInfo[renglon].usr==1 ? BLUE:RED,BLACK,x,y,logInfo[renglon].usr,logInfo[renglon].pos[Y],logInfo[renglon].pos[X]);    
+        printfColorAt("                                 ", RED,BLACK,x,y);
+        // char * resp;
+        // getCoord(logInfo[renglon].pos[Y],logInfo[renglon].pos[X],&resp);
+        printfColorAt("Player %d moves to %c%c", logInfo[renglon].usr==1 ? BLUE:RED,BLACK,x,y,logInfo[renglon].usr,logInfo[renglon].pos[X],logInfo[renglon].pos[Y]);    
     }
 
 }
@@ -1742,6 +1845,6 @@ void scroll(){
         printInfoLog(renglon);
         renglon++;
     }
-    printfColorAt("                                     ", RED,BLACK,700,20*(2+renglon));
+    printfColorAt("                                 ", RED,BLACK,750,20*(2+renglon));
 
 }

@@ -23,7 +23,7 @@ struct Time{
 struct Log{
     int capture;
     int usr;
-    int pos[2];
+    char pos[2];
     int piece_moved;
     int piece_eaten;
 };

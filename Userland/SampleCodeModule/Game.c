@@ -69,6 +69,7 @@ static char KeyBuffer[200];
 static int keyBufferFront = 0;
 static int keyBufferBack = 0;
 static bool goToTerminal = false;
+static int finaltablero[4];
 
 static int SCREEN_HEIGHT;
 static int SCREEN_WIDTH;
@@ -188,6 +189,10 @@ void initializePositions(){
     }
     // inicializo de que forma esta el tablero
     board.angle = 0;
+    finaltablero[X] = 7;
+    finaltablero[Y] = -1;
+    finaltablero[X+2] = 0;
+    finaltablero[Y+2] = -1;
     // marco en el tablero donde va a ser negro y donde blanco
     for (int i = 0; i < R_BLOCKS; i++)
     {
@@ -353,7 +358,8 @@ void handleUsrMov(){
                 }else {
                     curr_usr = 1;
                 }
-            } else if(curr_usr == 1){
+            } 
+            else if(curr_usr == 1){
                 //aca se come la pieza del otro  eficientizar
                 if(set2.board[usr_pos[Y]][usr_pos[X]] != NO_PIECE){
                     if(get_piece(usr_pos[X], usr_pos[Y])== KING2){
@@ -363,6 +369,9 @@ void handleUsrMov(){
                     set2.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
                     set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
                     set1.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
+                    if(get_piece(usr_pos[X], usr_pos[Y]) == PAWN1 && isfinaltablero(usr_pos[X], usr_pos[Y])== true ){
+                        coronacion(usr_pos[X], usr_pos[Y]);
+                    }
                     print_tile(usr_pos[X],usr_pos[Y]);
                     print_piece( usr_pos[X], usr_pos[Y]);
                     print_tile(piece_selected[X],piece_selected[Y]);
@@ -373,6 +382,9 @@ void handleUsrMov(){
                 }// aca se mueve a un lugar sin nadie 
                 else if(set1.board[usr_pos[Y]][usr_pos[X]] == NO_PIECE){
                     set1.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
+                    if(get_piece(usr_pos[X], usr_pos[Y]) == PAWN1 && isfinaltablero(usr_pos[X], usr_pos[Y])== true ){
+                        coronacion(usr_pos[X], usr_pos[Y]);
+                    }
                     print_tile(usr_pos[X],usr_pos[Y]);
                     print_piece( usr_pos[X], usr_pos[Y]);
                     set1.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
@@ -391,16 +403,23 @@ void handleUsrMov(){
                     set1.board[usr_pos[Y]][usr_pos[X]] = NO_PIECE;
                     set2.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
                     set2.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
+                    if(get_piece(usr_pos[X], usr_pos[Y]) == PAWN2 && isfinaltablero(usr_pos[X], usr_pos[Y])== true ){
+                        coronacion(usr_pos[X], usr_pos[Y]);
+                    }
                     print_tile(usr_pos[X],usr_pos[Y]);
                     print_piece( usr_pos[X], usr_pos[Y]);
                     print_tile(piece_selected[X],piece_selected[Y]);
                     print_piece( piece_selected[X], piece_selected[Y]);
                     set1.left--;
+                    
                     curr_usr = 1;
                     
                 } // aca mueve su ficha a un espacio vacio
                 else if(set2.board[usr_pos[Y]][usr_pos[X]] == NO_PIECE){
                     set2.board[usr_pos[Y]][usr_pos[X]] = get_piece(piece_selected[X], piece_selected[Y]);
+                    if(get_piece(usr_pos[X], usr_pos[Y]) == PAWN2 && isfinaltablero(usr_pos[X], usr_pos[Y])== true ){
+                        coronacion(usr_pos[X], usr_pos[Y]);
+                    }
                     print_tile(usr_pos[X],usr_pos[Y]);
                     print_piece( usr_pos[X], usr_pos[Y]);
                     set2.board[piece_selected[Y]][piece_selected[X]]= NO_PIECE;
@@ -457,6 +476,7 @@ void handleUsrMov(){
     }
 }
 
+
 // Esta funcion se fija si puede hacer enroque y highlightea con las torres que se puede hacer
 void try_enroque(){
     if(curr_usr == 1){
@@ -480,6 +500,24 @@ void try_enroque(){
         
         }
     } 
+}
+
+
+
+int isfinaltablero(int x, int y){
+    if(x== finaltablero[X] || x == finaltablero[X+2] || y == finaltablero[Y] || y == finaltablero[Y+2]){
+        return true;
+    }
+    return false;
+}
+// Esta funcion le pregunta al usuario por que pieza quiere cambiar su peon al llegar al final del tablero
+void coronacion(int x, int y){
+    if(curr_usr == 1){
+        set1.board[y][x] = QUEEN1;
+    } else {
+        set2.board[y][x] = QUEEN2;
+    }
+    return;
 }
 
 // Esta funcion hace el movimiento del enroque dado de donde a donde va el king de donde a donde va el rook y sus nombres especificos
@@ -1285,6 +1323,19 @@ void rotate_chess(){
     }else {
         board.angle++;
     }
+    if(board.angle == 0 || board.angle == 2){
+        finaltablero[X] = 7;
+        finaltablero[Y] = -1;
+        finaltablero[X+2] = 0;
+        finaltablero[Y+2] = -1;
+    }
+    else if(board.angle == 1 || board.angle == 3){
+        finaltablero[X] = -1;
+        finaltablero[Y] = 7;
+        finaltablero[X+2] = -1;
+        finaltablero[Y+2] = 0;
+    }
+    
     rotate_highlight();
     rotate_set1();
     rotate_set2();

@@ -26,7 +26,7 @@ void menu(){
     setSize(init*2);
 	getBpp(&aux);
     y+=charHeight*aux+3;
-    printfColorAt("Ponce 59489, Torrusio 59820, Diaz Kralj 60495",0xFFFFFF,0x00,position,y);
+    printfColorAt("Ponce 59220, Torrusio 59820, Diaz Kralj 60495",0xFFFFFF,0x00,position,y);
     y+=charHeight*aux+3;
     printfColorAt("1) Game",0xFFFFFF,0x00,position*2,y);
     printfColorAt("2) Terminal",0xFFFFFF,0x00,position*4+30,y);

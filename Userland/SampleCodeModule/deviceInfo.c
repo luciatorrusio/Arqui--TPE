@@ -13,9 +13,9 @@ typedef struct{
 
 
 
-void readMem(uint64_t position, char * buff, int size){
+void readMem(uint64_t position, char * buff, uint64_t size){
 
-    read(FD_MEMORY,position,buff,size,0);
+    read(FD_MEMORY,(void *)position,buff,(void *)size,0);
 
 }
 
@@ -29,7 +29,7 @@ void getBpp(unsigned int * bpp){
 
 }
 
-void setSize(unsigned int bpp){
+void setSize(uint64_t bpp){
     write(FD_DEVICE_INFO,(void*)bpp,0,0,0);
 }
 

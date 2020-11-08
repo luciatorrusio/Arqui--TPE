@@ -11,9 +11,9 @@
 #define P_KING 4
 #define P_QUEEN 5
 
-void printPiece(int * pos, int piece, int color);
-void printOnScreen(int *pos,int lenght,int height,int fontColor);
-void print_border(int *pos,int lenght,int height,int color);
-void highlightTile(int *pos,int lenght,int height,int color);
+void printPiece(int * pos, uint64_t piece, uint64_t color);
+void printOnScreen(int * pos, uint64_t lenght, uint64_t height, uint64_t color);
+void print_border(int * pos, uint64_t lenght, uint64_t height, uint64_t color);
+void highlightTile(int * pos,  uint64_t lenght, uint64_t height, uint64_t color);
 
 #endif

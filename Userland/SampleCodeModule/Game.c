@@ -94,6 +94,7 @@ static int initialize= -1;
     void initializePositions();
     void print_usr();
     void next_highlight();
+    void prev_highlight();
     int argument(int f,int c, int sum_f, int sum_c, bool is_long);
     void print_piece(int i, int j);
     void print_tile(int i, int j);
@@ -326,7 +327,7 @@ void handleUsrMov(){
             next_highlight();                                   //muevo al usuario a la proxima opcion
         }
         else if(key == LEFT_ARROW){
-            next_highlight();      // hacerlo si hay tiempo         
+            prev_highlight();      // hacerlo si hay tiempo         
         }else if(key == ROTATE){
             rotate_chess();               
         }else if(key == ENROQUE && select_enroque == true){
@@ -439,8 +440,8 @@ void handleUsrMov(){
         rotate_chess();               
     }
     else if(key == ENROQUE){
-        try_enroque();
-        
+        try_enroque();   
+
     }
     else if(key == ENTER){ 
         if(usr_on_own_piece()){
@@ -768,6 +769,44 @@ void next_highlight(){
         
     }
     
+}
+
+// mueve al usuario a la anterior opcion donde moverse
+void prev_highlight(){
+    // primero se fija entre los anteriores en el board
+    for (int i = usr_pos[Y]; i >= 0; i--) {
+        int pos = C_BLOCKS-1;
+        if(i == usr_pos[Y]){
+            pos = usr_pos[X]-1;
+        }
+        for(int j = pos; j>=0; j--){
+            if(highlightBoard.board[i][j] == HIGHLIGHT){
+                print_tile(usr_pos[X],usr_pos[Y]);
+                highlight(usr_pos[X],usr_pos[Y]);
+                print_piece( usr_pos[X], usr_pos[Y]);
+                usr_pos[X]=j;
+                usr_pos[Y]=i;
+                return;
+            }
+        }
+    }
+    // se fija entre los siguientes a el
+    for (int i = C_BLOCKS-1; i >= usr_pos[Y]; i--) {
+        int tope = 0;
+        if(i == usr_pos[Y]){
+            tope = usr_pos[X]+1;
+        }
+        for(int j = C_BLOCKS-1; j>=tope; j--){
+            if(highlightBoard.board[i][j] == HIGHLIGHT){
+                print_tile(usr_pos[X],usr_pos[Y]);
+                highlight(usr_pos[X],usr_pos[Y]);
+                print_piece( usr_pos[X], usr_pos[Y]);
+                usr_pos[X]=j;
+                usr_pos[Y]=i;
+                return;
+            }
+        }
+    }
 }
 
 // devuelve si el user esta situado en su propia pieza

@@ -124,7 +124,7 @@ int interpretCommand(){
     else if(strcmp(command,"clear") && !hasParam1 && !hasParam2)
         clearConsole();
     else if(strcmp(command,"divZero")){
-        quotient();
+        quotient(0);
     }
     else
         printfError("%s %s %s %s: command not found \n",command,param1,param2,param3);    

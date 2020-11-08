@@ -6,13 +6,11 @@
 
 extern void __UD2__();
 
-int quotient(){
+int quotient(int divideby){
 
     printf("I'm going to calculate the quotient of 2 divided by 0\n");
 
-    //int result =  (2)/ (0);
-
-    return (2)/ (0);
+    return (2)/ (divideby);
 }
 
 int man(){

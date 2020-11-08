@@ -261,7 +261,6 @@ void initializePositions(){
 int startGame(){
     int aux;
     print_game();
-
     bool stopWhile = false;
     goToTerminal = false;
 	uint64_t baseTicks = 0,realTicks = 0, previusTick = 0;
@@ -513,12 +512,40 @@ int isfinaltablero(int x, int y){
 }
 // Esta funcion le pregunta al usuario por que pieza quiere cambiar su peon al llegar al final del tablero
 void coronacion(int x, int y){
-    if(curr_usr == 1){
-        set1.board[y][x] = QUEEN1;
-    } else {
-        set2.board[y][x] = QUEEN2;
+    int c;
+    appear_options_coronacion();
+    while((c=readKey())!='1' && c!='2' && c!='4' && c!='3');
+    if(c == '1'){
+        put_curr_set(x,y,QUEEN1);
     }
+    else if(c == '2'){
+        put_curr_set(x,y,BISHOP1);
+    }
+    else if(c == '3'){
+        put_curr_set(x,y,KNIGHT1);
+    }
+    else if(c == '4'){
+        put_curr_set(x,y,ROOK11);
+    }
+    print_game();
     return;
+}
+void appear_options_coronacion(){
+    int pos[2];
+    pos[X]=300;
+    pos[Y]=SCREEN_HEIGHT/2;
+    printOnScreen(pos, 500, 100, BLACK);
+    printfColorAt("what do you want to change your pawn for?",YELLOW,BLACK,120,pos[Y]-20);
+    printfColorAt("1)QUEEN  2)BISHOP    3)KNIGHT    4)ROOK",YELLOW,BLACK,120,pos[Y]+20);
+        
+}
+void put_curr_set(int x, int y, int piece){
+    if(curr_usr == 1){
+        set1.board[y][x]=piece;
+    }else{
+        set2.board[y][x]=piece+100;
+    }
+
 }
 
 // Esta funcion hace el movimiento del enroque dado de donde a donde va el king de donde a donde va el rook y sus nombres especificos

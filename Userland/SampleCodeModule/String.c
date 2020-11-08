@@ -158,7 +158,7 @@ int strcmp(char * s1,char * s2){
 void formatString(char * string, int size,char format,...){
 	va_list args;
 	va_start(args,format);
-	snprintf(string,size,format,args);
+	snprintf(string,size,&format,args);
 	va_end(args);
 }
 

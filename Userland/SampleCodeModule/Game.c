@@ -132,6 +132,11 @@ static int initialize= -1;
     void move_enroque2(int yRook, int xRook, int yKing, int xKing, int y2Rook, int x2Rook , int y2King, int x2King, int ROOK, int KING );
     void printInfoLog(int renglon);
 
+    int isfinaltablero(int x, int y);
+    void coronacion(int x, int y);
+    void appear_options_coronacion();
+    void put_curr_set(int x, int y, int piece);
+
     void log();
     void clearLog();
     void updateLog(int usr, int x, int y);
@@ -1842,7 +1847,7 @@ void updateLog(int usr, int x, int y) {
         logInfo[renglones_ocupados-1].capture = false;
         printfColorAt("                                 ",RED,BLACK,750,20*(2+renglones_ocupados-1));
         char resp[2];
-        getCoord(y,x,&resp);
+        getCoord(y,x,resp);
         logInfo[renglones_ocupados-1].pos[X] = resp[0];
         logInfo[renglones_ocupados-1].pos[Y] = resp[1];
         printfColorAt("Player %d moves to %s", logInfo[renglones_ocupados-1].usr ==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados-1),logInfo[renglones_ocupados-1].usr,resp);
@@ -1861,7 +1866,7 @@ void updateLog(int usr, int x, int y) {
         logInfo[renglones_ocupados].usr = usr;
         logInfo[renglones_ocupados].capture = false;
         char resp[2];
-        getCoord(y,x,&resp);
+        getCoord(y,x,resp);
         logInfo[renglones_ocupados].pos[X] = resp[0];
         logInfo[renglones_ocupados].pos[Y] = resp[1];
         printfColorAt("Player %d moves to %s", logInfo[renglones_ocupados].usr==1 ? BLUE:RED,BLACK,750,20*(2+renglones_ocupados),logInfo[renglones_ocupados].usr,resp);

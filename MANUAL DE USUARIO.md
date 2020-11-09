@@ -17,5 +17,6 @@ printMem ‘position’: Realiza un volcado de memoria de 32 bytes a partir de l
 2. Ajedrez:
 - Se pueden usar las teclas ‘w’, ‘a’, ‘s’, ‘d’ para moverse hacia arriba, izquierda, abajo y derecha respectivamente.
 - Para seleccionar una pieza y mostrar los movimientos válidos se pulsa ENTER estando posicionado en la pieza deseada. Luego de elegir el movimiento deseado el mismo se puede llevar a cabo pulsando ENTER nuevamente.
+- Para hacer el movimiento de enroque se usa la tecla "e".
 - Para retornar a la terminal se usa la tecla ‘q’.
 - Si el usuario desea rotar el tablero, debe presionar la tecla ‘r’.
